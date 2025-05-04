@@ -3,10 +3,11 @@ package thelm.spectrumjei.recipe.category;
 import de.dafuqs.spectrum.recipe.ink_converting.InkConvertingRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import thelm.spectrumjei.SpectrumJEI;
 
@@ -33,15 +34,21 @@ public class InkConvertingRecipeCategory extends AbstractGatedRecipeCategory<Ink
 	}
 
 	@Override
-	public void draw(InkConvertingRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, InkConvertingRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 22, 2);
+			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 22, 2);
+		}
+	}
+
+	@Override
+	public void draw(InkConvertingRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipe)) {
 			TextRenderer font = font();
 			Text colorComponent = Text.translatable("container.spectrum.rei.ink_converting.color", recipe.getInkColor().getName());
 			Text amountComponent = Text.translatable("container.spectrum.rei.ink_converting.amount", recipe.getInkAmount());
-			font.draw(poseStack, colorComponent, 50, 1, 0x3F3F3F);
-			font.draw(poseStack, amountComponent, 50, 11, 0x3F3F3F);
+			guiGraphics.drawText(font, colorComponent, 50, 1, 0x3F3F3F, false);
+			guiGraphics.drawText(font, amountComponent, 50, 11, 0x3F3F3F, false);
 		}
 	}
 }

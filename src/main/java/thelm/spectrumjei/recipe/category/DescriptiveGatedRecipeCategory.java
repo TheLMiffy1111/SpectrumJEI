@@ -2,14 +2,14 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
-import de.dafuqs.spectrum.recipe.DescriptiveGatedRecipe;
+import de.dafuqs.spectrum.api.recipe.DescriptiveGatedRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -18,7 +18,7 @@ import thelm.spectrumjei.SpectrumJEI;
 /**
  * Based on IngredientInfoRecipeCategory
  */
-public class DescriptiveGatedRecipeCategory<R extends DescriptiveGatedRecipe> extends AbstractGatedRecipeCategory<R> {
+public class DescriptiveGatedRecipeCategory<R extends DescriptiveGatedRecipe<?>> extends AbstractGatedRecipeCategory<R> {
 
 	public DescriptiveGatedRecipeCategory(RecipeType<R> recipeType, Text title) {
 		super(recipeType, title);
@@ -38,13 +38,13 @@ public class DescriptiveGatedRecipeCategory<R extends DescriptiveGatedRecipe> ex
 	}
 
 	@Override
-	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 		if(isVisible(recipe)) {
 			TextRenderer font = font();
 			List<OrderedText> lines = font.wrapLines(recipe.getDescription(), getWidth());
 			for(int i = 0; i < lines.size(); ++i) {
-				font.draw(poseStack, lines.get(i), 0, 22 + i * 10, 0x3F3F3F);
+				guiGraphics.drawText(font, lines.get(i), 0, 22 + i * 10, 0x3F3F3F, false);
 			}
 		}
 	}

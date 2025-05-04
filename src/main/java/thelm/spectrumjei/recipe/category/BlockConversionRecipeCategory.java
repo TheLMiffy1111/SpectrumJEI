@@ -1,14 +1,13 @@
 package thelm.spectrumjei.recipe.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
 
@@ -42,16 +41,15 @@ public class BlockConversionRecipeCategory extends AbstractUnlockableRecipeCateg
 	}
 
 	@Override
-	public void draw(BlockConversionRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, BlockConversionRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 53, 5);
+			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 53, 5);
 		}
 	}
 
 	@Override
 	public Identifier getRegistryName(BlockConversionRecipe recipe) {
-		Identifier blockKey = Registry.BLOCK.getId(recipe.input().getBlock());
+		Identifier blockKey = Registries.BLOCK.getId(recipe.input().getBlock());
 		return new Identifier("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
 	}
 }

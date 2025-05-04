@@ -10,11 +10,12 @@ import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -34,7 +35,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	public static final Text INK_CONSUMPTION = Text.translatable("container.spectrum.rei.crystallarieum.ink_consumption");
 	public static final Text USED_UP = Text.translatable("container.spectrum.rei.crystallarieum.used_up");
 
-	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/patchouli/crystallarieum.png");
+	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/modonomicon/crystallarieum.png");
 	public static final ResourceDrawable ACCEL_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable ACCEL_HIGH = new ResourceDrawable(BACKGROUND, 67, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable ACCEL_NONE = new ResourceDrawable(BACKGROUND, 97, 0, 6, 6, 128, 128);
@@ -42,7 +43,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	public static final ResourceDrawable ACCEL_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_HIGH = new ResourceDrawable(BACKGROUND, 67, 0, 6, 6, 128, 128);
-	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 91, 6, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 81, 6, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_NONE = new ResourceDrawable(BACKGROUND, 97, 6, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_LOW = new ResourceDrawable(BACKGROUND, 73, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
@@ -74,10 +75,9 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	}
 
 	@Override
-	public void draw(CrystallarieumRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, CrystallarieumRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			RecipeArrowDrawable.of(recipe.getSecondsPerGrowthStage() * 1000).draw(poseStack, 47, 9);
+			builder.addDrawable(RecipeArrowDrawable.of(recipe.getSecondsPerGrowthStage() * 1000), 47, 9);
 			List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
 			for(int i = 0; i < catalysts.size(); ++i) {
 				CrystallarieumCatalyst catalyst = catalysts.get(i);
@@ -100,7 +100,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 				else {
 					icon = ACCEL_LOWER;
 				}
-				icon.draw(poseStack, x, 59);
+				builder.addDrawable(icon, x, 59);
 
 				float inkConsumption = catalyst.inkConsumptionMod;
 				if(inkConsumption >= 8F) {
@@ -118,7 +118,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 				else {
 					icon = CONSUME_LOWER;
 				}
-				icon.draw(poseStack, x, 69);
+				builder.addDrawable(icon, x, 69);
 
 				float consumeChance = catalyst.consumeChancePerSecond;
 				if(consumeChance >= 0.2F) {
@@ -133,8 +133,15 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 				else {
 					icon = CONSUME_NONE;
 				}
-				icon.draw(poseStack, x, 79);
+				builder.addDrawable(icon, x, 79);
 			}
+		}
+	}
+
+	@Override
+	public void draw(CrystallarieumRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipe)) {
 			TextRenderer font = font();
 			Text timeComponent;
 			if(recipe.growsWithoutCatalyst()) {
@@ -143,11 +150,11 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 			else {
 				timeComponent = Text.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds", recipe.getSecondsPerGrowthStage());
 			}
-			font.draw(poseStack, CATALYST, 6, 43, 0x3F3F3F);
-			font.draw(poseStack, ACCELERATOR, 6, 58, 0x3F3F3F);
-			font.draw(poseStack, INK_CONSUMPTION, 6, 68, 0x3F3F3F);
-			font.draw(poseStack, USED_UP, 6, 78, 0x3F3F3F);
-			font.draw(poseStack, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 90, 0x3F3F3F);
+			guiGraphics.drawText(font, CATALYST, 6, 43, 0x3F3F3F, false);
+			guiGraphics.drawText(font, ACCELERATOR, 6, 58, 0x3F3F3F, false);
+			guiGraphics.drawText(font, INK_CONSUMPTION, 6, 68, 0x3F3F3F, false);
+			guiGraphics.drawText(font, USED_UP, 6, 78, 0x3F3F3F, false);
+			guiGraphics.drawText(font, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 90, 0x3F3F3F, false);
 		}
 	}
 }

@@ -3,6 +3,7 @@ package thelm.spectrumjei.gui.render;
 import com.google.common.base.Preconditions;
 
 import mezz.jei.api.gui.drawable.IDrawable;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 
 /**
@@ -34,11 +35,12 @@ public record DownscaledDrawable(IDrawable drawable, int scale) implements IDraw
 	}
 
 	@Override
-	public void draw(MatrixStack poseStack, int xOffset, int yOffset) {
+	public void draw(DrawContext guiGraphics, int xOffset, int yOffset) {
+		MatrixStack poseStack = guiGraphics.getMatrices();
 		poseStack.push();
 		poseStack.translate(xOffset, yOffset, 0);
 		poseStack.scale(1F / scale, 1F / scale, 1);
-		drawable.draw(poseStack);
+		drawable.draw(guiGraphics);
 		poseStack.pop();
 	}
 }

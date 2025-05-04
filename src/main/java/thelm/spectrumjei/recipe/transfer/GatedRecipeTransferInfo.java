@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.dafuqs.revelationary.api.advancements.AdvancementHelper;
-import de.dafuqs.spectrum.recipe.GatedRecipe;
+import de.dafuqs.spectrum.api.recipe.GatedRecipe;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.screen.ScreenHandler;
@@ -13,7 +13,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 
-public class GatedRecipeTransferInfo<C extends ScreenHandler, R extends GatedRecipe> implements IRecipeTransferInfo<C, R> {
+public class GatedRecipeTransferInfo<C extends ScreenHandler, R extends GatedRecipe<?>> implements IRecipeTransferInfo<C, R> {
 
 	public final Class<? extends C> containerClass;
 	public final ScreenHandlerType<C> menuType;
@@ -78,7 +78,7 @@ public class GatedRecipeTransferInfo<C extends ScreenHandler, R extends GatedRec
 	}
 
 	public boolean isVisible(R recipe) {
-		return isUnlocked(recipe);
+		return isUnlocked(recipe) && !recipe.isSecret();
 	}
 
 	public boolean hasAdvancement(Identifier advancement) {

@@ -8,10 +8,11 @@ import de.dafuqs.spectrum.recipe.enchanter.EnchanterRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
@@ -54,18 +55,24 @@ public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<Enchant
 		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, ingredients.get(6), SpectrumJEI.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, ingredients.get(7), SpectrumJEI.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, ingredients.get(8), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(registryAccess()), SpectrumJEI.OUTPUT_SLOT, visible);
 	}
 
 	@Override
-	public void draw(EnchanterRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, EnchanterRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			ALTAR.draw(poseStack, 15, 13);
-			RecipeArrowDrawable.of(recipe.getCraftingTime() * 50).draw(poseStack, 84, 32);
+			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 84, 32);
+		}
+	}
+
+	@Override
+	public void draw(EnchanterRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipe)) {
+			ALTAR.draw(guiGraphics, 15, 13);
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			font.draw(poseStack, timeComponent, 69, 70, 0x3F3F3F);
+			guiGraphics.drawText(font, timeComponent, 69, 70, 0x3F3F3F, false);
 		}
 	}
 }

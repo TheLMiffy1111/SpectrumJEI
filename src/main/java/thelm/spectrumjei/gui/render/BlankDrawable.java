@@ -1,6 +1,6 @@
 package thelm.spectrumjei.gui.render;
 
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 
 public record BlankDrawable(int width, int height) implements IMaskableDrawable {
 
@@ -15,5 +15,5 @@ public record BlankDrawable(int width, int height) implements IMaskableDrawable 
 	}
 
 	@Override
-	public void draw(MatrixStack poseStack, float xOffset, float yOffset, float maskTop, float maskBottom, float maskLeft, float maskRight) {}
+	public void draw(DrawContext guiGraphics, float xOffset, float yOffset, float maskTop, float maskBottom, float maskLeft, float maskRight) {}
 }

@@ -2,16 +2,17 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
+import de.dafuqs.matchbooks.recipe.IngredientStack;
 import de.dafuqs.spectrum.SpectrumCommon;
 import de.dafuqs.spectrum.recipe.potion_workshop.PotionWorkshopRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.id.incubus_core.recipe.IngredientStack;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
@@ -44,18 +45,24 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), SpectrumJEI.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), SpectrumJEI.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(registryAccess()), SpectrumJEI.SLOT, visible);
 	}
 
 	@Override
-	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, R recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			BUBBLES.draw(poseStack, 33, 20);
-			RecipeArrowDrawable.of(recipe.getCraftingTime() * 50).draw(poseStack, 75, 25);
+			builder.addDrawable(BUBBLES, 33, 20);
+			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 75, 25);
+		}
+	}
+
+	@Override
+	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipe)) {
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			font.draw(poseStack, timeComponent, 52, 56, 0x3F3F3F);
+			guiGraphics.drawText(font, timeComponent, 52, 56, 0x3F3F3F, false);
 		}
 	}
 }

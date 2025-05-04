@@ -6,20 +6,21 @@ import java.util.List;
 import com.google.common.collect.Streams;
 
 import de.dafuqs.spectrum.SpectrumCommon;
-import de.dafuqs.spectrum.blocks.mob_blocks.FirestarterMobBlock;
-import de.dafuqs.spectrum.blocks.mob_blocks.FreezingMobBlock;
+import de.dafuqs.spectrum.blocks.idols.FirestarterIdolBlock;
+import de.dafuqs.spectrum.blocks.idols.FreezingIdolBlock;
 import de.dafuqs.spectrum.data_loaders.NaturesStaffConversionDataLoader;
+import de.dafuqs.spectrum.inventories.BlackHoleChestScreen;
 import de.dafuqs.spectrum.inventories.CinderhearthScreen;
 import de.dafuqs.spectrum.inventories.CinderhearthScreenHandler;
 import de.dafuqs.spectrum.inventories.CraftingTabletScreen;
 import de.dafuqs.spectrum.inventories.CraftingTabletScreenHandler;
+import de.dafuqs.spectrum.inventories.FilteringScreen;
 import de.dafuqs.spectrum.inventories.PedestalScreen;
 import de.dafuqs.spectrum.inventories.PedestalScreenHandler;
 import de.dafuqs.spectrum.inventories.PotionWorkshopScreen;
 import de.dafuqs.spectrum.inventories.PotionWorkshopScreenHandler;
 import de.dafuqs.spectrum.inventories.QuickNavigationGridScreen;
 import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
-import de.dafuqs.spectrum.recipe.SpectrumRecipeTypes;
 import de.dafuqs.spectrum.recipe.anvil_crushing.AnvilCrushingRecipe;
 import de.dafuqs.spectrum.recipe.cinderhearth.CinderhearthRecipe;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
@@ -36,10 +37,13 @@ import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import de.dafuqs.spectrum.recipe.potion_workshop.PotionWorkshopBrewingRecipe;
 import de.dafuqs.spectrum.recipe.potion_workshop.PotionWorkshopCraftingRecipe;
 import de.dafuqs.spectrum.recipe.potion_workshop.PotionWorkshopReactingRecipe;
+import de.dafuqs.spectrum.recipe.primordial_fire_burning.PrimordialFireBurningRecipe;
 import de.dafuqs.spectrum.recipe.spirit_instiller.SpiritInstillerRecipe;
 import de.dafuqs.spectrum.recipe.titration_barrel.ITitrationBarrelRecipe;
+import de.dafuqs.spectrum.registries.SpectrumAdvancements;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import de.dafuqs.spectrum.registries.SpectrumItems;
+import de.dafuqs.spectrum.registries.SpectrumRecipeTypes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -61,6 +65,7 @@ import net.minecraft.util.Identifier;
 import thelm.spectrumjei.gui.handler.CraftingTabletRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.OverlayHidingExtraAreaHandler;
 import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
+import thelm.spectrumjei.gui.handler.ShadowSlotGhostIngredientHandler;
 import thelm.spectrumjei.gui.render.DownscaledDrawable;
 import thelm.spectrumjei.gui.render.ResourceDrawable;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
@@ -78,6 +83,7 @@ import thelm.spectrumjei.recipe.category.FusionShrineRecipeCategory;
 import thelm.spectrumjei.recipe.category.InkConvertingRecipeCategory;
 import thelm.spectrumjei.recipe.category.PedestalRecipeCategory;
 import thelm.spectrumjei.recipe.category.PotionWorkshopRecipeCategory;
+import thelm.spectrumjei.recipe.category.PrimordialFireBurningRecipeCategory;
 import thelm.spectrumjei.recipe.category.SpiritInstillerRecipeCategory;
 import thelm.spectrumjei.recipe.category.TitrationBarrelRecipeCategory;
 import thelm.spectrumjei.recipe.transfer.CraftingTabletRecipeTransferHandler;
@@ -112,6 +118,7 @@ public class SpectrumJEI implements IModPlugin {
 	public static final RecipeType<CrystallarieumRecipe> CRYSTALLARIEUM = createRecipeType(SpectrumCommon.locate("crystallarieum"), CrystallarieumRecipe.class);
 	public static final RecipeType<CinderhearthRecipe> CINDERHEARTH = createRecipeType(SpectrumCommon.locate("cinderhearth"), CinderhearthRecipe.class);
 	public static final RecipeType<ITitrationBarrelRecipe> TITRATION_BARREL = createRecipeType(SpectrumCommon.locate("titration_barrel"), ITitrationBarrelRecipe.class);
+	public static final RecipeType<PrimordialFireBurningRecipe> PRIMORDIAL_FIRE_BURNING = createRecipeType(SpectrumCommon.locate("primordial_fire_burning"), PrimordialFireBurningRecipe.class);
 
 	public static final RecipeType<BlockConversionRecipe> NATURES_STAFF = createRecipeType(SpectrumCommon.locate("natures_staff"), BlockConversionRecipe.class);
 	public static final RecipeType<BlockConversionWithChanceRecipe> HEATING = createRecipeType(SpectrumCommon.locate("heating"), BlockConversionWithChanceRecipe.class);
@@ -155,10 +162,11 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCategories(new CrystallarieumRecipeCategory());
 		registration.addRecipeCategories(new CinderhearthRecipeCategory());
 		registration.addRecipeCategories(new TitrationBarrelRecipeCategory());
+		registration.addRecipeCategories(new PrimordialFireBurningRecipeCategory());
 
-		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, Text.translatable("item.spectrum.natures_staff"), SpectrumCommon.locate("unlocks/items/natures_staff")));	
-		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(HEATING, Text.translatable("container.spectrum.rei.heating.title"), SpectrumCommon.locate("unlocks/blocks/mob_blocks")));
-		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(FREEZING, Text.translatable("container.spectrum.rei.freezing.title"), SpectrumCommon.locate("unlocks/blocks/mob_blocks")));
+		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, Text.translatable("item.spectrum.natures_staff"), SpectrumAdvancements.UNLOCK_NATURES_STAFF));	
+		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(HEATING, Text.translatable("container.spectrum.rei.heating.title"), SpectrumAdvancements.UNLOCK_IDOLS));
+		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(FREEZING, Text.translatable("container.spectrum.rei.freezing.title"), SpectrumAdvancements.UNLOCK_IDOLS));
 	}
 
 	@Override
@@ -188,20 +196,21 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipes(CRYSTALLARIEUM, recipeManager.listAllOfType(SpectrumRecipeTypes.CRYSTALLARIEUM));
 		registration.addRecipes(CINDERHEARTH, recipeManager.listAllOfType(SpectrumRecipeTypes.CINDERHEARTH));
 		registration.addRecipes(TITRATION_BARREL, recipeManager.listAllOfType(SpectrumRecipeTypes.TITRATION_BARREL));
+		registration.addRecipes(PRIMORDIAL_FIRE_BURNING, recipeManager.listAllOfType(SpectrumRecipeTypes.PRIMORDIAL_FIRE_BURNING));
 
 		registration.addRecipes(NATURES_STAFF,
 				NaturesStaffConversionDataLoader.CONVERSIONS.entrySet().stream().
 				map(entry -> new BlockConversionRecipe(entry.getKey(), entry.getValue())).
 				filter(BlockConversionRecipe::isViewable).toList());
 		registration.addRecipes(HEATING,
-				FirestarterMobBlock.BURNING_MAP.entrySet().stream().
+				FirestarterIdolBlock.BURNING_MAP.entrySet().stream().
 				map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight())).
 				filter(BlockConversionWithChanceRecipe::isViewable).toList());
 		registration.addRecipes(FREEZING,
 				Streams.concat(
-						FreezingMobBlock.FREEZING_STATE_MAP.entrySet().stream().
+						FreezingIdolBlock.FREEZING_STATE_MAP.entrySet().stream().
 						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight())),
-						FreezingMobBlock.FREEZING_MAP.entrySet().stream().
+						FreezingIdolBlock.FREEZING_MAP.entrySet().stream().
 						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight()))).
 				filter(BlockConversionWithChanceRecipe::isViewable).toList());
 	}
@@ -261,10 +270,14 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.CRYSTALLARIEUM), CRYSTALLARIEUM);
 		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.CINDERHEARTH), CINDERHEARTH, RecipeTypes.BLASTING);
 		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.TITRATION_BARREL), TITRATION_BARREL);
+		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.DOOMBLOOM_SEED), PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.PRIMORDIAL_LIGHTER), PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.INCANDESCENT_AMALGAM), PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.PIPE_BOMB), PRIMORDIAL_FIRE_BURNING);
 
 		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.NATURES_STAFF), NATURES_STAFF);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.BLAZE_MOB_BLOCK), HEATING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.POLAR_BEAR_MOB_BLOCK), FREEZING);
+		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.BLAZE_IDOL), HEATING);
+		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.POLAR_BEAR_IDOL), FREEZING);
 	}
 
 	@Override
@@ -275,6 +288,9 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeClickArea(CinderhearthScreen.class, 35, 31, 22, 16, CINDERHEARTH, RecipeTypes.BLASTING);
 
 		registration.addGuiContainerHandler(QuickNavigationGridScreen.class, new OverlayHidingExtraAreaHandler<>());
+
+		registration.addGhostIngredientHandler(BlackHoleChestScreen.class, new ShadowSlotGhostIngredientHandler<>());
+		registration.addGhostIngredientHandler(FilteringScreen.class, new ShadowSlotGhostIngredientHandler<>());
 	}
 
 	@Override

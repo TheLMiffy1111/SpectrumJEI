@@ -51,7 +51,6 @@ repositories {
 		}
 		filter {
 			includeGroup "mezz.jei"
-			includeGroup "vazkii.patchouli"
 		}
 	}
 	exclusiveContent {
@@ -73,6 +72,16 @@ repositories {
 		}
 		filter {
 			includeGroup "de.dafuqs"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url = "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+			}
+		}
+		filter {
+			includeGroup "com.klikli_dev"
 		}
 	}
 	exclusiveContent {
@@ -114,19 +123,18 @@ repositories {
 		filter {
 			includeGroup "com.github.DaFuqs"
 			includeGroup "com.github.emilyploszaj"
-			includeGroup "com.github.devs-immortal"
 		}
 	}
 }
 
-def mcVersion = "1.19.2"
+def mcVersion = "1.20.1"
 def modName = "SpectrumJEI"
 def modId = "spectrumjei"
-def specVersion = "19.2"
+def specVersion = "20.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "19.2.0"
+version = "20.1.0"
 
 archivesBaseName = modName
 
@@ -165,42 +173,47 @@ dependencies {
 	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
 
 	// Minecraft
-	minecraft "com.mojang:minecraft:1.19.2"
+	minecraft "com.mojang:minecraft:1.20.1"
 	mappings loom.layered {
-		mappings "net.fabricmc:yarn:1.19.2+build.28:v2"
-		parchment "org.parchmentmc.data:parchment-1.19.2:2022.11.27@zip"
+		mappings "net.fabricmc:yarn:1.20.1+build.10:v2"
+		parchment "org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip"
 	}
 	modImplementation "net.fabricmc:fabric-loader:0.16.14"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.77.0+1.19.2"
-	modImplementation "eu.pb4:placeholder-api:2.0.0-pre.1+1.19.2"
-	modImplementation "com.terraformersmc:modmenu:4.2.0-beta.2"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.92.5+1.20.1"
+	modImplementation "eu.pb4:placeholder-api:2.1.4+1.20.1"
+	modImplementation "com.terraformersmc:modmenu:7.2.2"
+
+	// Cloth Config
+	modImplementation "dev.architectury:architectury-fabric:9.2.14"
+	modImplementation "me.shedaniel.cloth:cloth-config-fabric:11.1.136"
 
 	// JEI
-	modImplementation("mezz.jei:jei-1.19.2-fabric:11.8.1.1034") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-fabric:15.20.0.106") {transitive = false}
 
 	// Spectrum Included Dependencies
 	implementation "org.jgrapht:jgrapht-core:1.5.2"
 	implementation "org.jheaps:jheaps:0.14"
-	modImplementation "maven.modrinth:additionalentityattributes:ht3amcX1"
-	modImplementation "com.github.DaFuqs:Arrowhead:d9f258a4"
-	modImplementation "com.github.DaFuqs:DimensionalReverb:0a4cd0ae"
-	modImplementation "maven.modrinth:fractal-lib:8I3R187M"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:5.0.2"
-	modImplementation("com.github.devs-immortal:Incubus-Core:1.9.4") {transitive = false}
-	modImplementation "com.github.emilyploszaj:step-height-entity-attribute:1.0.1"
-	modImplementation "com.jamieswhiteshirt:reach-entity-attributes:2.3.0"
+	modImplementation "maven.modrinth:additionalentityattributes:w03ppuef"
+	modImplementation "com.github.DaFuqs:Arrowhead:797635e3"
+	modImplementation "com.github.DaFuqs:DimensionalReverb:26b08229"
+	modImplementation "maven.modrinth:fractal-lib:rBFEjAiy"
+	modImplementation "de.dafuqs:Matchbooks:0.1.0"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:5.2.3"
+	modImplementation "com.github.emilyploszaj:step-height-entity-attribute:1.2.0"
+	modImplementation "com.jamieswhiteshirt:reach-entity-attributes:2.4.0"
 
 	// Spectrum External Dependencies
-	modImplementation "maven.modrinth:revelationary:2d9fuEjc"
-	modImplementation "dev.architectury:architectury-fabric:6.6.92"
-	modImplementation "me.shedaniel.cloth:cloth-config-fabric:8.3.134"
+	modImplementation "maven.modrinth:revelationary:SGmfdrZ1"
+	modImplementation "dev.emi:trinkets:3.7.2"
+	implementation "org.commonmark:commonmark:0.24.0"
+	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0"
+	implementation "org.commonmark:commonmark-ext-ins:0.24.0"
 	implementation "me.zeroeightsix:fiber:0.23.0-2"
-	modImplementation "vazkii.patchouli:Patchouli:1.19.2-77-FABRIC"
-	modImplementation "dev.emi:trinkets:3.4.1"
-	modImplementation "maven.modrinth:dcwa:3Zi6jtYW"
+	modImplementation("com.klikli_dev:modonomicon-1.20.1-fabric:1.77.6") {transitive = false}
+	modImplementation "maven.modrinth:dcwa:P23QCBEG"
 
 	// Spectrum
-	modImplementation "maven.modrinth:spectrum:cZcvzTh4"
+	modImplementation "maven.modrinth:spectrum:WqxHcdgU"
 }
 
 def replacements = [

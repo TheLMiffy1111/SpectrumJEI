@@ -22,10 +22,11 @@
 		]
 	},
 	"mixins": [
-		"spectrumjei.mixins.json"
+		"spectrumjei.mixins.json",
+		"fractaljei.mixins.json"
 	],
 	"depends": {
-		"minecraft": ">=1.19.2- <1.19.3-",
+		"minecraft": ">=1.20- <1.20.2-",
 		"jei": "*",
 		"spectrum": "*"
 	}

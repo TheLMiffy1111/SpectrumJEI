@@ -2,7 +2,7 @@ package thelm.spectrumjei.gui.render;
 
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import thelm.spectrumjei.SpectrumJEI;
 
 public record RecipeFlameDrawable(int duration) implements IDrawable {
@@ -27,11 +27,11 @@ public record RecipeFlameDrawable(int duration) implements IDrawable {
 	}
 
 	@Override
-	public void draw(MatrixStack poseStack, int xOffset, int yOffset) {
+	public void draw(DrawContext guiGraphics, int xOffset, int yOffset) {
 		MinecraftClient minecraft = MinecraftClient.getInstance();
 		int guiScale = minecraft.getWindow().calculateScaleFactor(minecraft.options.getGuiScale().getValue(), minecraft.forcesUnicodeFont());
 		float mask = Math.round(System.currentTimeMillis() % duration * guiScale * HEIGHT / (float)duration) / (float)guiScale;
-		SpectrumJEI.FLAME_EMPTY.draw(poseStack, xOffset, yOffset);
-		SpectrumJEI.FLAME.draw(poseStack, xOffset, yOffset, mask, 0, 0, 0);
+		SpectrumJEI.FLAME_EMPTY.draw(guiGraphics, xOffset, yOffset);
+		SpectrumJEI.FLAME.draw(guiGraphics, xOffset, yOffset, mask, 0, 0, 0);
 	}
 }

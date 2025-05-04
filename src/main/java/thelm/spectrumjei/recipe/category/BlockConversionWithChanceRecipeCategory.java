@@ -2,14 +2,15 @@ package thelm.spectrumjei.recipe.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
 
@@ -43,19 +44,25 @@ public class BlockConversionWithChanceRecipeCategory extends AbstractUnlockableR
 	}
 
 	@Override
-	public void draw(BlockConversionWithChanceRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, BlockConversionWithChanceRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 53, 5);
+			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 53, 5);
+		}
+	}
+
+	@Override
+	public void draw(BlockConversionWithChanceRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipe)) {
 			TextRenderer font = font();
 			Text chanceComponent = Text.translatable("container.spectrum.rei.chance", recipe.chance() * 100);
-			font.draw(poseStack, chanceComponent, getWidth() / 2 - font.getWidth(chanceComponent) / 2, 29, 0x3F3F3F);
+			guiGraphics.drawText(font, chanceComponent, getWidth() / 2 - font.getWidth(chanceComponent) / 2, 29, 0x3F3F3F, false);
 		}
 	}
 
 	@Override
 	public Identifier getRegistryName(BlockConversionWithChanceRecipe recipe) {
-		Identifier blockKey = Registry.BLOCK.getId(recipe.input().getBlock());
+		Identifier blockKey = Registries.BLOCK.getId(recipe.input().getBlock());
 		return new Identifier("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
 	}
 }
