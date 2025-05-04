@@ -1,0 +1,153 @@
+package thelm.spectrumjei.recipe.category;
+
+import java.util.List;
+
+import de.dafuqs.spectrum.SpectrumCommon;
+import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumCatalyst;
+import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
+import de.dafuqs.spectrum.registries.SpectrumBlocks;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import thelm.spectrumjei.SpectrumJEI;
+import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
+import thelm.spectrumjei.gui.render.ResourceDrawable;
+
+/**
+ * Based on CrystallarieumEmiRecipeGated
+ */
+public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<CrystallarieumRecipe> {
+
+	public static final Text TITLE = new TranslatableText("block.spectrum.crystallarieum");
+
+	public static final Text CATALYST = new TranslatableText("container.spectrum.rei.crystallarieum.catalyst");
+	public static final Text ACCELERATOR = new TranslatableText("container.spectrum.rei.crystallarieum.accelerator");
+	public static final Text INK_CONSUMPTION = new TranslatableText("container.spectrum.rei.crystallarieum.ink_consumption");
+	public static final Text USED_UP = new TranslatableText("container.spectrum.rei.crystallarieum.used_up");
+
+	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/patchouli/crystallarieum.png");
+	public static final ResourceDrawable ACCEL_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable ACCEL_HIGH = new ResourceDrawable(BACKGROUND, 67, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable ACCEL_NONE = new ResourceDrawable(BACKGROUND, 97, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable ACCEL_LOW = new ResourceDrawable(BACKGROUND, 73, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable ACCEL_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_HIGH = new ResourceDrawable(BACKGROUND, 67, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 91, 6, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_NONE = new ResourceDrawable(BACKGROUND, 97, 6, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_LOW = new ResourceDrawable(BACKGROUND, 73, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
+
+	public CrystallarieumRecipeCategory() {
+		super(SpectrumJEI.CRYSTALLARIEUM, TITLE);
+	}
+
+	@Override
+	public int getHeight() {
+		return 100;
+	}
+
+	@Override
+	public void setRecipe(IRecipeLayoutBuilder builder, CrystallarieumRecipe recipe, IFocusGroup focuses) {
+		boolean visible = isVisible(recipe);
+		addItem(builder, RecipeIngredientRole.INPUT, 7, 9, recipe.getIngredientStack(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.CATALYST, 27, 19, new ItemStack(SpectrumBlocks.CRYSTALLARIEUM), visible);
+		List<ItemStack> growthStages = recipe.getGrowthStages().stream().map(BlockState::getBlock).map(ItemStack::new).toList();
+		addItem(builder, RecipeIngredientRole.INPUT, 27, 1, growthStages.get(0), SpectrumJEI.SLOT, visible);
+		for(int i = 1; i < growthStages.size(); ++i) {
+			addItem(builder, RecipeIngredientRole.OUTPUT, 53 + i * 20, 9, growthStages.get(i), SpectrumJEI.SLOT, visible);
+		}
+		List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
+		for(int i = 0; i < catalysts.size(); ++i) {
+			int x = 53 + i * 18;
+			addItem(builder, RecipeIngredientRole.CATALYST, x, 39, catalysts.get(i).ingredient, SpectrumJEI.SLOT, visible);
+		}
+	}
+
+	@Override
+	public void draw(CrystallarieumRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+		if(isVisible(recipe)) {
+			RecipeArrowDrawable.of(recipe.getSecondsPerGrowthStage() * 1000).draw(poseStack, 47, 9);
+			List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
+			for(int i = 0; i < catalysts.size(); ++i) {
+				CrystallarieumCatalyst catalyst = catalysts.get(i);
+				int x = 58 + i * 18;
+				IDrawable icon;
+
+				float growthAcceleration = catalyst.growthAccelerationMod;
+				if(growthAcceleration >= 6F) {
+					icon = ACCEL_HIGHER;
+				}
+				else if(growthAcceleration > 1F) {
+					icon = ACCEL_HIGH;
+				}
+				else if(growthAcceleration == 1F) {
+					icon = ACCEL_NONE;
+				}
+				else if(growthAcceleration >= 0.25F) {
+					icon = ACCEL_LOW;
+				}
+				else {
+					icon = ACCEL_LOWER;
+				}
+				icon.draw(poseStack, x, 59);
+
+				float inkConsumption = catalyst.inkConsumptionMod;
+				if(inkConsumption >= 8F) {
+					icon = CONSUME_HIGHER;
+				}
+				else if(inkConsumption > 1F) {
+					icon = CONSUME_HIGH;
+				}
+				else if(inkConsumption == 1F) {
+					icon = CONSUME_NONE;
+				}
+				else if(inkConsumption >= 0.25F) {
+					icon = CONSUME_LOW;
+				}
+				else {
+					icon = CONSUME_LOWER;
+				}
+				icon.draw(poseStack, x, 69);
+
+				float consumeChance = catalyst.consumeChancePerSecond;
+				if(consumeChance >= 0.2F) {
+					icon = CONSUME_HIGHER;
+				}
+				else if(consumeChance >= 0.05F) {
+					icon = CONSUME_HIGH;
+				}
+				else if(consumeChance > 0F) {
+					icon = CONSUME_NORMAL;
+				}
+				else {
+					icon = CONSUME_NONE;
+				}
+				icon.draw(poseStack, x, 79);
+			}
+			TextRenderer font = font();
+			Text timeComponent;
+			if(recipe.growsWithoutCatalyst()) {
+				timeComponent = new TranslatableText("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds", recipe.getSecondsPerGrowthStage());
+			}
+			else {
+				timeComponent = new TranslatableText("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds_catalyst_required", recipe.getSecondsPerGrowthStage());
+			}
+			font.draw(poseStack, CATALYST, 6, 43, 0x3F3F3F);
+			font.draw(poseStack, ACCELERATOR, 6, 58, 0x3F3F3F);
+			font.draw(poseStack, INK_CONSUMPTION, 6, 68, 0x3F3F3F);
+			font.draw(poseStack, USED_UP, 6, 78, 0x3F3F3F);
+			font.draw(poseStack, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 90, 0x3F3F3F);
+		}
+	}
+}
