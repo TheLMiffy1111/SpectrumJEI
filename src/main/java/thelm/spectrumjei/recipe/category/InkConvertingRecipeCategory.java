@@ -8,7 +8,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import thelm.spectrumjei.SpectrumJEI;
 
 /**
@@ -16,7 +15,7 @@ import thelm.spectrumjei.SpectrumJEI;
  */
 public class InkConvertingRecipeCategory extends AbstractGatedRecipeCategory<InkConvertingRecipe> {
 
-	public static final Text TITLE = new TranslatableText("container.spectrum.rei.ink_converting.title");
+	public static final Text TITLE = Text.translatable("container.spectrum.rei.ink_converting.title");
 
 	public InkConvertingRecipeCategory() {
 		super(SpectrumJEI.INK_CONVERTING, TITLE);
@@ -39,8 +38,8 @@ public class InkConvertingRecipeCategory extends AbstractGatedRecipeCategory<Ink
 		if(isVisible(recipe)) {
 			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 22, 2);
 			TextRenderer font = font();
-			Text colorComponent = new TranslatableText("container.spectrum.rei.ink_converting.color", recipe.getInkColor().getName());
-			Text amountComponent = new TranslatableText("container.spectrum.rei.ink_converting.amount", recipe.getInkAmount());
+			Text colorComponent = Text.translatable("container.spectrum.rei.ink_converting.color", recipe.getInkColor().getName());
+			Text amountComponent = Text.translatable("container.spectrum.rei.ink_converting.amount", recipe.getInkAmount());
 			font.draw(poseStack, colorComponent, 50, 1, 0x3F3F3F);
 			font.draw(poseStack, amountComponent, 50, 11, 0x3F3F3F);
 		}

@@ -9,9 +9,9 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.id.incubus_core.recipe.IngredientStack;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
@@ -38,12 +38,12 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		List<Ingredient> ingredients = recipe.getIngredients();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4), SpectrumJEI.SLOT, visible);
+		List<IngredientStack> ingredients = recipe.getIngredientStacks();
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getStacks(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getStacks(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), SpectrumJEI.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(), SpectrumJEI.SLOT, visible);
 	}
 

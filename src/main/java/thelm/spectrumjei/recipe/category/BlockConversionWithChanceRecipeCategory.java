@@ -8,7 +8,6 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import thelm.spectrumjei.SpectrumJEI;
@@ -49,7 +48,7 @@ public class BlockConversionWithChanceRecipeCategory extends AbstractUnlockableR
 		if(isVisible(recipe)) {
 			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 53, 5);
 			TextRenderer font = font();
-			Text chanceComponent = new TranslatableText("container.spectrum.rei.chance", recipe.chance() * 100);
+			Text chanceComponent = Text.translatable("container.spectrum.rei.chance", recipe.chance() * 100);
 			font.draw(poseStack, chanceComponent, getWidth() / 2 - font.getWidth(chanceComponent) / 2, 29, 0x3F3F3F);
 		}
 	}

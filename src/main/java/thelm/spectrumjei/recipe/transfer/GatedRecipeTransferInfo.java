@@ -2,26 +2,30 @@ package thelm.spectrumjei.recipe.transfer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import de.dafuqs.revelationary.api.advancements.AdvancementHelper;
 import de.dafuqs.spectrum.recipe.GatedRecipe;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 
 public class GatedRecipeTransferInfo<C extends ScreenHandler, R extends GatedRecipe> implements IRecipeTransferInfo<C, R> {
 
-	public final Class<C> containerClass;
+	public final Class<? extends C> containerClass;
+	public final ScreenHandlerType<C> menuType;
 	public final RecipeType<R> recipeType;
 	public final int recipeSlotStart;
 	public final int recipeSlotCount;
 	public final int inventorySlotStart;
 	public final int inventorySlotCount;
 
-	public GatedRecipeTransferInfo(Class<C> containerClass, RecipeType<R> recipeType, int recipeSlotStart, int recipeSlotCount, int inventorySlotStart, int inventorySlotCount) {
+	public GatedRecipeTransferInfo(Class<? extends C> containerClass, ScreenHandlerType<C> menuType, RecipeType<R> recipeType, int recipeSlotStart, int recipeSlotCount, int inventorySlotStart, int inventorySlotCount) {
 		this.containerClass = containerClass;
+		this.menuType = menuType;
 		this.recipeType = recipeType;
 		this.recipeSlotStart = recipeSlotStart;
 		this.recipeSlotCount = recipeSlotCount;
@@ -30,18 +34,13 @@ public class GatedRecipeTransferInfo<C extends ScreenHandler, R extends GatedRec
 	}
 
 	@Override
-	public Class<C> getContainerClass() {
+	public Class<? extends C> getContainerClass() {
 		return containerClass;
 	}
 
 	@Override
-	public Class<R> getRecipeClass() {
-		return (Class<R>)recipeType.getRecipeClass();
-	}
-
-	@Override
-	public Identifier getRecipeCategoryUid() {
-		return recipeType.getUid();
+	public Optional<ScreenHandlerType<C>> getMenuType() {
+		return Optional.ofNullable(menuType);
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class GatedRecipeTransferInfo<C extends ScreenHandler, R extends GatedRec
 	}
 
 	public boolean isUnlocked(R recipe) {
-		return hasAdvancement(recipe.getRequiredAdvancementIdentifier());
+		return hasAdvancement(recipe.getRecipeTypeUnlockIdentifier()) && hasAdvancement(recipe.getRequiredAdvancementIdentifier());
 	}
 
 	public boolean isVisible(R recipe) {

@@ -15,7 +15,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
 
@@ -24,7 +23,7 @@ import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
  */
 public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<SpiritInstillerRecipe> {
 
-	public static final Text TITLE = new TranslatableText("block.spectrum.spirit_instiller");
+	public static final Text TITLE = Text.translatable("block.spectrum.spirit_instiller");
 
 	public SpiritInstillerRecipeCategory() {
 		super(SpectrumJEI.SPIRIT_INSTILLER, TITLE);

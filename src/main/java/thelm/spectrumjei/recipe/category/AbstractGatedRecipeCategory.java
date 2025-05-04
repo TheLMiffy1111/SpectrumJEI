@@ -19,7 +19,7 @@ public abstract class AbstractGatedRecipeCategory<R extends GatedRecipe> extends
 
 	@Override
 	public boolean isUnlocked(R recipe) {
-		return hasAdvancement(recipe.getRequiredAdvancementIdentifier());
+		return hasAdvancement(recipe.getRecipeTypeUnlockIdentifier()) && hasAdvancement(recipe.getRequiredAdvancementIdentifier());
 	}
 
 	@Override

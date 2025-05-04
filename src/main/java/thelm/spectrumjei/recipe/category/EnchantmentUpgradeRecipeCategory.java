@@ -13,7 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.ResourceDrawable;
@@ -23,7 +22,7 @@ import thelm.spectrumjei.gui.render.ResourceDrawable;
  */
 public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategory<EnchantmentUpgradeRecipe> {
 
-	public static final Text TITLE = new TranslatableText("container.spectrum.rei.enchantment_upgrading.title");
+	public static final Text TITLE = Text.translatable("container.spectrum.rei.enchantment_upgrading.title");
 
 	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/container/enchanter.png");
 	public static final ResourceDrawable ALTAR = new ResourceDrawable(BACKGROUND, 0, 0, 54, 54);
@@ -63,7 +62,7 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 			ALTAR.draw(poseStack, 15, 13);
 			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 84, 32);
 			TextRenderer font = font();
-			Text reqComponent = new TranslatableText("container.spectrum.rei.enchantment_upgrade.required_item_count", recipe.getRequiredItemCount());
+			Text reqComponent = Text.translatable("container.spectrum.rei.enchantment_upgrade.required_item_count", recipe.getRequiredItemCount());
 			font.draw(poseStack, reqComponent, 69, 70, 0x3F3F3F);
 		}
 	}

@@ -29,7 +29,7 @@ public record RecipeFlameDrawable(int duration) implements IDrawable {
 	@Override
 	public void draw(MatrixStack poseStack, int xOffset, int yOffset) {
 		MinecraftClient minecraft = MinecraftClient.getInstance();
-		int guiScale = minecraft.getWindow().calculateScaleFactor(minecraft.options.guiScale, minecraft.forcesUnicodeFont());
+		int guiScale = minecraft.getWindow().calculateScaleFactor(minecraft.options.getGuiScale().getValue(), minecraft.forcesUnicodeFont());
 		float mask = Math.round(System.currentTimeMillis() % duration * guiScale * HEIGHT / (float)duration) / (float)guiScale;
 		SpectrumJEI.FLAME_EMPTY.draw(poseStack, xOffset, yOffset);
 		SpectrumJEI.FLAME.draw(poseStack, xOffset, yOffset, mask, 0, 0, 0);

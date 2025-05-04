@@ -3,6 +3,7 @@ package thelm.spectrumjei.recipe.category;
 import java.util.List;
 
 import de.dafuqs.spectrum.SpectrumCommon;
+import de.dafuqs.spectrum.helpers.NullableDyeColor;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumCatalyst;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
@@ -16,7 +17,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
@@ -27,12 +27,12 @@ import thelm.spectrumjei.gui.render.ResourceDrawable;
  */
 public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<CrystallarieumRecipe> {
 
-	public static final Text TITLE = new TranslatableText("block.spectrum.crystallarieum");
+	public static final Text TITLE = Text.translatable("block.spectrum.crystallarieum");
 
-	public static final Text CATALYST = new TranslatableText("container.spectrum.rei.crystallarieum.catalyst");
-	public static final Text ACCELERATOR = new TranslatableText("container.spectrum.rei.crystallarieum.accelerator");
-	public static final Text INK_CONSUMPTION = new TranslatableText("container.spectrum.rei.crystallarieum.ink_consumption");
-	public static final Text USED_UP = new TranslatableText("container.spectrum.rei.crystallarieum.used_up");
+	public static final Text CATALYST = Text.translatable("container.spectrum.rei.crystallarieum.catalyst");
+	public static final Text ACCELERATOR = Text.translatable("container.spectrum.rei.crystallarieum.accelerator");
+	public static final Text INK_CONSUMPTION = Text.translatable("container.spectrum.rei.crystallarieum.ink_consumption");
+	public static final Text USED_UP = Text.translatable("container.spectrum.rei.crystallarieum.used_up");
 
 	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/patchouli/crystallarieum.png");
 	public static final ResourceDrawable ACCEL_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
@@ -60,7 +60,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	public void setRecipe(IRecipeLayoutBuilder builder, CrystallarieumRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		addItem(builder, RecipeIngredientRole.INPUT, 7, 9, recipe.getIngredientStack(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.CATALYST, 27, 19, new ItemStack(SpectrumBlocks.CRYSTALLARIEUM), visible);
+		addItem(builder, RecipeIngredientRole.CATALYST, 27, 19, SpectrumBlocks.CRYSTALLARIEUM.asStackWithColor(NullableDyeColor.get(recipe.getInkColor().getDyeColor())), visible);
 		List<ItemStack> growthStages = recipe.getGrowthStages().stream().map(BlockState::getBlock).map(ItemStack::new).toList();
 		addItem(builder, RecipeIngredientRole.INPUT, 27, 1, growthStages.get(0), SpectrumJEI.SLOT, visible);
 		for(int i = 1; i < growthStages.size(); ++i) {
@@ -138,10 +138,10 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 			TextRenderer font = font();
 			Text timeComponent;
 			if(recipe.growsWithoutCatalyst()) {
-				timeComponent = new TranslatableText("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds", recipe.getSecondsPerGrowthStage());
+				timeComponent = Text.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds_catalyst_optional", recipe.getSecondsPerGrowthStage());
 			}
 			else {
-				timeComponent = new TranslatableText("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds_catalyst_required", recipe.getSecondsPerGrowthStage());
+				timeComponent = Text.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds", recipe.getSecondsPerGrowthStage());
 			}
 			font.draw(poseStack, CATALYST, 6, 43, 0x3F3F3F);
 			font.draw(poseStack, ACCELERATOR, 6, 58, 0x3F3F3F);

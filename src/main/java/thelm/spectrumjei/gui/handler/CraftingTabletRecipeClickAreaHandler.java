@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.dafuqs.spectrum.enums.PedestalRecipeTier;
 import de.dafuqs.spectrum.inventories.CraftingTabletScreen;
+import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.handlers.IGuiClickableArea;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;

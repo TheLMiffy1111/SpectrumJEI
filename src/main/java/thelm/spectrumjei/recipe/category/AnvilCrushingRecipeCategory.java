@@ -11,7 +11,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.ResourceDrawable;
@@ -21,11 +20,11 @@ import thelm.spectrumjei.gui.render.ResourceDrawable;
  */
 public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<AnvilCrushingRecipe> {
 
-	public static final Text TITLE = new TranslatableText("container.spectrum.rei.anvil_crushing.title");
+	public static final Text TITLE = Text.translatable("container.spectrum.rei.anvil_crushing.title");
 
-	public static final Text LOW_FORCE = new TranslatableText("container.spectrum.rei.anvil_crushing.low_force_required");
-	public static final Text MEDIUM_FORCE = new TranslatableText("container.spectrum.rei.anvil_crushing.medium_force_required");
-	public static final Text HIGH_FORCE = new TranslatableText("container.spectrum.rei.anvil_crushing.high_force_required");
+	public static final Text LOW_FORCE = Text.translatable("container.spectrum.rei.anvil_crushing.low_force_required");
+	public static final Text MEDIUM_FORCE = Text.translatable("container.spectrum.rei.anvil_crushing.medium_force_required");
+	public static final Text HIGH_FORCE = Text.translatable("container.spectrum.rei.anvil_crushing.high_force_required");
 
 	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/container/anvil_crushing.png");
 	public static final ResourceDrawable WALL = new ResourceDrawable(BACKGROUND, 0, 0, 16, 48);
@@ -56,7 +55,7 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 			FALL.draw(poseStack, 32, 1);
 			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 60, 16);
 			TextRenderer font = font();
-			Text xpComponent = new TranslatableText("container.spectrum.rei.anvil_crushing.plus_xp", recipe.getExperience());
+			Text xpComponent = Text.translatable("container.spectrum.rei.anvil_crushing.plus_xp", recipe.getExperience());
 			Text forceComponent = getForceComponent(recipe);
 			font.draw(poseStack, xpComponent, 126 - font.getWidth(xpComponent), 40, 0x3F3F3F);
 			font.draw(poseStack, forceComponent, getWidth() / 2 - font.getWidth(forceComponent) / 2, 54, 0x3F3F3F);

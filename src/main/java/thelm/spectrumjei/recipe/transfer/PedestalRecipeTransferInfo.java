@@ -1,21 +1,22 @@
 package thelm.spectrumjei.recipe.transfer;
 
-import de.dafuqs.spectrum.enums.PedestalRecipeTier;
 import de.dafuqs.spectrum.inventories.PedestalScreenHandler;
-import de.dafuqs.spectrum.recipe.pedestal.PedestalCraftingRecipe;
+import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
+import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
+import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import mezz.jei.api.recipe.RecipeType;
 import thelm.spectrumjei.SpectrumJEI;
 
-public class PedestalRecipeTransferInfo extends GatedRecipeTransferInfo<PedestalScreenHandler, PedestalCraftingRecipe> {
+public class PedestalRecipeTransferInfo extends GatedRecipeTransferInfo<PedestalScreenHandler, PedestalRecipe> {
 
 	public final PedestalRecipeTier tier;
 
 	public PedestalRecipeTransferInfo(PedestalRecipeTier tier) {
-		super(PedestalScreenHandler.class, getRecipeType(tier), 0, getRecipeSlotCount(tier), 16, 36);
+		super(PedestalScreenHandler.class, SpectrumScreenHandlerTypes.PEDESTAL, getRecipeType(tier), 0, getRecipeSlotCount(tier), 16, 36);
 		this.tier = tier;
 	}
 
-	public static RecipeType<PedestalCraftingRecipe> getRecipeType(PedestalRecipeTier tier) {
+	public static RecipeType<PedestalRecipe> getRecipeType(PedestalRecipeTier tier) {
 		return switch(tier) {
 		case BASIC -> SpectrumJEI.PEDESTAL_BASIC;
 		case SIMPLE -> SpectrumJEI.PEDESTAL_SIMPLE;
@@ -33,7 +34,7 @@ public class PedestalRecipeTransferInfo extends GatedRecipeTransferInfo<Pedestal
 	}
 
 	@Override
-	public boolean canHandle(PedestalScreenHandler container, PedestalCraftingRecipe recipe) {
+	public boolean canHandle(PedestalScreenHandler container, PedestalRecipe recipe) {
 		return super.canHandle(container, recipe) && container.getPedestalRecipeTier().compareTo(tier) >= 0;
 	}
 }

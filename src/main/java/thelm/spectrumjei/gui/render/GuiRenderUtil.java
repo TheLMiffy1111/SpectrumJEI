@@ -43,7 +43,6 @@ public class GuiRenderUtil {
 		bufferBuilder.vertex(matrix, xMin, yMax, 0).texture(uMin, vMax).next();
 		bufferBuilder.vertex(matrix, xMax, yMax, 0).texture(uMax, vMax).next();
 		bufferBuilder.vertex(matrix, xMax, yMin, 0).texture(uMax, vMin).next();
-		bufferBuilder.end();
-		BufferRenderer.draw(bufferBuilder);
+		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 }

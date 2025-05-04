@@ -17,7 +17,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
 
@@ -26,7 +25,7 @@ import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
  */
 public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<ITitrationBarrelRecipe> {
 
-	public static final Text TITLE = new TranslatableText("block.spectrum.titration_barrel");
+	public static final Text TITLE = Text.translatable("block.spectrum.titration_barrel");
 
 	public TitrationBarrelRecipeCategory() {
 		super(SpectrumJEI.TITRATION_BARREL, TITLE);
@@ -44,14 +43,14 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		int inputCount = ingredients.size();
 		boolean hasFluid = false;
-		if(recipe.getFluid() != Fluids.EMPTY) {
+		if(recipe.getFluidInput() != Fluids.EMPTY) {
 			inputCount++;
 			hasFluid = true;
 		}
 		int startX = Math.max(11, 41 - inputCount * 10);
 		int startY = inputCount > 3 ? 1 : 11;
 		if(hasFluid) {
-			addFluid(builder, RecipeIngredientRole.INPUT, startX, startY, recipe.getFluid(), fluidHelper.bucketVolume(), SpectrumJEI.SLOT, visible);
+			addFluid(builder, RecipeIngredientRole.INPUT, startX, startY, recipe.getFluidInput(), fluidHelper.bucketVolume(), SpectrumJEI.SLOT, visible);
 		}
 		for(int i = 0; i < ingredients.size(); ++i) {
 			int x = startX + (hasFluid ? i + 1 : i) % 3 * 20;
@@ -61,7 +60,14 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		if(recipe.getTappingItem() != null && recipe.getTappingItem() != Items.AIR) {
 			addItem(builder, RecipeIngredientRole.INPUT, 76, 21, new ItemStack(recipe.getTappingItem()), SpectrumJEI.SLOT, visible);
 		}
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, recipe.getOutput(), SpectrumJEI.OUTPUT_SLOT, visible);
+		List<ItemStack> outputVariations;
+		if(recipe instanceof TitrationBarrelRecipe titrationBarrelRecipe && titrationBarrelRecipe.getFermentationData() != null) {
+			outputVariations = List.copyOf(titrationBarrelRecipe.getOutputVariations(TitrationBarrelRecipe.FERMENTATION_DURATION_DISPLAY_TIME_MULTIPLIERS));
+		}
+		else {
+			outputVariations = List.of(recipe.getOutput());
+		}
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, outputVariations, SpectrumJEI.OUTPUT_SLOT, visible);
 	}
 
 	@Override

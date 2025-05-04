@@ -17,14 +17,15 @@
 	"environment": "client",
 	"entrypoints": {
 		"jei_mod_plugin": [
-			"thelm.spectrumjei.SpectrumJEI"
+			"thelm.spectrumjei.SpectrumJEI",
+			"thelm.fractaljei.FractalJEI"
 		]
 	},
 	"mixins": [
 		"spectrumjei.mixins.json"
 	],
 	"depends": {
-		"minecraft": ">=1.18.2- <1.19-",
+		"minecraft": ">=1.19.2- <1.19.3-",
 		"jei": "*",
 		"spectrum": "*"
 	}

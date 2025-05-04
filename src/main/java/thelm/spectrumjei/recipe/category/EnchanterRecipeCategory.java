@@ -15,7 +15,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
@@ -26,7 +25,7 @@ import thelm.spectrumjei.gui.render.ResourceDrawable;
  */
 public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<EnchanterRecipe> {
 
-	public static final Text TITLE = new TranslatableText("container.spectrum.rei.enchanting.title");
+	public static final Text TITLE = Text.translatable("container.spectrum.rei.enchanting.title");
 
 	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/container/enchanter.png");
 	public static final ResourceDrawable ALTAR = new ResourceDrawable(BACKGROUND, 0, 0, 54, 54);

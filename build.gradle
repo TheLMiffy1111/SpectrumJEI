@@ -68,11 +68,11 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.wispforest.io/"
+				url = "https://maven.is-immensely.gay/releases/"
 			}
 		}
 		filter {
-			includeGroup "io.wispforest"
+			includeGroup "de.dafuqs"
 		}
 	}
 	exclusiveContent {
@@ -88,31 +88,11 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.theepicblock.nl/"
-			}
-		}
-		filter {
-			includeGroup "io.github.fablabsmc"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://maven.jamieswhiteshirt.com/libs-release/"
 			}
 		}
 		filter {
 			includeGroup "com.jamieswhiteshirt"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.extracraftx.com/"
-			}
-		}
-		filter {
-			includeGroup "com.extracraftx.minecraft"
 		}
 	}
 	exclusiveContent {
@@ -139,14 +119,14 @@ repositories {
 	}
 }
 
-def mcVersion = "1.18.2"
+def mcVersion = "1.19.2"
 def modName = "SpectrumJEI"
 def modId = "spectrumjei"
-def specVersion = "18.2"
+def specVersion = "19.2"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "18.2.0"
+version = "19.2.0"
 
 archivesBaseName = modName
 
@@ -185,41 +165,42 @@ dependencies {
 	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
 
 	// Minecraft
-	minecraft "com.mojang:minecraft:1.18.2"
+	minecraft "com.mojang:minecraft:1.19.2"
 	mappings loom.layered {
-		mappings "net.fabricmc:yarn:1.18.2+build.4:v2"
-		parchment "org.parchmentmc.data:parchment-1.18.2:2022.11.06@zip"
+		mappings "net.fabricmc:yarn:1.19.2+build.28:v2"
+		parchment "org.parchmentmc.data:parchment-1.19.2:2022.11.27@zip"
 	}
 	modImplementation "net.fabricmc:fabric-loader:0.16.14"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.77.0+1.18.2"
-	modImplementation "eu.pb4:placeholder-api:1.1.3+1.17.1"
-	modImplementation "com.terraformersmc:modmenu:3.2.5"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.77.0+1.19.2"
+	modImplementation "eu.pb4:placeholder-api:2.0.0-pre.1+1.19.2"
+	modImplementation "com.terraformersmc:modmenu:4.2.0-beta.2"
 
 	// JEI
-	modImplementation("mezz.jei:jei-1.18.2-fabric:10.2.1.1009") {transitive = false}
+	modImplementation("mezz.jei:jei-1.19.2-fabric:11.8.1.1034") {transitive = false}
 
 	// Spectrum Included Dependencies
-	modImplementation "com.github.DaFuqs:AdditionalEntityAttributes:35d08069"
-	modImplementation "com.github.DaFuqs:Arrowhead:5c488c00"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:4.2.0"
-	modImplementation "io.github.fablabsmc:bannerpp:2.0.6-teb.1+mc.1.18.2"
+	implementation "org.jgrapht:jgrapht-core:1.5.2"
+	implementation "org.jheaps:jheaps:0.14"
+	modImplementation "maven.modrinth:additionalentityattributes:ht3amcX1"
+	modImplementation "com.github.DaFuqs:Arrowhead:d9f258a4"
+	modImplementation "com.github.DaFuqs:DimensionalReverb:0a4cd0ae"
+	modImplementation "maven.modrinth:fractal-lib:8I3R187M"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:5.0.2"
+	modImplementation("com.github.devs-immortal:Incubus-Core:1.9.4") {transitive = false}
 	modImplementation "com.github.emilyploszaj:step-height-entity-attribute:1.0.1"
-	modImplementation "com.jamieswhiteshirt:reach-entity-attributes:2.2.0"
-	modImplementation("com.github.devs-immortal:Incubus-Core:1.8.4") {transitive = false}
-	modImplementation "com.extracraftx.minecraft:ProgrammerArtInjector:1.2.1"
+	modImplementation "com.jamieswhiteshirt:reach-entity-attributes:2.3.0"
 
 	// Spectrum External Dependencies
-	modImplementation "maven.modrinth:revelationary:TTTlCzoW"
-	modImplementation "dev.architectury:architectury-fabric:4.12.94"
-	modImplementation "me.shedaniel.cloth:cloth-config-fabric:6.5.133"
+	modImplementation "maven.modrinth:revelationary:2d9fuEjc"
+	modImplementation "dev.architectury:architectury-fabric:6.6.92"
+	modImplementation "me.shedaniel.cloth:cloth-config-fabric:8.3.134"
 	implementation "me.zeroeightsix:fiber:0.23.0-2"
-	modImplementation "vazkii.patchouli:Patchouli:1.18.2-71.1-FABRIC"
-	modImplementation "io.wispforest:owo-lib:0.7.2+1.18"
-	modImplementation "dev.emi:trinkets:3.3.1"
-	modImplementation "maven.modrinth:dcwa:XXLeEb0H"
+	modImplementation "vazkii.patchouli:Patchouli:1.19.2-77-FABRIC"
+	modImplementation "dev.emi:trinkets:3.4.1"
+	modImplementation "maven.modrinth:dcwa:3Zi6jtYW"
 
 	// Spectrum
-	modImplementation "maven.modrinth:spectrum:7YmKE57s"
+	modImplementation "maven.modrinth:spectrum:cZcvzTh4"
 }
 
 def replacements = [

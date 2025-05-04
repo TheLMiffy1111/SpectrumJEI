@@ -16,7 +16,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
 
@@ -25,7 +24,7 @@ import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
  */
 public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<FusionShrineRecipe> {
 
-	public static final Text TITLE = new TranslatableText("block.spectrum.fusion_shrine");
+	public static final Text TITLE = Text.translatable("block.spectrum.fusion_shrine");
 
 	public FusionShrineRecipeCategory() {
 		super(SpectrumJEI.FUSION_SHRINE, TITLE);

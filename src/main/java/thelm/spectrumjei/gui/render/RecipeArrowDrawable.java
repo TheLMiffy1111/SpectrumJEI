@@ -27,7 +27,7 @@ public record RecipeArrowDrawable(int duration) implements IDrawable {
 	@Override
 	public void draw(MatrixStack poseStack, int xOffset, int yOffset) {
 		MinecraftClient minecraft = MinecraftClient.getInstance();
-		int guiScale = minecraft.getWindow().calculateScaleFactor(minecraft.options.guiScale, minecraft.forcesUnicodeFont());
+		int guiScale = minecraft.getWindow().calculateScaleFactor(minecraft.options.getGuiScale().getValue(), minecraft.forcesUnicodeFont());
 		float mask = WIDTH - Math.round(System.currentTimeMillis() % duration * guiScale * WIDTH / (float)duration) / (float)guiScale;
 		SpectrumJEI.RECIPE_ARROW.draw(poseStack, xOffset, yOffset);
 		SpectrumJEI.RECIPE_ARROW_FILLED.draw(poseStack, xOffset, yOffset, 0, 0, 0, mask);

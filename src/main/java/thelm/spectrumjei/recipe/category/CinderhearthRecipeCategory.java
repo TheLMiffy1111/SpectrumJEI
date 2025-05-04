@@ -11,9 +11,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Pair;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
@@ -24,7 +22,7 @@ import thelm.spectrumjei.gui.render.RecipeFlameDrawable;
  */
 public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<CinderhearthRecipe> {
 
-	public static final Text TITLE = new TranslatableText("block.spectrum.cinderhearth");
+	public static final Text TITLE = Text.translatable("block.spectrum.cinderhearth");
 
 	public CinderhearthRecipeCategory() {
 		super(SpectrumJEI.CINDERHEARTH, TITLE);
@@ -58,7 +56,7 @@ public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<Cind
 			List<Pair<ItemStack, Float>> outputs = recipe.getOutputsWithChance();
 			for(int i = 0; i < outputs.size(); ++i) {
 				if(outputs.get(i).getRight() < 1) {
-					Text chanceComponent = new LiteralText((int)(outputs.get(i).getRight() * 100) + "%");
+					Text chanceComponent = Text.literal((int)(outputs.get(i).getRight() * 100) + "%");
 					font.draw(poseStack, chanceComponent, 67 + i * 28 - font.getWidth(chanceComponent) / 2, 32, 0x3F3F3F);
 				}
 			}

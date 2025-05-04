@@ -21,15 +21,14 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import thelm.spectrumjei.SpectrumJEI;
 import thelm.spectrumjei.gui.render.BlankDrawable;
 
 public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCategory<R> {
 
-	public static final Text HIDDEN_LINE_1 = new TranslatableText("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_1");
-	public static final Text HIDDEN_LINE_2 = new TranslatableText("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_2");
+	public static final Text HIDDEN_LINE_1 = Text.translatable("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_1");
+	public static final Text HIDDEN_LINE_2 = Text.translatable("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_2");
 
 	public final RecipeType<R> recipeType;
 	public final Text title;
@@ -39,16 +38,6 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 		this.recipeType = recipeType;
 		this.title = title;
 		background = new BlankDrawable(getWidth(), getHeight());
-	}
-
-	@Override
-	public Identifier getUid() {
-		return recipeType.getUid();
-	}
-
-	@Override
-	public Class<? extends R> getRecipeClass() {
-		return recipeType.getRecipeClass();
 	}
 
 	@Override
@@ -66,10 +55,12 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 		return background;
 	}
 
+	@Override
 	public int getWidth() {
 		return 136;
 	}
 
+	@Override
 	public abstract int getHeight();
 
 	@Override
@@ -157,10 +148,10 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 	}
 
 	public Text getTimeComponent(int time) {
-		return time == 20 ? new TranslatableText("container.spectrum.rei.enchanting.crafting_time_one_second", 1) : new TranslatableText("container.spectrum.rei.enchanting.crafting_time", time / 20);
+		return time == 20 ? Text.translatable("container.spectrum.rei.enchanting.crafting_time_one_second", 1) : Text.translatable("container.spectrum.rei.enchanting.crafting_time", time / 20);
 	}
 
 	public Text getTimeComponent(int time, float experience) {
-		return time == 20 ? new TranslatableText("container.spectrum.rei.pedestal_crafting.crafting_time_one_second_and_xp", 1, experience) : new TranslatableText("container.spectrum.rei.pedestal_crafting.crafting_time_and_xp", time / 20, experience);
+		return time == 20 ? Text.translatable("container.spectrum.rei.pedestal_crafting.crafting_time_one_second_and_xp", 1, experience) : Text.translatable("container.spectrum.rei.pedestal_crafting.crafting_time_and_xp", time / 20, experience);
 	}
 }
