@@ -14,9 +14,8 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 
 /**
  * Based on PotionWorkshopEmiRecipeGated
@@ -39,12 +38,12 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 	public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(), JEIDrawables.SLOT, visible);
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
 		if(isVisible(recipe)) {
 			BUBBLES.draw(poseStack, 33, 20);
-			RecipeArrowDrawable.of(recipe.getCraftingTime() * 50).draw(poseStack, 75, 25);
+			JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50).draw(poseStack, 75, 25);
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
 			font.draw(poseStack, timeComponent, 52, 56, 0x3F3F3F);

@@ -8,6 +8,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
 
 /**
@@ -29,14 +30,14 @@ public class InkConvertingRecipeCategory extends AbstractGatedRecipeCategory<Ink
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, InkConvertingRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 1, 2, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 1, 2, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
 	}
 
 	@Override
 	public void draw(InkConvertingRecipe recipe, IRecipeSlotsView recipeSlotsView, MatrixStack poseStack, double mouseX, double mouseY) {
 		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
 		if(isVisible(recipe)) {
-			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 22, 2);
+			JEIDrawables.RECIPE_ARROW.draw(poseStack, 22, 2);
 			TextRenderer font = font();
 			Text colorComponent = Text.translatable("container.spectrum.rei.ink_converting.color", recipe.getInkColor().getName());
 			Text amountComponent = Text.translatable("container.spectrum.rei.ink_converting.amount", recipe.getInkAmount());

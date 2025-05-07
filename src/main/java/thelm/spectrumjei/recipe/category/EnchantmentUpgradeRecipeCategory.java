@@ -14,8 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 
 /**
  * Based on EnchanterEmiRecipeGated
@@ -41,18 +42,18 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 		boolean visible = isVisible(recipe);
 		Item inputItem = recipe.getRequiredItem();
 		int inputCount = recipe.getRequiredItemCount();
-		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getRequiredExperience(), true), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getRequiredExperience(), true), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 113, 53, new ItemStack(SpectrumBlocks.ENCHANTER), visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 34, 32, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 21, 1, new ItemStack(inputItem, getSplitCount(inputCount, 0)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 47, 1, new ItemStack(inputItem, getSplitCount(inputCount, 1)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 65, 19, new ItemStack(inputItem, getSplitCount(inputCount, 2)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 65, 45, new ItemStack(inputItem, getSplitCount(inputCount, 3)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 47, 63, new ItemStack(inputItem, getSplitCount(inputCount, 4)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, new ItemStack(inputItem, getSplitCount(inputCount, 5)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, new ItemStack(inputItem, getSplitCount(inputCount, 6)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, new ItemStack(inputItem, getSplitCount(inputCount, 7)), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 34, 32, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 21, 1, new ItemStack(inputItem, getSplitCount(inputCount, 0)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 47, 1, new ItemStack(inputItem, getSplitCount(inputCount, 1)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 65, 19, new ItemStack(inputItem, getSplitCount(inputCount, 2)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 65, 45, new ItemStack(inputItem, getSplitCount(inputCount, 3)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 47, 63, new ItemStack(inputItem, getSplitCount(inputCount, 4)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, new ItemStack(inputItem, getSplitCount(inputCount, 5)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, new ItemStack(inputItem, getSplitCount(inputCount, 6)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, new ItemStack(inputItem, getSplitCount(inputCount, 7)), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
 		if(isVisible(recipe)) {
 			ALTAR.draw(poseStack, 15, 13);
-			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 84, 32);
+			JEIDrawables.RECIPE_ARROW.draw(poseStack, 84, 32);
 			TextRenderer font = font();
 			Text reqComponent = Text.translatable("container.spectrum.rei.enchantment_upgrade.required_item_count", recipe.getRequiredItemCount());
 			font.draw(poseStack, reqComponent, 69, 70, 0x3F3F3F);

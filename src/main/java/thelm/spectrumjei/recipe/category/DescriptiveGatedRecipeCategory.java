@@ -13,7 +13,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import thelm.spectrumjei.SpectrumJEI;
+import thelm.jeidrawables.JEIDrawables;
 
 /**
  * Based on IngredientInfoRecipeCategory
@@ -33,7 +33,7 @@ public class DescriptiveGatedRecipeCategory<R extends DescriptiveGatedRecipe> ex
 	public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		ItemStack stack = new ItemStack(recipe.getItem());
-		addItem(builder, RecipeIngredientRole.INPUT, 60, 1, stack, SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 60, 1, stack, JEIDrawables.SLOT, visible);
 		builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(stack);
 	}
 

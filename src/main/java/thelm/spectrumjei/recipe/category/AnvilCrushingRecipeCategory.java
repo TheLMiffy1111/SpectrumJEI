@@ -12,8 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 
 /**
  * Based on AnvilCrushingEmiRecipeGated
@@ -42,9 +43,9 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, AnvilCrushingRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 32, 31, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 32, 31, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 32, 11, new ItemStack(Items.ANVIL), visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getOutput(), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getOutput(), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 		if(isVisible(recipe)) {
 			WALL.draw(poseStack, 10, 1);
 			FALL.draw(poseStack, 32, 1);
-			SpectrumJEI.RECIPE_ARROW.draw(poseStack, 60, 16);
+			JEIDrawables.RECIPE_ARROW.draw(poseStack, 60, 16);
 			TextRenderer font = font();
 			Text xpComponent = Text.translatable("container.spectrum.rei.anvil_crushing.plus_xp", recipe.getExperience());
 			Text forceComponent = getForceComponent(recipe);

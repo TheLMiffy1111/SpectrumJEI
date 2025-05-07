@@ -22,8 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.gui.render.BlankDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.BlankDrawable;
 
 public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCategory<R> {
 
