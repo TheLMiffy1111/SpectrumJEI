@@ -8,8 +8,10 @@ import de.dafuqs.spectrum.enums.GemstoneColor;
 import de.dafuqs.spectrum.enums.PedestalRecipeTier;
 import de.dafuqs.spectrum.inventories.PedestalScreen;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalCraftingRecipe;
+import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -21,9 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.CyclingDrawable;
+import thelm.jeidrawables.gui.render.IngredientDrawable;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 
 /**
  * Based on PedestalCraftingEmiRecipeGated
@@ -34,6 +38,11 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 	public static final Text TITLE_SIMPLE = new TranslatableText("multiblock.spectrum.pedestal.simple_structure");
 	public static final Text TITLE_ADVANCED = new TranslatableText("multiblock.spectrum.pedestal.advanced_structure");
 	public static final Text TITLE_COMPLEX = new TranslatableText("multiblock.spectrum.pedestal.complex_structure");
+
+	public static final IDrawable BASIC_ICON = new CyclingDrawable(1000,
+			new IngredientDrawable<>(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ)),
+			new IngredientDrawable<>(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST)),
+			new IngredientDrawable<>(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_CITRINE)));
 
 	public final PedestalRecipeTier tier;
 	public final int powderSlotCount;
@@ -93,6 +102,11 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 	}
 
 	@Override
+	public IDrawable getIcon() {
+		return tier == PedestalRecipeTier.BASIC ? BASIC_ICON : null;
+	}
+
+	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, PedestalCraftingRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		int powderSlotX = 1 + getWidth() / 2 - powderSlotCount * 9;
@@ -128,7 +142,7 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 		super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
 		if(isVisible(recipe)) {
 			tierOverlay.draw(poseStack, 88, 38);
-			RecipeArrowDrawable.of(recipe.getCraftingTime() * 50).draw(poseStack, 67, 19);
+			JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50).draw(poseStack, 67, 19);
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
 			font.draw(poseStack, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 80, 0x3F3F3F);

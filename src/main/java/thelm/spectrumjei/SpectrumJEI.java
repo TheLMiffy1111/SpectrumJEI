@@ -39,7 +39,6 @@ import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import de.dafuqs.spectrum.registries.SpectrumItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -57,8 +56,6 @@ import net.minecraft.util.Identifier;
 import thelm.spectrumjei.gui.handler.CraftingTabletRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.OverlayHidingExtraAreaHandler;
 import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
-import thelm.spectrumjei.gui.render.DownscaledDrawable;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
 import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
 import thelm.spectrumjei.recipe.category.AnvilCrushingRecipeCategory;
@@ -109,15 +106,6 @@ public class SpectrumJEI implements IModPlugin {
 	public static final RecipeType<BlockConversionRecipe> NATURES_STAFF = createRecipeType(SpectrumCommon.locate("natures_staff"), BlockConversionRecipe.class);
 	public static final RecipeType<BlockConversionWithChanceRecipe> HEATING = createRecipeType(SpectrumCommon.locate("heating"), BlockConversionWithChanceRecipe.class);
 	public static final RecipeType<BlockConversionWithChanceRecipe> FREEZING = createRecipeType(SpectrumCommon.locate("freezing"), BlockConversionWithChanceRecipe.class);
-
-	public static final Identifier ELEMENTS = new Identifier("spectrumjei:textures/gui/elements.png");
-	public static final ResourceDrawable SLOT = new ResourceDrawable(SpectrumJEI.ELEMENTS, 0, 0, 18, 18);
-	public static final ResourceDrawable OUTPUT_SLOT = new ResourceDrawable(SpectrumJEI.ELEMENTS, 18, 0, 26, 26);
-	public static final ResourceDrawable RECIPE_ARROW = new ResourceDrawable(SpectrumJEI.ELEMENTS, 44, 0, 22, 16);
-	public static final ResourceDrawable RECIPE_ARROW_FILLED = new ResourceDrawable(SpectrumJEI.ELEMENTS, 66, 0, 22, 16);
-	public static final ResourceDrawable FLAME_EMPTY = new ResourceDrawable(SpectrumJEI.ELEMENTS, 44, 16, 14, 14);
-	public static final ResourceDrawable FLAME = new ResourceDrawable(SpectrumJEI.ELEMENTS, 58, 16, 14, 14);
-	public static final IDrawable SHAPELESS = new DownscaledDrawable(new ResourceDrawable(SpectrumJEI.ELEMENTS, 88, 0, 36, 36), 4);
 
 	@Override
 	public Identifier getPluginUid() {
