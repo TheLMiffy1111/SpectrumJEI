@@ -56,6 +56,17 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://maven.crystaelix.com/releases/"
+			}
+		}
+		filter {
+			includeGroup "thelm.jeidrawables"
+			includeGroup "thelm.jeibatchfix"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://maven.architectury.dev/"
 			}
 		}
@@ -189,6 +200,8 @@ dependencies {
 
 	// JEI
 	modImplementation("mezz.jei:jei-1.20.1-fabric:15.20.0.106") {transitive = false}
+	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:20.1.0"))
+	modImplementation "thelm.jeibatchfix:JEIBatchFix-Fabric:20.1.0"
 
 	// Spectrum Included Dependencies
 	implementation "org.jgrapht:jgrapht-core:1.5.2"

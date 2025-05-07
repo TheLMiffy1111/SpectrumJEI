@@ -17,8 +17,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
 
 /**
  * Based on FusionShrineEmiRecipeGated
@@ -41,7 +41,7 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 		boolean visible = isVisible(recipe);
 		if(recipe.getFluid() != FluidIngredient.EMPTY) {
 			addItem(builder, RecipeIngredientRole.CATALYST, 10, 26, new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), visible);
-			addFluid(builder, RecipeIngredientRole.INPUT, 30, 26, recipe.getFluid(), FluidConstants.BUCKET, SpectrumJEI.SLOT, visible);
+			addFluid(builder, RecipeIngredientRole.INPUT, 30, 26, recipe.getFluid(), FluidConstants.BUCKET, JEIDrawables.SLOT, visible);
 		}
 		else {
 			addItem(builder, RecipeIngredientRole.CATALYST, 20, 26, new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), visible);
@@ -49,15 +49,15 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		int startX = 1 + getWidth() / 2 - ingredients.size() * 9;
 		for(int i = 0; i < ingredients.size(); ++i) {
-			addItem(builder, RecipeIngredientRole.INPUT, startX + i * 18, 1, ingredients.get(i).getStacks(), SpectrumJEI.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, startX + i * 18, 1, ingredients.get(i).getStacks(), JEIDrawables.SLOT, visible);
 		}
-		addItem(builder, RecipeIngredientRole.OUTPUT, 94, 26, recipe.getOutput(registryAccess()), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 94, 26, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, FusionShrineRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 57, 26);
+			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 57, 26);
 		}
 	}
 

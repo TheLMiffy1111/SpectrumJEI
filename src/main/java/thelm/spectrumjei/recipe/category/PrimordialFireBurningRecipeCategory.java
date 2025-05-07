@@ -10,8 +10,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.SpriteDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.SpriteDrawable;
 
 public class PrimordialFireBurningRecipeCategory extends AbstractGatedRecipeCategory<PrimordialFireBurningRecipe> {
 
@@ -34,15 +35,15 @@ public class PrimordialFireBurningRecipeCategory extends AbstractGatedRecipeCate
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, PrimordialFireBurningRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 29, 1, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 87, 9, recipe.getOutput(registryAccess()), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 29, 1, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 87, 9, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, PrimordialFireBurningRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
 			builder.addDrawable(FIRE, 29, 19);
-			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 53, 9);
+			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 53, 9);
 		}
 	}
 }

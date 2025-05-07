@@ -15,9 +15,8 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 
 /**
  * Based on PotionWorkshopEmiRecipeGated
@@ -40,19 +39,19 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 	public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(registryAccess()), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(registryAccess()), JEIDrawables.SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, R recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
 			builder.addDrawable(BUBBLES, 33, 20);
-			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 75, 25);
+			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 75, 25);
 		}
 	}
 

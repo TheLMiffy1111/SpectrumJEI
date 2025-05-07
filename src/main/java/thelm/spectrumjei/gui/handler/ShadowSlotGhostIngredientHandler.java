@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
-import thelm.spectrumjei.mixin.AbstractContainerScreenAccessor;
+import thelm.jeidrawables.mixin.AbstractContainerScreenAccessor;
 
 public class ShadowSlotGhostIngredientHandler<T extends HandledScreen<?>> implements IGhostIngredientHandler<T>{
 
@@ -33,7 +33,7 @@ public class ShadowSlotGhostIngredientHandler<T extends HandledScreen<?>> implem
 
 	public static Rect2i getSlotArea(HandledScreen<?> gui, Slot slot) {
 		AbstractContainerScreenAccessor accessor = (AbstractContainerScreenAccessor)gui;
-		return new Rect2i(accessor.spectrumjei$guiLeft() + slot.x, accessor.spectrumjei$guiTop() + slot.y, 16, 16);
+		return new Rect2i(accessor.jeidas$leftPos() + slot.x, accessor.jeidas$topPos() + slot.y, 16, 16);
 	}
 
 	public record ShadowSlotTarget<I>(int windowId, ShadowSlot slot, FilterConfigurable.FilterInventory inventory, Rect2i area) implements Target<I> {

@@ -16,8 +16,8 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
 
 /**
  * Based on SpiritInstillingEmiRecipeGated
@@ -39,9 +39,9 @@ public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<S
 	public void setRecipe(IRecipeLayoutBuilder builder, SpiritInstillerRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(0).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 11, 1, ingredients.get(1).getStacks(), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 51, 1, ingredients.get(2).getStacks(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(0).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 11, 1, ingredients.get(1).getStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 51, 1, ingredients.get(2).getStacks(), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 31, 18, new ItemStack(SpectrumBlocks.SPIRIT_INSTILLER), visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 11, 18, new ItemStack(SpectrumBlocks.ITEM_BOWL_CALCITE), visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 51, 18, new ItemStack(SpectrumBlocks.ITEM_BOWL_CALCITE), visible);
@@ -49,13 +49,13 @@ public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<S
 		if(recipe instanceof SpawnerChangeRecipe spawnerChange) {
 			LoreHelper.setLore(stack, spawnerChange.getOutputLoreText());
 		}
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, stack, SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, stack, JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, SpiritInstillerRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 73, 10);
+			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 73, 10);
 		}
 	}
 

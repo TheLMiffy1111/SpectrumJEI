@@ -9,6 +9,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
 
 /**
@@ -30,13 +31,13 @@ public class InkConvertingRecipeCategory extends AbstractGatedRecipeCategory<Ink
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, InkConvertingRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 1, 2, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 1, 2, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, InkConvertingRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 22, 2);
+			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 22, 2);
 		}
 	}
 

@@ -19,9 +19,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 
 /**
  * Based on CrystallarieumEmiRecipeGated
@@ -43,7 +43,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	public static final ResourceDrawable ACCEL_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_HIGH = new ResourceDrawable(BACKGROUND, 67, 0, 6, 6, 128, 128);
-	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 81, 6, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 91, 6, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_NONE = new ResourceDrawable(BACKGROUND, 97, 6, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_LOW = new ResourceDrawable(BACKGROUND, 73, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
@@ -60,24 +60,24 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, CrystallarieumRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 7, 9, recipe.getIngredientStack(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 7, 9, recipe.getIngredientStack(), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 27, 19, SpectrumBlocks.CRYSTALLARIEUM.asStackWithColor(NullableDyeColor.get(recipe.getInkColor().getDyeColor())), visible);
 		List<ItemStack> growthStages = recipe.getGrowthStages().stream().map(BlockState::getBlock).map(ItemStack::new).toList();
-		addItem(builder, RecipeIngredientRole.INPUT, 27, 1, growthStages.get(0), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 27, 1, growthStages.get(0), JEIDrawables.SLOT, visible);
 		for(int i = 1; i < growthStages.size(); ++i) {
-			addItem(builder, RecipeIngredientRole.OUTPUT, 53 + i * 20, 9, growthStages.get(i), SpectrumJEI.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.OUTPUT, 53 + i * 20, 9, growthStages.get(i), JEIDrawables.SLOT, visible);
 		}
 		List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
 		for(int i = 0; i < catalysts.size(); ++i) {
 			int x = 53 + i * 18;
-			addItem(builder, RecipeIngredientRole.CATALYST, x, 39, catalysts.get(i).ingredient, SpectrumJEI.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.CATALYST, x, 39, catalysts.get(i).ingredient, JEIDrawables.SLOT, visible);
 		}
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, CrystallarieumRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(RecipeArrowDrawable.of(recipe.getSecondsPerGrowthStage() * 1000), 47, 9);
+			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getSecondsPerGrowthStage() * 1000), 47, 9);
 			List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
 			for(int i = 0; i < catalysts.size(); ++i) {
 				CrystallarieumCatalyst catalyst = catalysts.get(i);

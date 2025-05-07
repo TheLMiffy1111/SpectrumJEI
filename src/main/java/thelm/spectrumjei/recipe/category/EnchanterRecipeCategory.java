@@ -17,9 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 
 /**
  * Based on EnchanterEmiRecipeGated
@@ -44,24 +44,24 @@ public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<Enchant
 	public void setRecipe(IRecipeLayoutBuilder builder, EnchanterRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
 		List<Ingredient> ingredients = recipe.getIngredients();
-		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getRequiredExperience(), true), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getRequiredExperience(), true), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 113, 53, new ItemStack(SpectrumBlocks.ENCHANTER), visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 34, 32, ingredients.get(0), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 21, 1, ingredients.get(1), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 47, 1, ingredients.get(2), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 65, 19, ingredients.get(3), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 65, 45, ingredients.get(4), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 47, 63, ingredients.get(5), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, ingredients.get(6), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, ingredients.get(7), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, ingredients.get(8), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(registryAccess()), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 34, 32, ingredients.get(0), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 21, 1, ingredients.get(1), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 47, 1, ingredients.get(2), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 65, 19, ingredients.get(3), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 65, 45, ingredients.get(4), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 47, 63, ingredients.get(5), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, ingredients.get(6), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, ingredients.get(7), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, ingredients.get(8), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, EnchanterRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 84, 32);
+			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 84, 32);
 		}
 	}
 

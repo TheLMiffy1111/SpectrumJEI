@@ -18,8 +18,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
+import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
 
 /**
  * Based on TitrationBarrelEmiRecipeGated
@@ -51,15 +51,15 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		int startX = Math.max(11, 41 - inputCount * 10);
 		int startY = inputCount > 3 ? 1 : 11;
 		if(hasFluid) {
-			addFluid(builder, RecipeIngredientRole.INPUT, startX, startY, recipe.getFluidInput(), fluidHelper.bucketVolume(), SpectrumJEI.SLOT, visible);
+			addFluid(builder, RecipeIngredientRole.INPUT, startX, startY, recipe.getFluidInput(), fluidHelper.bucketVolume(), JEIDrawables.SLOT, visible);
 		}
 		for(int i = 0; i < ingredients.size(); ++i) {
 			int x = startX + (hasFluid ? i + 1 : i) % 3 * 20;
 			int y = startY + (hasFluid ? i + 1 : i) / 3 * 20;
-			addItem(builder, RecipeIngredientRole.INPUT, x, y, ingredients.get(i).getStacks(), SpectrumJEI.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, x, y, ingredients.get(i).getStacks(), JEIDrawables.SLOT, visible);
 		}
 		if(recipe.getTappingItem() != null && recipe.getTappingItem() != Items.AIR) {
-			addItem(builder, RecipeIngredientRole.INPUT, 76, 21, new ItemStack(recipe.getTappingItem()), SpectrumJEI.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, 76, 21, new ItemStack(recipe.getTappingItem()), JEIDrawables.SLOT, visible);
 		}
 		List<ItemStack> outputVariations;
 		if(recipe instanceof TitrationBarrelRecipe titrationBarrelRecipe && titrationBarrelRecipe.getFermentationData() != null) {
@@ -68,13 +68,13 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		else {
 			outputVariations = List.of(recipe.getOutput(registryAccess()));
 		}
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, outputVariations, SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, outputVariations, JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, ITitrationBarrelRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			IDrawable recipeArrow = RecipeArrowDrawable.of(recipe.getMinFermentationTimeHours() * 1000);
+			IDrawable recipeArrow = JEIDrawables.recipeArrow(recipe.getMinFermentationTimeHours() * 1000);
 			if(recipe.getTappingItem() == null || recipe.getTappingItem() == Items.AIR) {
 				builder.addDrawable(recipeArrow, 73, 10);
 			}

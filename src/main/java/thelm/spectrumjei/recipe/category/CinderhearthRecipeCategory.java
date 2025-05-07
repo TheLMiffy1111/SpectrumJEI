@@ -5,6 +5,7 @@ import java.util.List;
 import de.dafuqs.spectrum.recipe.cinderhearth.CinderhearthRecipe;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -14,9 +15,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
+import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.RecipeArrowDrawable;
-import thelm.spectrumjei.gui.render.RecipeFlameDrawable;
 
 /**
  * Based on CinderhearthEmiRecipeGated
@@ -24,6 +24,8 @@ import thelm.spectrumjei.gui.render.RecipeFlameDrawable;
 public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<CinderhearthRecipe> {
 
 	public static final Text TITLE = Text.translatable("block.spectrum.cinderhearth");
+
+	public static final IDrawable FLAME = JEIDrawables.flame(10000);
 
 	public CinderhearthRecipeCategory() {
 		super(SpectrumJEI.CINDERHEARTH, TITLE);
@@ -37,10 +39,10 @@ public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<Cind
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, CinderhearthRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 4, 1, recipe.getIngredientStacks().get(0).getStacks(), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 4, 1, recipe.getIngredientStacks().get(0).getStacks(), JEIDrawables.SLOT, visible);
 		List<Pair<ItemStack, Float>> outputs = recipe.getOutputsWithChance(registryAccess());
 		for(int i = 0; i < 3; ++i) {
-			IIngredientAcceptor<?> acceptor = addSlot(builder, RecipeIngredientRole.OUTPUT, 58 + i * 28, 10, SpectrumJEI.OUTPUT_SLOT, visible);
+			IIngredientAcceptor<?> acceptor = addSlot(builder, RecipeIngredientRole.OUTPUT, 58 + i * 28, 10, JEIDrawables.OUTPUT_SLOT, visible);
 			if(i < outputs.size()) {
 				acceptor.addItemStack(outputs.get(i).getLeft());
 			}
@@ -50,8 +52,8 @@ public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<Cind
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, CinderhearthRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(RecipeArrowDrawable.of(recipe.getCraftingTime() * 50), 26, 10);
-			builder.addDrawable(RecipeFlameDrawable.DEFAULT, 4, 19);
+			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 26, 10);
+			builder.addDrawable(FLAME, 4, 19);
 		}
 	}
 

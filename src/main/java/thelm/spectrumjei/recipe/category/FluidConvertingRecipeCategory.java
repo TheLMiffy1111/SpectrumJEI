@@ -7,7 +7,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.text.Text;
-import thelm.spectrumjei.SpectrumJEI;
+import thelm.jeidrawables.JEIDrawables;
 
 /**
  * Based on FluidConvertingEmiRecipeGated
@@ -26,14 +26,14 @@ public class FluidConvertingRecipeCategory<R extends FluidConvertingRecipe> exte
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 30, 5, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 86, 5, recipe.getOutput(registryAccess()), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 30, 5, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 86, 5, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, R recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
-			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 53, 5);
+			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 53, 5);
 		}
 	}
 }

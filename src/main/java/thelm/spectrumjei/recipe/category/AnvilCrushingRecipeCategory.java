@@ -13,8 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import thelm.jeidrawables.JEIDrawables;
+import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
-import thelm.spectrumjei.gui.render.ResourceDrawable;
 
 /**
  * Based on AnvilCrushingEmiRecipeGated
@@ -43,9 +44,9 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, AnvilCrushingRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 32, 31, recipe.getIngredients().get(0), SpectrumJEI.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 32, 31, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 32, 11, new ItemStack(Items.ANVIL), visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getOutput(registryAccess()), SpectrumJEI.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 		if(isVisible(recipe)) {
 			builder.addDrawable(WALL, 10, 0);
 			builder.addDrawable(FALL, 32, 1);
-			builder.addDrawable(SpectrumJEI.RECIPE_ARROW, 60, 16);
+			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 60, 16);
 		}
 	}
 
