@@ -2,8 +2,7 @@ package thelm.spectrumjei;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.collect.Streams;
+import java.util.stream.Stream;
 
 import de.dafuqs.spectrum.SpectrumCommon;
 import de.dafuqs.spectrum.blocks.idols.FirestarterIdolBlock;
@@ -195,7 +194,7 @@ public class SpectrumJEI implements IModPlugin {
 				map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight())).
 				filter(BlockConversionWithChanceRecipe::isViewable).toList());
 		registration.addRecipes(FREEZING,
-				Streams.concat(
+				Stream.concat(
 						FreezingIdolBlock.FREEZING_STATE_MAP.entrySet().stream().
 						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight())),
 						FreezingIdolBlock.FREEZING_MAP.entrySet().stream().

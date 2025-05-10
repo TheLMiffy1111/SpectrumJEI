@@ -200,7 +200,7 @@ dependencies {
 
 	// JEI
 	modImplementation("mezz.jei:jei-1.20.1-fabric:15.20.0.106") {transitive = false}
-	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:20.1.0"))
+	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:20.1.1"))
 	modImplementation "thelm.jeibatchfix:JEIBatchFix-Fabric:20.1.0"
 
 	// Spectrum Included Dependencies
