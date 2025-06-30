@@ -1,6 +1,7 @@
 package thelm.spectrumjei.recipe.category;
 
 import de.dafuqs.spectrum.SpectrumCommon;
+import de.dafuqs.spectrum.blocks.enchanter.EnchanterBlockEntity;
 import de.dafuqs.spectrum.items.magic_items.KnowledgeGemItem;
 import de.dafuqs.spectrum.recipe.enchantment_upgrade.EnchantmentUpgradeRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
@@ -19,7 +20,7 @@ import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
 
 /**
- * Based on EnchanterEmiRecipeGated
+ * Based on EnchanterEmiRecipeGated and EnchantmentUpgradeEmiRecipeGated
  */
 public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategory<EnchantmentUpgradeRecipe> {
 
@@ -35,6 +36,11 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 	@Override
 	public int getHeight() {
 		return 80;
+	}
+
+	@Override
+	public boolean isUnlocked(EnchantmentUpgradeRecipe recipe) {
+		return super.isUnlocked(recipe) && (!recipe.requiresUnlockedOverEnchanting() || hasAdvancement(EnchanterBlockEntity.OVERENCHANTING_ADVANCEMENT_IDENTIFIER));
 	}
 
 	@Override

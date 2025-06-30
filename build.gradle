@@ -136,7 +136,7 @@ def specVersion = "19.2"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "19.2.0"
+version = "19.2.1"
 
 archivesBaseName = modName
 
