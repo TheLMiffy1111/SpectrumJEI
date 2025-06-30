@@ -41,12 +41,12 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	public static final ResourceDrawable ACCEL_NONE = new ResourceDrawable(BACKGROUND, 97, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable ACCEL_LOW = new ResourceDrawable(BACKGROUND, 73, 0, 6, 6, 128, 128);
 	public static final ResourceDrawable ACCEL_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
-	public static final ResourceDrawable CONSUME_HIGHER = new ResourceDrawable(BACKGROUND, 85, 0, 6, 6, 128, 128);
-	public static final ResourceDrawable CONSUME_HIGH = new ResourceDrawable(BACKGROUND, 67, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_HIGHER = new ResourceDrawable(BACKGROUND, 85, 6, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_HIGH = new ResourceDrawable(BACKGROUND, 67, 6, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 91, 6, 6, 6, 128, 128);
 	public static final ResourceDrawable CONSUME_NONE = new ResourceDrawable(BACKGROUND, 97, 6, 6, 6, 128, 128);
-	public static final ResourceDrawable CONSUME_LOW = new ResourceDrawable(BACKGROUND, 73, 0, 6, 6, 128, 128);
-	public static final ResourceDrawable CONSUME_LOWER = new ResourceDrawable(BACKGROUND, 79, 0, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_LOW = new ResourceDrawable(BACKGROUND, 73, 6, 6, 6, 128, 128);
+	public static final ResourceDrawable CONSUME_LOWER = new ResourceDrawable(BACKGROUND, 79, 6, 6, 6, 128, 128);
 
 	public CrystallarieumRecipeCategory() {
 		super(SpectrumJEI.CRYSTALLARIEUM, TITLE);
@@ -94,7 +94,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 				else if(growthAcceleration == 1F) {
 					icon = ACCEL_NONE;
 				}
-				else if(growthAcceleration >= 0.25F) {
+				else if(growthAcceleration > 0.25F) {
 					icon = ACCEL_LOW;
 				}
 				else {
@@ -112,7 +112,7 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 				else if(inkConsumption == 1F) {
 					icon = CONSUME_NONE;
 				}
-				else if(inkConsumption >= 0.25F) {
+				else if(inkConsumption > 0.25F) {
 					icon = CONSUME_LOW;
 				}
 				else {

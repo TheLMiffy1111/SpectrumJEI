@@ -56,7 +56,6 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -223,48 +222,48 @@ public class SpectrumJEI implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.RESTOCKING_CHEST), RecipeTypes.CRAFTING);
+		registration.addRecipeCatalyst(SpectrumBlocks.RESTOCKING_CHEST, RecipeTypes.CRAFTING);
 
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ), PEDESTAL_BASIC);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST), PEDESTAL_BASIC);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_CITRINE), PEDESTAL_BASIC);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_ALL_BASIC), PEDESTAL_BASIC, PEDESTAL_SIMPLE);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_ONYX), PEDESTAL_BASIC, PEDESTAL_SIMPLE, PEDESTAL_ADVANCED);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_MOONSTONE), PEDESTAL_BASIC, PEDESTAL_SIMPLE, PEDESTAL_ADVANCED, PEDESTAL_COMPLEX);
+		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ, PEDESTAL_BASIC);
+		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST, PEDESTAL_BASIC);
+		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_CITRINE, PEDESTAL_BASIC);
+		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_ALL_BASIC, PEDESTAL_BASIC, PEDESTAL_SIMPLE);
+		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_ONYX, PEDESTAL_BASIC, PEDESTAL_SIMPLE, PEDESTAL_ADVANCED);
+		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_MOONSTONE, PEDESTAL_BASIC, PEDESTAL_SIMPLE, PEDESTAL_ADVANCED, PEDESTAL_COMPLEX);
 		if(SpectrumCommon.CONFIG.canPedestalCraftVanillaRecipes()) {
-			registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_CITRINE), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_ALL_BASIC), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_ONYX), RecipeTypes.CRAFTING);
-			registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_MOONSTONE), RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ, RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST, RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_CITRINE, RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_ALL_BASIC, RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_ONYX, RecipeTypes.CRAFTING);
+			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_MOONSTONE, RecipeTypes.CRAFTING);
 		}
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.CRAFTING_TABLET), RecipeTypes.CRAFTING);
-		registration.addRecipeCatalyst(new ItemStack(Blocks.ANVIL), ANVIL_CRUSHING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.BEDROCK_ANVIL), ANVIL_CRUSHING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.STRATINE_FRAGMENT_BLOCK), ANVIL_CRUSHING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PALTAERIA_FRAGMENT_BLOCK), ANVIL_CRUSHING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), FUSION_SHRINE);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.FUSION_SHRINE_CALCITE), FUSION_SHRINE);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.ENCHANTER), ENCHANTER, ENCHANTMENT_UPGRADE);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.POTION_WORKSHOP), POTION_WORKSHOP_BREWING, POTION_WORKSHOP_CRAFTING, POTION_WORKSHOP_REACTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.MUD_BUCKET), MUD_CONVERTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.LIQUID_CRYSTAL_BUCKET), LIQUID_CRYSTAL_CONVERTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.MIDNIGHT_SOLUTION_BUCKET), MIDNIGHT_SOLUTION_CONVERTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.DRAGONROT_BUCKET), DRAGONROT_CONVERTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.SPIRIT_INSTILLER), SPIRIT_INSTILLER);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.COLOR_PICKER), INK_CONVERTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.CRYSTALLARIEUM), CRYSTALLARIEUM);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.CINDERHEARTH), CINDERHEARTH, RecipeTypes.BLASTING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.TITRATION_BARREL), TITRATION_BARREL);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.DOOMBLOOM_SEED), PRIMORDIAL_FIRE_BURNING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.PRIMORDIAL_LIGHTER), PRIMORDIAL_FIRE_BURNING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.INCANDESCENT_AMALGAM), PRIMORDIAL_FIRE_BURNING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.PIPE_BOMB), PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(SpectrumItems.CRAFTING_TABLET, RecipeTypes.CRAFTING);
+		registration.addRecipeCatalyst(Blocks.ANVIL, ANVIL_CRUSHING);
+		registration.addRecipeCatalyst(SpectrumBlocks.BEDROCK_ANVIL, ANVIL_CRUSHING);
+		registration.addRecipeCatalyst(SpectrumBlocks.STRATINE_FRAGMENT_BLOCK, ANVIL_CRUSHING);
+		registration.addRecipeCatalyst(SpectrumBlocks.PALTAERIA_FRAGMENT_BLOCK, ANVIL_CRUSHING);
+		registration.addRecipeCatalyst(SpectrumBlocks.FUSION_SHRINE_BASALT, FUSION_SHRINE);
+		registration.addRecipeCatalyst(SpectrumBlocks.FUSION_SHRINE_CALCITE, FUSION_SHRINE);
+		registration.addRecipeCatalyst(SpectrumBlocks.ENCHANTER, ENCHANTER, ENCHANTMENT_UPGRADE);
+		registration.addRecipeCatalyst(SpectrumBlocks.POTION_WORKSHOP, POTION_WORKSHOP_BREWING, POTION_WORKSHOP_CRAFTING, POTION_WORKSHOP_REACTING);
+		registration.addRecipeCatalyst(SpectrumItems.MUD_BUCKET, MUD_CONVERTING);
+		registration.addRecipeCatalyst(SpectrumItems.LIQUID_CRYSTAL_BUCKET, LIQUID_CRYSTAL_CONVERTING);
+		registration.addRecipeCatalyst(SpectrumItems.MIDNIGHT_SOLUTION_BUCKET, MIDNIGHT_SOLUTION_CONVERTING);
+		registration.addRecipeCatalyst(SpectrumItems.DRAGONROT_BUCKET, DRAGONROT_CONVERTING);
+		registration.addRecipeCatalyst(SpectrumBlocks.SPIRIT_INSTILLER, SPIRIT_INSTILLER);
+		registration.addRecipeCatalyst(SpectrumBlocks.COLOR_PICKER, INK_CONVERTING);
+		registration.addRecipeCatalyst(SpectrumBlocks.CRYSTALLARIEUM, CRYSTALLARIEUM);
+		registration.addRecipeCatalyst(SpectrumBlocks.CINDERHEARTH, CINDERHEARTH, RecipeTypes.BLASTING);
+		registration.addRecipeCatalyst(SpectrumBlocks.TITRATION_BARREL, TITRATION_BARREL);
+		registration.addRecipeCatalyst(SpectrumItems.DOOMBLOOM_SEED, PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(SpectrumItems.PRIMORDIAL_LIGHTER, PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(SpectrumBlocks.INCANDESCENT_AMALGAM, PRIMORDIAL_FIRE_BURNING);
+		registration.addRecipeCatalyst(SpectrumItems.PIPE_BOMB, PRIMORDIAL_FIRE_BURNING);
 
-		registration.addRecipeCatalyst(new ItemStack(SpectrumItems.NATURES_STAFF), NATURES_STAFF);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.BLAZE_IDOL), HEATING);
-		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.POLAR_BEAR_IDOL), FREEZING);
+		registration.addRecipeCatalyst(SpectrumItems.NATURES_STAFF, NATURES_STAFF);
+		registration.addRecipeCatalyst(SpectrumBlocks.BLAZE_IDOL, HEATING);
+		registration.addRecipeCatalyst(SpectrumBlocks.POLAR_BEAR_IDOL, FREEZING);
 	}
 
 	@Override
