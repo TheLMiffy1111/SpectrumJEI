@@ -8,7 +8,6 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.id.incubus_core.recipe.IngredientStack;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -41,7 +40,7 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 		boolean visible = isVisible(recipe);
 		if(recipe.getFluidInput() != Fluids.EMPTY) {
 			addItem(builder, RecipeIngredientRole.CATALYST, 10, 26, new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), visible);
-			addFluid(builder, RecipeIngredientRole.INPUT, 30, 26, recipe.getFluidInput(), FluidConstants.BUCKET, JEIDrawables.SLOT, visible);
+			addFluid(builder, RecipeIngredientRole.INPUT, 30, 26, recipe.getFluidInput(), fluidHelper().bucketVolume(), JEIDrawables.SLOT, visible);
 		}
 		else {
 			addItem(builder, RecipeIngredientRole.CATALYST, 20, 26, new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), visible);
