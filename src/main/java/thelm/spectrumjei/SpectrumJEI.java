@@ -134,7 +134,7 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCategories(new CinderhearthRecipeCategory());
 		registration.addRecipeCategories(new TitrationBarrelRecipeCategory());
 
-		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, new TranslatableText("item.spectrum.natures_staff"), SpectrumCommon.locate("progression/unlock_natures_staff")));	
+		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, new TranslatableText("item.spectrum.natures_staff"), SpectrumCommon.locate("progression/unlock_natures_staff")));
 		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(HEATING, new TranslatableText("container.spectrum.rei.heating.title"), SpectrumCommon.locate("progression/unlock_mob_blocks")));
 		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(FREEZING, new TranslatableText("container.spectrum.rei.freezing.title"), SpectrumCommon.locate("progression/unlock_mob_blocks")));
 	}
