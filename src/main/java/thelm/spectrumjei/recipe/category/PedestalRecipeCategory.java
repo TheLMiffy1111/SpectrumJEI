@@ -3,8 +3,8 @@ package thelm.spectrumjei.recipe.category;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dafuqs.matchbooks.recipe.IngredientStack;
 import de.dafuqs.spectrum.api.item.GemstoneColor;
+import de.dafuqs.spectrum.api.recipe.IngredientStack;
 import de.dafuqs.spectrum.inventories.PedestalScreen;
 import de.dafuqs.spectrum.recipe.pedestal.BuiltinGemstoneColor;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
@@ -18,12 +18,13 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.jeidrawables.gui.render.CyclingDrawable;
 import thelm.jeidrawables.gui.render.IngredientDrawable;
@@ -35,10 +36,10 @@ import thelm.spectrumjei.SpectrumJEI;
  */
 public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<PedestalRecipe> {
 
-	public static final Text TITLE_BASIC = Text.translatable("block.spectrum.pedestal");
-	public static final Text TITLE_SIMPLE = Text.translatable("multiblock.spectrum.pedestal_simple");
-	public static final Text TITLE_ADVANCED = Text.translatable("multiblock.spectrum.pedestal_advanced");
-	public static final Text TITLE_COMPLEX = Text.translatable("multiblock.spectrum.pedestal_complex");
+	public static final Component TITLE_BASIC = Component.translatable("block.spectrum.pedestal");
+	public static final Component TITLE_SIMPLE = Component.translatable("multiblock.spectrum.pedestal_simple");
+	public static final Component TITLE_ADVANCED = Component.translatable("multiblock.spectrum.pedestal_advanced");
+	public static final Component TITLE_COMPLEX = Component.translatable("multiblock.spectrum.pedestal_complex");
 
 	public static final IDrawable BASIC_ICON = new CyclingDrawable(1000,
 			new IngredientDrawable<>(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ)),
@@ -48,7 +49,7 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 	public final PedestalRecipeTier tier;
 	public final int powderSlotCount;
 
-	public final Identifier background;
+	public final ResourceLocation background;
 	public final ResourceDrawable[] inputSlots;
 	public final ResourceDrawable[] powderSlots;
 	public final ResourceDrawable outputSlot;
@@ -75,7 +76,7 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 		tierOverlay = new ResourceDrawable(background, 200, 0, 40, 16);
 	}
 
-	public static RecipeType<PedestalRecipe> getRecipeType(PedestalRecipeTier tier) {
+	public static RecipeType<RecipeHolder<PedestalRecipe>> getRecipeType(PedestalRecipeTier tier) {
 		return switch(tier) {
 		case BASIC -> SpectrumJEI.PEDESTAL_BASIC;
 		case SIMPLE -> SpectrumJEI.PEDESTAL_SIMPLE;
@@ -84,7 +85,7 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 		};
 	}
 
-	public static Text getTitle(PedestalRecipeTier tier) {
+	public static Component getTitle(PedestalRecipeTier tier) {
 		return switch(tier) {
 		case BASIC -> TITLE_BASIC;
 		case SIMPLE -> TITLE_SIMPLE;
@@ -104,13 +105,14 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 	}
 
 	@Override
-	public boolean isUnlocked(PedestalRecipe recipe) {
-		return super.isUnlocked(recipe) && recipe.getTier().hasUnlocked(MinecraftClient.getInstance().player);
+	public boolean isUnlocked(RecipeHolder<PedestalRecipe> recipeHolder) {
+		return super.isUnlocked(recipeHolder) && recipeHolder.value().getTier().hasUnlocked(Minecraft.getInstance().player);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, PedestalRecipe recipe, IFocusGroup focuses) {
-		boolean visible = isVisible(recipe);
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<PedestalRecipe> recipeHolder, IFocusGroup focuses) {
+		boolean visible = isVisible(recipeHolder);
+		PedestalRecipe recipe = recipeHolder.value();
 		int powderSlotX = 1 + getWidth() / 2 - powderSlotCount * 9;
 		List<IIngredientAcceptor<?>> gridSlots = new ArrayList<>(9);
 		for(int y = 0; y < 3; ++y) {
@@ -120,7 +122,7 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 		}
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		for(int i = 0; i < ingredients.size(); ++i) {
-			gridSlots.get(recipe.getGridSlotId(i)).addItemStacks(ingredients.get(i).getStacks());
+			gridSlots.get(recipe.getGridSlotId(i)).addItemStacks(ingredients.get(i).getMatchingStacks());
 		}
 		for(int i = 0; i < powderSlotCount; ++i) {
 			IIngredientAcceptor<?> slot = addSlot(builder, RecipeIngredientRole.INPUT, powderSlotX + i * 18, 60, powderSlots[i], visible);
@@ -130,12 +132,13 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 				slot.addItemStack(new ItemStack(color.getGemstonePowderItem(), powderAmount));
 			}
 		}
-		addItem(builder, RecipeIngredientRole.OUTPUT, 101, 19, recipe.getOutput(registryAccess()), outputSlot, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 101, 19, recipe.getResultItem(registryAccess()), outputSlot, visible);
 	}
 
 	@Override
-	public void createRecipeExtras(IRecipeExtrasBuilder builder, PedestalRecipe recipe, IFocusGroup focuses) {
-		if(isVisible(recipe)) {
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<PedestalRecipe> recipeHolder, IFocusGroup focuses) {
+		if(isVisible(recipeHolder)) {
+			PedestalRecipe recipe = recipeHolder.value();
 			builder.addDrawable(tierOverlay, 88, 38);
 			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 67, 19);
 			if(recipe.isShapeless()) {
@@ -145,12 +148,13 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 	}
 
 	@Override
-	public void draw(PedestalRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		if(isVisible(recipe)) {
-			TextRenderer font = font();
-			Text timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
-			guiGraphics.drawText(font, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 80, 0x3F3F3F, false);
+	public void draw(RecipeHolder<PedestalRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipeHolder)) {
+			PedestalRecipe recipe = recipeHolder.value();
+			Font font = font();
+			Component timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
+			guiGraphics.drawString(font, timeComponent, getWidth() / 2 - font.width(timeComponent) / 2, 80, 0x3F3F3F, false);
 		}
 	}
 }

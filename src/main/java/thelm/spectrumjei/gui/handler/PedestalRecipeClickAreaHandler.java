@@ -17,7 +17,7 @@ public class PedestalRecipeClickAreaHandler implements IGuiContainerHandler<Pede
 
 	@Override
 	public Collection<IGuiClickableArea> getGuiClickableAreas(PedestalScreen containerScreen, double guiMouseX, double guiMouseY) {
-		PedestalRecipeTier tier = containerScreen.getScreenHandler().getPedestalRecipeTier();
+		PedestalRecipeTier tier = containerScreen.getMenu().getPedestalRecipeTier();
 		List<RecipeType<?>> recipeTypes = new ArrayList<>();
 		recipeTypes.add(SpectrumJEI.PEDESTAL_BASIC);
 		if(tier.ordinal() > 0) {

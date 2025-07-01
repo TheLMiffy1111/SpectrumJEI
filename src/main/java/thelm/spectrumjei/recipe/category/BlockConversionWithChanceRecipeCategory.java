@@ -6,11 +6,11 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
 
@@ -19,9 +19,9 @@ import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
  */
 public class BlockConversionWithChanceRecipeCategory extends AbstractUnlockableRecipeCategory<BlockConversionWithChanceRecipe> {
 
-	public final Identifier advancement;
+	public final ResourceLocation advancement;
 
-	public BlockConversionWithChanceRecipeCategory(RecipeType<BlockConversionWithChanceRecipe> recipeType, Text title, Identifier advancement) {
+	public BlockConversionWithChanceRecipeCategory(RecipeType<BlockConversionWithChanceRecipe> recipeType, Component title, ResourceLocation advancement) {
 		super(recipeType, title);
 		this.advancement = advancement;
 	}
@@ -51,18 +51,18 @@ public class BlockConversionWithChanceRecipeCategory extends AbstractUnlockableR
 	}
 
 	@Override
-	public void draw(BlockConversionWithChanceRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+	public void draw(BlockConversionWithChanceRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 		if(isVisible(recipe)) {
-			TextRenderer font = font();
-			Text chanceComponent = Text.translatable("container.spectrum.rei.chance", recipe.chance() * 100);
-			guiGraphics.drawText(font, chanceComponent, getWidth() / 2 - font.getWidth(chanceComponent) / 2, 29, 0x3F3F3F, false);
+			Font font = font();
+			Component chanceComponent = Component.translatable("container.spectrum.rei.chance", recipe.chance() * 100);
+			guiGraphics.drawString(font, chanceComponent, getWidth() / 2 - font.width(chanceComponent) / 2, 29, 0x3F3F3F, false);
 		}
 	}
 
 	@Override
-	public Identifier getRegistryName(BlockConversionWithChanceRecipe recipe) {
-		Identifier blockKey = Registries.BLOCK.getId(recipe.input().getBlock());
-		return new Identifier("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
+	public ResourceLocation getRegistryName(BlockConversionWithChanceRecipe recipe) {
+		ResourceLocation blockKey = BuiltInRegistries.BLOCK.getKey(recipe.input().getBlock());
+		return ResourceLocation.parse("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
 	}
 }

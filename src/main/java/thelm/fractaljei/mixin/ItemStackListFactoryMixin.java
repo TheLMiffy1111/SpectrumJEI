@@ -13,8 +13,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 
 import de.dafuqs.fractal.api.ItemSubGroup;
 import mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 @Mixin(ItemStackListFactory.class)
 public class ItemStackListFactoryMixin {
@@ -22,15 +22,15 @@ public class ItemStackListFactoryMixin {
 	@Shadow
 	private static Logger LOGGER;
 
-	@Inject(method = "create", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemGroups;getGroups()Ljava/util/List;"))
-	private static void fractaljei$buildSubTabContents(CallbackInfoReturnable<List<ItemStack>> info, @Local ItemGroup.DisplayContext displayParameters) {
+	@Inject(method = "create", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CreativeModeTabs;allTabs()Ljava/util/List;"))
+	private static void fractaljei$buildSubTabContents(CallbackInfoReturnable<List<ItemStack>> info, @Local CreativeModeTab.ItemDisplayParameters displayParameters) {
 		for(ItemSubGroup tab : ItemSubGroup.SUB_GROUPS) {
-			if(tab.getType() != ItemGroup.Type.CATEGORY) {
+			if(tab.getType() != CreativeModeTab.Type.CATEGORY) {
 				LOGGER.debug("Skipping creative tab: '{}' because it is type: {}", tab.getDisplayName().getString(), tab.getType());
 				continue;
 			}
 			try {
-				tab.updateEntries(displayParameters);
+				tab.buildContents(displayParameters);
 			}
 			catch (RuntimeException | LinkageError e) {
 				LOGGER.error("Item Group crashed while building contents. Items from this group will be missing from the JEI ingredient list: {}", tab.getDisplayName().getString(), e);

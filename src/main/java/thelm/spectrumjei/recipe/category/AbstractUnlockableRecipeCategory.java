@@ -15,31 +15,31 @@ import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluid;
 import thelm.spectrumjei.SpectrumJEI;
 
 public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCategory<R> {
 
-	public static final Text HIDDEN_LINE_1 = Text.translatable("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_1");
-	public static final Text HIDDEN_LINE_2 = Text.translatable("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_2");
-	public static final Text SECRET = Text.translatable("container.spectrum.rei.pedestal_crafting.secret_recipe");
-	public static final Text SECRET_HINT = Text.translatable("container.spectrum.rei.pedestal_crafting.secret_recipe.hint");
+	public static final Component HIDDEN_LINE_1 = Component.translatable("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_1");
+	public static final Component HIDDEN_LINE_2 = Component.translatable("container.spectrum.rei.pedestal_crafting.recipe_not_unlocked_line_2");
+	public static final Component SECRET = Component.translatable("container.spectrum.rei.pedestal_crafting.secret_recipe");
+	public static final Component SECRET_HINT = Component.translatable("container.spectrum.rei.pedestal_crafting.secret_recipe.hint");
 
 	public final RecipeType<R> recipeType;
-	public final Text title;
+	public final Component title;
 
-	public AbstractUnlockableRecipeCategory(RecipeType<R> recipeType, Text title) {
+	public AbstractUnlockableRecipeCategory(RecipeType<R> recipeType, Component title) {
 		this.recipeType = recipeType;
 		this.title = title;
 	}
@@ -50,7 +50,7 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 	}
 
 	@Override
-	public Text getTitle() {
+	public Component getTitle() {
 		return title;
 	}
 
@@ -74,28 +74,28 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 	}
 
 	@Override
-	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
+	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		if(!isUnlocked(recipe)) {
 			drawLockedText(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 		}
 	}
 
-	public void drawLockedText(R recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		TextRenderer font = font();
-		guiGraphics.drawText(font, HIDDEN_LINE_1, getWidth() / 2 - font.getWidth(HIDDEN_LINE_1) / 2, getHeight() / 2 - 9, 0x3F3F3F, false);
-		guiGraphics.drawText(font, HIDDEN_LINE_2, getWidth() / 2 - font.getWidth(HIDDEN_LINE_2) / 2, getHeight() / 2 + 1, 0x3F3F3F, false);
+	public void drawLockedText(R recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		Font font = font();
+		guiGraphics.drawString(font, HIDDEN_LINE_1, getWidth() / 2 - font.width(HIDDEN_LINE_1) / 2, getHeight() / 2 - 9, 0x3F3F3F, false);
+		guiGraphics.drawString(font, HIDDEN_LINE_2, getWidth() / 2 - font.width(HIDDEN_LINE_2) / 2, getHeight() / 2 + 1, 0x3F3F3F, false);
 	}
 
-	public boolean hasAdvancement(Identifier advancement) {
+	public boolean hasAdvancement(ResourceLocation advancement) {
 		return advancement == null || AdvancementHelper.hasAdvancementClient(advancement);
 	}
 
-	public DynamicRegistryManager registryAccess() {
-		return MinecraftClient.getInstance().world.getRegistryManager();
+	public RegistryAccess registryAccess() {
+		return Minecraft.getInstance().level.registryAccess();
 	}
 
-	public TextRenderer font() {
-		return MinecraftClient.getInstance().textRenderer;
+	public Font font() {
+		return Minecraft.getInstance().font;
 	}
 
 	public IJeiHelpers jeiHelpers() {
@@ -145,9 +145,9 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 	public IIngredientAcceptor<?> addFluid(IRecipeLayoutBuilder builder, RecipeIngredientRole ingredientRole, int x, int y, FluidIngredient ingredient, long amount, IDrawable background, boolean visible) {
 		IIngredientAcceptor<?> acceptor = addSlot(builder, ingredientRole, x, y, background, visible);
 		if(ingredient.isTag()) {
-			List<Fluid> fluids = Registries.FLUID.getEntryList(ingredient.tag().get()).stream().
-					flatMap(RegistryEntryList::stream).
-					map(RegistryEntry::value).toList();
+			List<Fluid> fluids = BuiltInRegistries.FLUID.getTag(ingredient.tag().get()).stream().
+					flatMap(HolderSet::stream).
+					map(Holder::value).toList();
 			for(Fluid fluid : fluids) {
 				acceptor.addFluidStack(fluid, amount);
 			}
@@ -161,11 +161,11 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 		return acceptor;
 	}
 
-	public Text getTimeComponent(int time) {
-		return time == 20 ? Text.translatable("container.spectrum.rei.crafting_time_one_second", 1) : Text.translatable("container.spectrum.rei.crafting_time", time / 20);
+	public Component getTimeComponent(int time) {
+		return time == 20 ? Component.translatable("container.spectrum.rei.crafting_time_one_second", 1) : Component.translatable("container.spectrum.rei.crafting_time", time / 20);
 	}
 
-	public Text getTimeComponent(int time, float experience) {
-		return time == 20 ? Text.translatable("container.spectrum.rei.crafting_time_one_second_and_xp", 1, experience) : Text.translatable("container.spectrum.rei.crafting_time_and_xp", time / 20, experience);
+	public Component getTimeComponent(int time, float experience) {
+		return time == 20 ? Component.translatable("container.spectrum.rei.crafting_time_one_second_and_xp", 1, experience) : Component.translatable("container.spectrum.rei.crafting_time_and_xp", time / 20, experience);
 	}
 }

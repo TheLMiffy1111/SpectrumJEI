@@ -5,9 +5,9 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
 
@@ -16,9 +16,9 @@ import thelm.spectrumjei.recipe.BlockConversionRecipe;
  */
 public class BlockConversionRecipeCategory extends AbstractUnlockableRecipeCategory<BlockConversionRecipe> {
 
-	public final Identifier advancement;
+	public final ResourceLocation advancement;
 
-	public BlockConversionRecipeCategory(RecipeType<BlockConversionRecipe> recipeType, Text title, Identifier advancement) {
+	public BlockConversionRecipeCategory(RecipeType<BlockConversionRecipe> recipeType, Component title, ResourceLocation advancement) {
 		super(recipeType, title);
 		this.advancement = advancement;
 	}
@@ -48,8 +48,8 @@ public class BlockConversionRecipeCategory extends AbstractUnlockableRecipeCateg
 	}
 
 	@Override
-	public Identifier getRegistryName(BlockConversionRecipe recipe) {
-		Identifier blockKey = Registries.BLOCK.getId(recipe.input().getBlock());
-		return new Identifier("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
+	public ResourceLocation getRegistryName(BlockConversionRecipe recipe) {
+		ResourceLocation blockKey = BuiltInRegistries.BLOCK.getKey(recipe.input().getBlock());
+		return ResourceLocation.parse("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
 	}
 }

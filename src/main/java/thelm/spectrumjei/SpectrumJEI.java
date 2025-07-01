@@ -1,7 +1,5 @@
 package thelm.spectrumjei;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import de.dafuqs.spectrum.SpectrumCommon;
@@ -20,17 +18,17 @@ import de.dafuqs.spectrum.inventories.PotionWorkshopScreen;
 import de.dafuqs.spectrum.inventories.PotionWorkshopScreenHandler;
 import de.dafuqs.spectrum.inventories.QuickNavigationGridScreen;
 import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
+import de.dafuqs.spectrum.recipe.InkConvertingRecipe;
 import de.dafuqs.spectrum.recipe.anvil_crushing.AnvilCrushingRecipe;
 import de.dafuqs.spectrum.recipe.cinderhearth.CinderhearthRecipe;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
 import de.dafuqs.spectrum.recipe.enchanter.EnchanterRecipe;
-import de.dafuqs.spectrum.recipe.enchantment_upgrade.EnchantmentUpgradeRecipe;
+import de.dafuqs.spectrum.recipe.enchanter.EnchantmentUpgradeRecipe;
 import de.dafuqs.spectrum.recipe.fluid_converting.DragonrotConvertingRecipe;
 import de.dafuqs.spectrum.recipe.fluid_converting.LiquidCrystalConvertingRecipe;
 import de.dafuqs.spectrum.recipe.fluid_converting.MidnightSolutionConvertingRecipe;
-import de.dafuqs.spectrum.recipe.fluid_converting.MudConvertingRecipe;
+import de.dafuqs.spectrum.recipe.fluid_converting.SludgeConvertingRecipe;
 import de.dafuqs.spectrum.recipe.fusion_shrine.FusionShrineRecipe;
-import de.dafuqs.spectrum.recipe.ink_converting.InkConvertingRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import de.dafuqs.spectrum.recipe.potion_workshop.PotionWorkshopBrewingRecipe;
@@ -54,11 +52,12 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.recipe.RecipeManager;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Blocks;
 import thelm.spectrumjei.gui.handler.CraftingTabletRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.OverlayHidingExtraAreaHandler;
 import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
@@ -87,40 +86,40 @@ import thelm.spectrumjei.recipe.transfer.PedestalRecipeTransferInfo;
 
 public class SpectrumJEI implements IModPlugin {
 
-	public static final Identifier UID = new Identifier("spectrumjei:spectrum");
+	public static final ResourceLocation UID = ResourceLocation.parse("spectrumjei:spectrum");
 
 	public static IJeiHelpers jeiHelpers;
 	public static IJeiRuntime jeiRuntime;
 
-	public static final List<RecipeType<?>> RECIPE_TYPES = new ArrayList<>();
-	public static final RecipeType<PedestalRecipe> PEDESTAL_BASIC = createRecipeType(SpectrumCommon.locate("pedestal_basic"), PedestalRecipe.class);
-	public static final RecipeType<PedestalRecipe> PEDESTAL_SIMPLE = createRecipeType(SpectrumCommon.locate("pedestal_simple"), PedestalRecipe.class);
-	public static final RecipeType<PedestalRecipe> PEDESTAL_ADVANCED = createRecipeType(SpectrumCommon.locate("pedestal_advanced"), PedestalRecipe.class);
-	public static final RecipeType<PedestalRecipe> PEDESTAL_COMPLEX = createRecipeType(SpectrumCommon.locate("pedestal_complex"), PedestalRecipe.class);
-	public static final RecipeType<AnvilCrushingRecipe> ANVIL_CRUSHING = createRecipeType(SpectrumCommon.locate("anvil_crushing"), AnvilCrushingRecipe.class);
-	public static final RecipeType<FusionShrineRecipe> FUSION_SHRINE = createRecipeType(SpectrumCommon.locate("fusion_shrine"), FusionShrineRecipe.class);
-	public static final RecipeType<EnchanterRecipe> ENCHANTER = createRecipeType(SpectrumCommon.locate("enchanter"), EnchanterRecipe.class);
-	public static final RecipeType<EnchantmentUpgradeRecipe> ENCHANTMENT_UPGRADE = createRecipeType(SpectrumCommon.locate("enchantment_upgrade"), EnchantmentUpgradeRecipe.class);
-	public static final RecipeType<PotionWorkshopBrewingRecipe> POTION_WORKSHOP_BREWING = createRecipeType(SpectrumCommon.locate("potion_workshop_brewing"), PotionWorkshopBrewingRecipe.class);
-	public static final RecipeType<PotionWorkshopCraftingRecipe> POTION_WORKSHOP_CRAFTING = createRecipeType(SpectrumCommon.locate("potion_workshop_crafting"), PotionWorkshopCraftingRecipe.class);
-	public static final RecipeType<PotionWorkshopReactingRecipe> POTION_WORKSHOP_REACTING = createRecipeType(SpectrumCommon.locate("potion_workshop_reacting"), PotionWorkshopReactingRecipe.class);
-	public static final RecipeType<MudConvertingRecipe> MUD_CONVERTING = createRecipeType(SpectrumCommon.locate("mud_converting"), MudConvertingRecipe.class);
-	public static final RecipeType<LiquidCrystalConvertingRecipe> LIQUID_CRYSTAL_CONVERTING = createRecipeType(SpectrumCommon.locate("liquid_crystal_converting"), LiquidCrystalConvertingRecipe.class);
-	public static final RecipeType<MidnightSolutionConvertingRecipe> MIDNIGHT_SOLUTION_CONVERTING = createRecipeType(SpectrumCommon.locate("midnight_solution_converting"), MidnightSolutionConvertingRecipe.class);
-	public static final RecipeType<DragonrotConvertingRecipe> DRAGONROT_CONVERTING = createRecipeType(SpectrumCommon.locate("dragonrot_converting"), DragonrotConvertingRecipe.class);
-	public static final RecipeType<SpiritInstillerRecipe> SPIRIT_INSTILLER = createRecipeType(SpectrumCommon.locate("spirit_instiller"), SpiritInstillerRecipe.class);
-	public static final RecipeType<InkConvertingRecipe> INK_CONVERTING = createRecipeType(SpectrumCommon.locate("ink_converting"), InkConvertingRecipe.class);
-	public static final RecipeType<CrystallarieumRecipe> CRYSTALLARIEUM = createRecipeType(SpectrumCommon.locate("crystallarieum"), CrystallarieumRecipe.class);
-	public static final RecipeType<CinderhearthRecipe> CINDERHEARTH = createRecipeType(SpectrumCommon.locate("cinderhearth"), CinderhearthRecipe.class);
-	public static final RecipeType<ITitrationBarrelRecipe> TITRATION_BARREL = createRecipeType(SpectrumCommon.locate("titration_barrel"), ITitrationBarrelRecipe.class);
-	public static final RecipeType<PrimordialFireBurningRecipe> PRIMORDIAL_FIRE_BURNING = createRecipeType(SpectrumCommon.locate("primordial_fire_burning"), PrimordialFireBurningRecipe.class);
+	//public static final List<RecipeType<?>> RECIPE_TYPES = new ArrayList<>();
+	public static final RecipeType<RecipeHolder<PedestalRecipe>> PEDESTAL_BASIC = RecipeType.createRecipeHolderType(SpectrumCommon.locate("pedestal_basic"));
+	public static final RecipeType<RecipeHolder<PedestalRecipe>> PEDESTAL_SIMPLE = RecipeType.createRecipeHolderType(SpectrumCommon.locate("pedestal_simple"));
+	public static final RecipeType<RecipeHolder<PedestalRecipe>> PEDESTAL_ADVANCED = RecipeType.createRecipeHolderType(SpectrumCommon.locate("pedestal_advanced"));
+	public static final RecipeType<RecipeHolder<PedestalRecipe>> PEDESTAL_COMPLEX = RecipeType.createRecipeHolderType(SpectrumCommon.locate("pedestal_complex"));
+	public static final RecipeType<RecipeHolder<AnvilCrushingRecipe>> ANVIL_CRUSHING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("anvil_crushing"));
+	public static final RecipeType<RecipeHolder<FusionShrineRecipe>> FUSION_SHRINE = RecipeType.createRecipeHolderType(SpectrumCommon.locate("fusion_shrine"));
+	public static final RecipeType<RecipeHolder<EnchanterRecipe>> ENCHANTER = RecipeType.createRecipeHolderType(SpectrumCommon.locate("enchanter"));
+	public static final RecipeType<RecipeHolder<EnchantmentUpgradeRecipe>> ENCHANTMENT_UPGRADE = RecipeType.createRecipeHolderType(SpectrumCommon.locate("enchantment_upgrade"));
+	public static final RecipeType<RecipeHolder<PotionWorkshopBrewingRecipe>> POTION_WORKSHOP_BREWING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("potion_workshop_brewing"));
+	public static final RecipeType<RecipeHolder<PotionWorkshopCraftingRecipe>> POTION_WORKSHOP_CRAFTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("potion_workshop_crafting"));
+	public static final RecipeType<RecipeHolder<PotionWorkshopReactingRecipe>> POTION_WORKSHOP_REACTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("potion_workshop_reacting"));
+	public static final RecipeType<RecipeHolder<SludgeConvertingRecipe>> SLUDGE_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("mud_converting"));
+	public static final RecipeType<RecipeHolder<LiquidCrystalConvertingRecipe>> LIQUID_CRYSTAL_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("liquid_crystal_converting"));
+	public static final RecipeType<RecipeHolder<MidnightSolutionConvertingRecipe>> MIDNIGHT_SOLUTION_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("midnight_solution_converting"));
+	public static final RecipeType<RecipeHolder<DragonrotConvertingRecipe>> DRAGONROT_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("dragonrot_converting"));
+	public static final RecipeType<RecipeHolder<SpiritInstillerRecipe>> SPIRIT_INSTILLER = RecipeType.createRecipeHolderType(SpectrumCommon.locate("spirit_instiller"));
+	public static final RecipeType<RecipeHolder<InkConvertingRecipe>> INK_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("ink_converting"));
+	public static final RecipeType<RecipeHolder<CrystallarieumRecipe>> CRYSTALLARIEUM = RecipeType.createRecipeHolderType(SpectrumCommon.locate("crystallarieum"));
+	public static final RecipeType<RecipeHolder<CinderhearthRecipe>> CINDERHEARTH = RecipeType.createRecipeHolderType(SpectrumCommon.locate("cinderhearth"));
+	public static final RecipeType<RecipeHolder<ITitrationBarrelRecipe>> TITRATION_BARREL = RecipeType.createRecipeHolderType(SpectrumCommon.locate("titration_barrel"));
+	public static final RecipeType<RecipeHolder<PrimordialFireBurningRecipe>> PRIMORDIAL_FIRE_BURNING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("primordial_fire_burning"));
 
-	public static final RecipeType<BlockConversionRecipe> NATURES_STAFF = createRecipeType(SpectrumCommon.locate("natures_staff"), BlockConversionRecipe.class);
-	public static final RecipeType<BlockConversionWithChanceRecipe> HEATING = createRecipeType(SpectrumCommon.locate("heating"), BlockConversionWithChanceRecipe.class);
-	public static final RecipeType<BlockConversionWithChanceRecipe> FREEZING = createRecipeType(SpectrumCommon.locate("freezing"), BlockConversionWithChanceRecipe.class);
+	public static final RecipeType<BlockConversionRecipe> NATURES_STAFF = new RecipeType<>(SpectrumCommon.locate("natures_staff"), BlockConversionRecipe.class);
+	public static final RecipeType<BlockConversionWithChanceRecipe> HEATING = new RecipeType<>(SpectrumCommon.locate("heating"), BlockConversionWithChanceRecipe.class);
+	public static final RecipeType<BlockConversionWithChanceRecipe> FREEZING = new RecipeType<>(SpectrumCommon.locate("freezing"), BlockConversionWithChanceRecipe.class);
 
 	@Override
-	public Identifier getPluginUid() {
+	public ResourceLocation getPluginUid() {
 		return UID;
 	}
 
@@ -136,13 +135,13 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCategories(new FusionShrineRecipeCategory());
 		registration.addRecipeCategories(new EnchanterRecipeCategory());
 		registration.addRecipeCategories(new EnchantmentUpgradeRecipeCategory());
-		registration.addRecipeCategories(new PotionWorkshopRecipeCategory<>(POTION_WORKSHOP_BREWING, Text.translatable("container.spectrum.rei.potion_workshop_brewing.title")));
-		registration.addRecipeCategories(new PotionWorkshopRecipeCategory<>(POTION_WORKSHOP_CRAFTING, Text.translatable("container.spectrum.rei.potion_workshop_crafting.title")));
-		registration.addRecipeCategories(new DescriptiveGatedRecipeCategory<>(POTION_WORKSHOP_REACTING, Text.translatable("container.spectrum.rei.potion_workshop_reacting.title")));
-		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(MUD_CONVERTING, Text.translatable("container.spectrum.rei.mud_converting.title")));
-		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(LIQUID_CRYSTAL_CONVERTING, Text.translatable("container.spectrum.rei.liquid_crystal_converting.title")));
-		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(MIDNIGHT_SOLUTION_CONVERTING, Text.translatable("container.spectrum.rei.midnight_solution_converting.title")));
-		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(DRAGONROT_CONVERTING, Text.translatable("container.spectrum.rei.dragonrot_converting.title")));
+		registration.addRecipeCategories(new PotionWorkshopRecipeCategory<>(POTION_WORKSHOP_BREWING, Component.translatable("container.spectrum.rei.potion_workshop_brewing.title")));
+		registration.addRecipeCategories(new PotionWorkshopRecipeCategory<>(POTION_WORKSHOP_CRAFTING, Component.translatable("container.spectrum.rei.potion_workshop_crafting.title")));
+		registration.addRecipeCategories(new DescriptiveGatedRecipeCategory<>(POTION_WORKSHOP_REACTING, Component.translatable("container.spectrum.rei.potion_workshop_reacting.title")));
+		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(SLUDGE_CONVERTING, Component.translatable("container.spectrum.rei.sludge_converting.title")));
+		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(LIQUID_CRYSTAL_CONVERTING, Component.translatable("container.spectrum.rei.liquid_crystal_converting.title")));
+		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(MIDNIGHT_SOLUTION_CONVERTING, Component.translatable("container.spectrum.rei.midnight_solution_converting.title")));
+		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(DRAGONROT_CONVERTING, Component.translatable("container.spectrum.rei.dragonrot_converting.title")));
 		registration.addRecipeCategories(new SpiritInstillerRecipeCategory());
 		registration.addRecipeCategories(new InkConvertingRecipeCategory());
 		registration.addRecipeCategories(new CrystallarieumRecipeCategory());
@@ -150,39 +149,39 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCategories(new TitrationBarrelRecipeCategory());
 		registration.addRecipeCategories(new PrimordialFireBurningRecipeCategory());
 
-		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, Text.translatable("item.spectrum.natures_staff"), SpectrumAdvancements.UNLOCK_NATURES_STAFF));	
-		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(HEATING, Text.translatable("container.spectrum.rei.heating.title"), SpectrumAdvancements.UNLOCK_IDOLS));
-		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(FREEZING, Text.translatable("container.spectrum.rei.freezing.title"), SpectrumAdvancements.UNLOCK_IDOLS));
+		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, Component.translatable("item.spectrum.natures_staff"), SpectrumAdvancements.UNLOCK_NATURES_STAFF));
+		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(HEATING, Component.translatable("container.spectrum.rei.heating.title"), SpectrumAdvancements.UNLOCK_IDOLS));
+		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(FREEZING, Component.translatable("container.spectrum.rei.freezing.title"), SpectrumAdvancements.UNLOCK_IDOLS));
 	}
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		RecipeManager recipeManager = MinecraftClient.getInstance().world.getRecipeManager();
-		registration.addRecipes(PEDESTAL_BASIC, recipeManager.listAllOfType(SpectrumRecipeTypes.PEDESTAL).stream().
-				filter(r -> r.getTier() == PedestalRecipeTier.BASIC).toList());
-		registration.addRecipes(PEDESTAL_SIMPLE, recipeManager.listAllOfType(SpectrumRecipeTypes.PEDESTAL).stream().
-				filter(r -> r.getTier() == PedestalRecipeTier.SIMPLE).toList());
-		registration.addRecipes(PEDESTAL_ADVANCED, recipeManager.listAllOfType(SpectrumRecipeTypes.PEDESTAL).stream().
-				filter(r -> r.getTier() == PedestalRecipeTier.ADVANCED).toList());
-		registration.addRecipes(PEDESTAL_COMPLEX, recipeManager.listAllOfType(SpectrumRecipeTypes.PEDESTAL).stream().
-				filter(r -> r.getTier() == PedestalRecipeTier.COMPLEX).toList());
-		registration.addRecipes(ANVIL_CRUSHING, recipeManager.listAllOfType(SpectrumRecipeTypes.ANVIL_CRUSHING));
-		registration.addRecipes(FUSION_SHRINE, recipeManager.listAllOfType(SpectrumRecipeTypes.FUSION_SHRINE));
-		registration.addRecipes(ENCHANTER, recipeManager.listAllOfType(SpectrumRecipeTypes.ENCHANTER));
-		registration.addRecipes(ENCHANTMENT_UPGRADE, recipeManager.listAllOfType(SpectrumRecipeTypes.ENCHANTMENT_UPGRADE));
-		registration.addRecipes(POTION_WORKSHOP_BREWING, recipeManager.listAllOfType(SpectrumRecipeTypes.POTION_WORKSHOP_BREWING));
-		registration.addRecipes(POTION_WORKSHOP_CRAFTING, recipeManager.listAllOfType(SpectrumRecipeTypes.POTION_WORKSHOP_CRAFTING));
-		registration.addRecipes(POTION_WORKSHOP_REACTING, recipeManager.listAllOfType(SpectrumRecipeTypes.POTION_WORKSHOP_REACTING));
-		registration.addRecipes(MUD_CONVERTING, recipeManager.listAllOfType(SpectrumRecipeTypes.MUD_CONVERTING));
-		registration.addRecipes(LIQUID_CRYSTAL_CONVERTING, recipeManager.listAllOfType(SpectrumRecipeTypes.LIQUID_CRYSTAL_CONVERTING));
-		registration.addRecipes(MIDNIGHT_SOLUTION_CONVERTING, recipeManager.listAllOfType(SpectrumRecipeTypes.MIDNIGHT_SOLUTION_CONVERTING));
-		registration.addRecipes(DRAGONROT_CONVERTING, recipeManager.listAllOfType(SpectrumRecipeTypes.DRAGONROT_CONVERTING));
-		registration.addRecipes(SPIRIT_INSTILLER, recipeManager.listAllOfType(SpectrumRecipeTypes.SPIRIT_INSTILLING));
-		registration.addRecipes(INK_CONVERTING, recipeManager.listAllOfType(SpectrumRecipeTypes.INK_CONVERTING));
-		registration.addRecipes(CRYSTALLARIEUM, recipeManager.listAllOfType(SpectrumRecipeTypes.CRYSTALLARIEUM));
-		registration.addRecipes(CINDERHEARTH, recipeManager.listAllOfType(SpectrumRecipeTypes.CINDERHEARTH));
-		registration.addRecipes(TITRATION_BARREL, recipeManager.listAllOfType(SpectrumRecipeTypes.TITRATION_BARREL));
-		registration.addRecipes(PRIMORDIAL_FIRE_BURNING, recipeManager.listAllOfType(SpectrumRecipeTypes.PRIMORDIAL_FIRE_BURNING));
+		RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+		registration.addRecipes(PEDESTAL_BASIC, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.PEDESTAL).stream().
+				filter(r -> r.value().getTier() == PedestalRecipeTier.BASIC).toList());
+		registration.addRecipes(PEDESTAL_SIMPLE, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.PEDESTAL).stream().
+				filter(r -> r.value().getTier() == PedestalRecipeTier.SIMPLE).toList());
+		registration.addRecipes(PEDESTAL_ADVANCED, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.PEDESTAL).stream().
+				filter(r -> r.value().getTier() == PedestalRecipeTier.ADVANCED).toList());
+		registration.addRecipes(PEDESTAL_COMPLEX, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.PEDESTAL).stream().
+				filter(r -> r.value().getTier() == PedestalRecipeTier.COMPLEX).toList());
+		registration.addRecipes(ANVIL_CRUSHING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.ANVIL_CRUSHING));
+		registration.addRecipes(FUSION_SHRINE, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.FUSION_SHRINE));
+		registration.addRecipes(ENCHANTER, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.ENCHANTER));
+		registration.addRecipes(ENCHANTMENT_UPGRADE, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.ENCHANTMENT_UPGRADE));
+		registration.addRecipes(POTION_WORKSHOP_BREWING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.POTION_WORKSHOP_BREWING));
+		registration.addRecipes(POTION_WORKSHOP_CRAFTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.POTION_WORKSHOP_CRAFTING));
+		registration.addRecipes(POTION_WORKSHOP_REACTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.POTION_WORKSHOP_REACTING));
+		registration.addRecipes(SLUDGE_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.SLUDGE_CONVERTING));
+		registration.addRecipes(LIQUID_CRYSTAL_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.LIQUID_CRYSTAL_CONVERTING));
+		registration.addRecipes(MIDNIGHT_SOLUTION_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.MIDNIGHT_SOLUTION_CONVERTING));
+		registration.addRecipes(DRAGONROT_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.DRAGONROT_CONVERTING));
+		registration.addRecipes(SPIRIT_INSTILLER, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.SPIRIT_INSTILLING));
+		registration.addRecipes(INK_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.INK_CONVERTING));
+		registration.addRecipes(CRYSTALLARIEUM, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.CRYSTALLARIEUM));
+		registration.addRecipes(CINDERHEARTH, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.CINDERHEARTH));
+		registration.addRecipes(TITRATION_BARREL, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.TITRATION_BARREL));
+		registration.addRecipes(PRIMORDIAL_FIRE_BURNING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.PRIMORDIAL_FIRE_BURNING));
 
 		registration.addRecipes(NATURES_STAFF,
 				NaturesStaffConversionDataLoader.CONVERSIONS.entrySet().stream().
@@ -190,14 +189,14 @@ public class SpectrumJEI implements IModPlugin {
 				filter(BlockConversionRecipe::isViewable).toList());
 		registration.addRecipes(HEATING,
 				FirestarterIdolBlock.BURNING_MAP.entrySet().stream().
-				map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight())).
+				map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getA(), entry.getValue().getB())).
 				filter(BlockConversionWithChanceRecipe::isViewable).toList());
 		registration.addRecipes(FREEZING,
 				Stream.concat(
 						FreezingIdolBlock.FREEZING_STATE_MAP.entrySet().stream().
-						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight())),
+						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getA(), entry.getValue().getB())),
 						FreezingIdolBlock.FREEZING_MAP.entrySet().stream().
-						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getLeft(), entry.getValue().getRight()))).
+						map(entry -> new BlockConversionWithChanceRecipe(entry.getKey(), entry.getValue().getA(), entry.getValue().getB()))).
 				filter(BlockConversionWithChanceRecipe::isViewable).toList());
 	}
 
@@ -222,7 +221,7 @@ public class SpectrumJEI implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addRecipeCatalyst(SpectrumBlocks.RESTOCKING_CHEST, RecipeTypes.CRAFTING);
+		registration.addRecipeCatalyst(SpectrumBlocks.FABRICATION_CHEST, RecipeTypes.CRAFTING);
 
 		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ, PEDESTAL_BASIC);
 		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST, PEDESTAL_BASIC);
@@ -241,13 +240,13 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCatalyst(SpectrumItems.CRAFTING_TABLET, RecipeTypes.CRAFTING);
 		registration.addRecipeCatalyst(Blocks.ANVIL, ANVIL_CRUSHING);
 		registration.addRecipeCatalyst(SpectrumBlocks.BEDROCK_ANVIL, ANVIL_CRUSHING);
-		registration.addRecipeCatalyst(SpectrumBlocks.STRATINE_FRAGMENT_BLOCK, ANVIL_CRUSHING);
-		registration.addRecipeCatalyst(SpectrumBlocks.PALTAERIA_FRAGMENT_BLOCK, ANVIL_CRUSHING);
+		registration.addRecipeCatalyst(SpectrumBlocks.STRATINE_FLOATBLOCK, ANVIL_CRUSHING);
+		registration.addRecipeCatalyst(SpectrumBlocks.PALTAERIA_FLOATBLOCK, ANVIL_CRUSHING);
 		registration.addRecipeCatalyst(SpectrumBlocks.FUSION_SHRINE_BASALT, FUSION_SHRINE);
 		registration.addRecipeCatalyst(SpectrumBlocks.FUSION_SHRINE_CALCITE, FUSION_SHRINE);
 		registration.addRecipeCatalyst(SpectrumBlocks.ENCHANTER, ENCHANTER, ENCHANTMENT_UPGRADE);
 		registration.addRecipeCatalyst(SpectrumBlocks.POTION_WORKSHOP, POTION_WORKSHOP_BREWING, POTION_WORKSHOP_CRAFTING, POTION_WORKSHOP_REACTING);
-		registration.addRecipeCatalyst(SpectrumItems.MUD_BUCKET, MUD_CONVERTING);
+		registration.addRecipeCatalyst(SpectrumItems.SLUDGE_BUCKET, SLUDGE_CONVERTING);
 		registration.addRecipeCatalyst(SpectrumItems.LIQUID_CRYSTAL_BUCKET, LIQUID_CRYSTAL_CONVERTING);
 		registration.addRecipeCatalyst(SpectrumItems.MIDNIGHT_SOLUTION_BUCKET, MIDNIGHT_SOLUTION_CONVERTING);
 		registration.addRecipeCatalyst(SpectrumItems.DRAGONROT_BUCKET, DRAGONROT_CONVERTING);
@@ -282,11 +281,5 @@ public class SpectrumJEI implements IModPlugin {
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 		SpectrumJEI.jeiRuntime = jeiRuntime;
-	}
-
-	public static <R> RecipeType<R> createRecipeType(Identifier uid, Class<? extends R> recipeClass) {
-		RecipeType<R> recipeType = new RecipeType<>(uid, recipeClass);
-		RECIPE_TYPES.add(recipeType);
-		return recipeType;
 	}
 }

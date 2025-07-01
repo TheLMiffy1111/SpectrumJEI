@@ -2,8 +2,8 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
-import de.dafuqs.matchbooks.recipe.IngredientStack;
 import de.dafuqs.spectrum.SpectrumCommon;
+import de.dafuqs.spectrum.api.recipe.IngredientStack;
 import de.dafuqs.spectrum.recipe.potion_workshop.PotionWorkshopRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -11,10 +11,11 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.jeidrawables.gui.render.ResourceDrawable;
 
@@ -23,10 +24,10 @@ import thelm.jeidrawables.gui.render.ResourceDrawable;
  */
 public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extends AbstractGatedRecipeCategory<R> {
 
-	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/container/potion_workshop_3_slots.png");
+	public static final ResourceLocation BACKGROUND = SpectrumCommon.locate("textures/gui/container/potion_workshop_3_slots.png");
 	public static final ResourceDrawable BUBBLES = new ResourceDrawable(BACKGROUND, 176, 0, 11, 27);
 
-	public PotionWorkshopRecipeCategory(RecipeType<R> recipeType, Text title) {
+	public PotionWorkshopRecipeCategory(RecipeType<RecipeHolder<R>> recipeType, Component title) {
 		super(recipeType, title);
 	}
 
@@ -36,32 +37,35 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup focuses) {
-		boolean visible = isVisible(recipe);
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<R> recipeHolder, IFocusGroup focuses) {
+		boolean visible = isVisible(recipeHolder);
+		R recipe = recipeHolder.value();
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getOutput(registryAccess()), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getResultItem(registryAccess()), JEIDrawables.SLOT, visible);
 	}
 
 	@Override
-	public void createRecipeExtras(IRecipeExtrasBuilder builder, R recipe, IFocusGroup focuses) {
-		if(isVisible(recipe)) {
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<R> recipeHolder, IFocusGroup focuses) {
+		if(isVisible(recipeHolder)) {
+			R recipe = recipeHolder.value();
 			builder.addDrawable(BUBBLES, 33, 20);
 			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 75, 25);
 		}
 	}
 
 	@Override
-	public void draw(R recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		if(isVisible(recipe)) {
-			TextRenderer font = font();
-			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			guiGraphics.drawText(font, timeComponent, 52, 56, 0x3F3F3F, false);
+	public void draw(RecipeHolder<R> recipeHolder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipeHolder)) {
+			R recipe = recipeHolder.value();
+			Font font = font();
+			Component timeComponent = getTimeComponent(recipe.getCraftingTime());
+			guiGraphics.drawString(font, timeComponent, 52, 56, 0x3F3F3F, false);
 		}
 	}
 }

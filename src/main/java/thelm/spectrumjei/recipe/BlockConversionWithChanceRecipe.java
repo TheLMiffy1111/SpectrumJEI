@@ -3,18 +3,18 @@ package thelm.spectrumjei.recipe;
 import java.util.List;
 
 import mezz.jei.api.helpers.IPlatformFluidHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.fluid.FlowableFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
 import thelm.spectrumjei.SpectrumJEI;
 
 public record BlockConversionWithChanceRecipe(BlockState input, BlockState output, float chance) {
 
 	public BlockConversionWithChanceRecipe(Block input, BlockState output, float chance) {
-		this(input.getDefaultState(), output, chance);
+		this(input.defaultBlockState(), output, chance);
 	}
 
 	public List<?> inputIngredient() {
@@ -30,13 +30,13 @@ public record BlockConversionWithChanceRecipe(BlockState input, BlockState outpu
 	}
 
 	public static List<?> toIngredient(BlockState state) {
-		if(state.getBlock() instanceof FluidBlock) {
+		if(state.getBlock() instanceof LiquidBlock) {
 			IPlatformFluidHelper<?> fluidHelper = SpectrumJEI.jeiHelpers.getPlatformFluidHelper();
-			Fluid fluid = state.getFluidState().getFluid();
-			if(fluid instanceof FlowableFluid fFluid) {
-				fluid = fFluid.getStill();
+			Fluid fluid = state.getFluidState().getType();
+			if(fluid instanceof FlowingFluid fFluid) {
+				fluid = fFluid.getSource();
 			}
-			return List.of(fluidHelper.create(fluid, fluidHelper.bucketVolume()));
+			return List.of(fluidHelper.create(fluid.builtInRegistryHolder(), fluidHelper.bucketVolume()));
 		}
 		else {
 			ItemStack stack = new ItemStack(state.getBlock());

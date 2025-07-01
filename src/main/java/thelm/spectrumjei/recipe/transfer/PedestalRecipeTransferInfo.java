@@ -5,6 +5,7 @@ import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.spectrumjei.SpectrumJEI;
 
 public class PedestalRecipeTransferInfo extends GatedRecipeTransferInfo<PedestalScreenHandler, PedestalRecipe> {
@@ -16,7 +17,7 @@ public class PedestalRecipeTransferInfo extends GatedRecipeTransferInfo<Pedestal
 		this.tier = tier;
 	}
 
-	public static RecipeType<PedestalRecipe> getRecipeType(PedestalRecipeTier tier) {
+	public static RecipeType<RecipeHolder<PedestalRecipe>> getRecipeType(PedestalRecipeTier tier) {
 		return switch(tier) {
 		case BASIC -> SpectrumJEI.PEDESTAL_BASIC;
 		case SIMPLE -> SpectrumJEI.PEDESTAL_SIMPLE;
@@ -34,7 +35,7 @@ public class PedestalRecipeTransferInfo extends GatedRecipeTransferInfo<Pedestal
 	}
 
 	@Override
-	public boolean canHandle(PedestalScreenHandler container, PedestalRecipe recipe) {
-		return super.canHandle(container, recipe) && container.getPedestalRecipeTier().compareTo(tier) >= 0;
+	public boolean canHandle(PedestalScreenHandler container, RecipeHolder<PedestalRecipe> recipeHolder) {
+		return super.canHandle(container, recipeHolder) && container.getPedestalRecipeTier().compareTo(tier) >= 0;
 	}
 }

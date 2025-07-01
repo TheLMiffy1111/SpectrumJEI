@@ -2,20 +2,20 @@ package thelm.fractaljei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.resources.ResourceLocation;
 
 public class FractalJEI implements IModPlugin {
 
-	public static final Identifier UID = new Identifier("fractaljei:fractal");
+	public static final ResourceLocation UID = ResourceLocation.parse("fractaljei:fractal");
 
 	@Override
-	public Identifier getPluginUid() {
+	public ResourceLocation getPluginUid() {
 		return UID;
 	}
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		registration.addGuiContainerHandler(CreativeInventoryScreen.class, new SubTabExtraAreaHandler());
+		registration.addGuiContainerHandler(CreativeModeInventoryScreen.class, new SubTabExtraAreaHandler());
 	}
 }

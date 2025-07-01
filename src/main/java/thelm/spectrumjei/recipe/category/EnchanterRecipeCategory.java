@@ -11,12 +11,13 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
@@ -26,9 +27,9 @@ import thelm.spectrumjei.SpectrumJEI;
  */
 public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<EnchanterRecipe> {
 
-	public static final Text TITLE = Text.translatable("container.spectrum.rei.enchanting.title");
+	public static final Component TITLE = Component.translatable("container.spectrum.rei.enchanting.title");
 
-	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/container/enchanter.png");
+	public static final ResourceLocation BACKGROUND = SpectrumCommon.locate("textures/gui/container/enchanter.png");
 	public static final ResourceDrawable ALTAR = new ResourceDrawable(BACKGROUND, 0, 0, 54, 54);
 
 	public EnchanterRecipeCategory() {
@@ -41,8 +42,9 @@ public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<Enchant
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, EnchanterRecipe recipe, IFocusGroup focuses) {
-		boolean visible = isVisible(recipe);
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<EnchanterRecipe> recipeHolder, IFocusGroup focuses) {
+		boolean visible = isVisible(recipeHolder);
+		EnchanterRecipe recipe = recipeHolder.value();
 		List<Ingredient> ingredients = recipe.getIngredients();
 		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getRequiredExperience(), true), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 113, 53, new ItemStack(SpectrumBlocks.ENCHANTER), visible);
@@ -55,24 +57,26 @@ public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<Enchant
 		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, ingredients.get(6), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, ingredients.get(7), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, ingredients.get(8), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 113, 32, recipe.getResultItem(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
-	public void createRecipeExtras(IRecipeExtrasBuilder builder, EnchanterRecipe recipe, IFocusGroup focuses) {
-		if(isVisible(recipe)) {
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<EnchanterRecipe> recipeHolder, IFocusGroup focuses) {
+		if(isVisible(recipeHolder)) {
+			EnchanterRecipe recipe = recipeHolder.value();
 			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 84, 32);
 		}
 	}
 
 	@Override
-	public void draw(EnchanterRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		if(isVisible(recipe)) {
+	public void draw(RecipeHolder<EnchanterRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipeHolder)) {
+			EnchanterRecipe recipe = recipeHolder.value();
 			ALTAR.draw(guiGraphics, 15, 13);
-			TextRenderer font = font();
-			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			guiGraphics.drawText(font, timeComponent, 69, 70, 0x3F3F3F, false);
+			Font font = font();
+			Component timeComponent = getTimeComponent(recipe.getCraftingTime());
+			guiGraphics.drawString(font, timeComponent, 69, 70, 0x3F3F3F, false);
 		}
 	}
 }

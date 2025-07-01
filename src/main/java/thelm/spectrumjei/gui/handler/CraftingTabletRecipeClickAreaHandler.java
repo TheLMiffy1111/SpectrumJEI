@@ -16,7 +16,7 @@ public class CraftingTabletRecipeClickAreaHandler implements IGuiContainerHandle
 
 	@Override
 	public Collection<IGuiClickableArea> getGuiClickableAreas(CraftingTabletScreen containerScreen, double guiMouseX, double guiMouseY) {
-		PedestalRecipeTier tier = containerScreen.getScreenHandler().getTier().orElse(PedestalRecipeTier.BASIC);
+		PedestalRecipeTier tier = containerScreen.getMenu().getTier().orElse(PedestalRecipeTier.BASIC);
 		List<RecipeType<?>> recipeTypes = new ArrayList<>();
 		recipeTypes.add(RecipeTypes.CRAFTING);
 		recipeTypes.add(SpectrumJEI.PEDESTAL_BASIC);

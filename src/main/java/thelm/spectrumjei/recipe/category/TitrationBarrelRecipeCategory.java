@@ -2,8 +2,8 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
-import de.dafuqs.matchbooks.recipe.IngredientStack;
 import de.dafuqs.spectrum.api.recipe.FluidIngredient;
+import de.dafuqs.spectrum.api.recipe.IngredientStack;
 import de.dafuqs.spectrum.recipe.titration_barrel.ITitrationBarrelRecipe;
 import de.dafuqs.spectrum.recipe.titration_barrel.TitrationBarrelRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -12,11 +12,12 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
 
@@ -25,7 +26,7 @@ import thelm.spectrumjei.SpectrumJEI;
  */
 public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<ITitrationBarrelRecipe> {
 
-	public static final Text TITLE = Text.translatable("block.spectrum.titration_barrel");
+	public static final Component TITLE = Component.translatable("block.spectrum.titration_barrel");
 
 	public TitrationBarrelRecipeCategory() {
 		super(SpectrumJEI.TITRATION_BARREL, TITLE);
@@ -37,8 +38,9 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, ITitrationBarrelRecipe recipe, IFocusGroup focuses) {
-		boolean visible = isVisible(recipe);
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ITitrationBarrelRecipe> recipeHolder, IFocusGroup focuses) {
+		boolean visible = isVisible(recipeHolder);
+		ITitrationBarrelRecipe recipe = recipeHolder.value();
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		int inputCount = ingredients.size();
 		boolean hasFluid = false;
@@ -54,7 +56,7 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		for(int i = 0; i < ingredients.size(); ++i) {
 			int x = startX + (hasFluid ? i + 1 : i) % 3 * 20;
 			int y = startY + (hasFluid ? i + 1 : i) / 3 * 20;
-			addItem(builder, RecipeIngredientRole.INPUT, x, y, ingredients.get(i).getStacks(), JEIDrawables.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, x, y, ingredients.get(i).getMatchingStacks(), JEIDrawables.SLOT, visible);
 		}
 		if(recipe.getTappingItem() != null && recipe.getTappingItem() != Items.AIR) {
 			addItem(builder, RecipeIngredientRole.INPUT, 76, 21, new ItemStack(recipe.getTappingItem()), JEIDrawables.SLOT, visible);
@@ -64,14 +66,15 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 			outputVariations = List.copyOf(titrationBarrelRecipe.getOutputVariations(TitrationBarrelRecipe.FERMENTATION_DURATION_DISPLAY_TIME_MULTIPLIERS));
 		}
 		else {
-			outputVariations = List.of(recipe.getOutput(registryAccess()));
+			outputVariations = List.of(recipe.getResultItem(registryAccess()));
 		}
 		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, outputVariations, JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
-	public void createRecipeExtras(IRecipeExtrasBuilder builder, ITitrationBarrelRecipe recipe, IFocusGroup focuses) {
-		if(isVisible(recipe)) {
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<ITitrationBarrelRecipe> recipeHolder, IFocusGroup focuses) {
+		if(isVisible(recipeHolder)) {
+			ITitrationBarrelRecipe recipe = recipeHolder.value();
 			IDrawable recipeArrow = JEIDrawables.recipeArrow(recipe.getMinFermentationTimeHours() * 1000);
 			if(recipe.getTappingItem() == null || recipe.getTappingItem() == Items.AIR) {
 				builder.addDrawable(recipeArrow, 73, 10);
@@ -83,12 +86,13 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 	}
 
 	@Override
-	public void draw(ITitrationBarrelRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		if(isVisible(recipe)) {
-			TextRenderer font = font();
-			Text durationComponent = TitrationBarrelRecipe.getDurationText(recipe.getMinFermentationTimeHours(), recipe.getFermentationData());
-			guiGraphics.drawText(font, durationComponent, getWidth() / 2 - font.getWidth(durationComponent) / 2, 40, 0x3F3F3F, false);
+	public void draw(RecipeHolder<ITitrationBarrelRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipeHolder)) {
+			ITitrationBarrelRecipe recipe = recipeHolder.value();
+			Font font = font();
+			Component durationComponent = TitrationBarrelRecipe.getDurationText(recipe.getMinFermentationTimeHours(), recipe.getFermentationData());
+			guiGraphics.drawString(font, durationComponent, getWidth() / 2 - font.width(durationComponent) / 2, 40, 0x3F3F3F, false);
 		}
 	}
 

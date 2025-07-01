@@ -2,8 +2,8 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
-import de.dafuqs.matchbooks.recipe.IngredientStack;
 import de.dafuqs.spectrum.api.recipe.FluidIngredient;
+import de.dafuqs.spectrum.api.recipe.IngredientStack;
 import de.dafuqs.spectrum.recipe.fusion_shrine.FusionShrineRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -12,11 +12,12 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
 
@@ -25,7 +26,7 @@ import thelm.spectrumjei.SpectrumJEI;
  */
 public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<FusionShrineRecipe> {
 
-	public static final Text TITLE = Text.translatable("block.spectrum.fusion_shrine");
+	public static final Component TITLE = Component.translatable("block.spectrum.fusion_shrine");
 
 	public FusionShrineRecipeCategory() {
 		super(SpectrumJEI.FUSION_SHRINE, TITLE);
@@ -37,8 +38,9 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, FusionShrineRecipe recipe, IFocusGroup focuses) {
-		boolean visible = isVisible(recipe);
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<FusionShrineRecipe> recipeHolder, IFocusGroup focuses) {
+		boolean visible = isVisible(recipeHolder);
+		FusionShrineRecipe recipe = recipeHolder.value();
 		if(recipe.getFluid() != FluidIngredient.EMPTY) {
 			addItem(builder, RecipeIngredientRole.CATALYST, 10, 26, new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), visible);
 			addFluid(builder, RecipeIngredientRole.INPUT, 30, 26, recipe.getFluid(), FluidConstants.BUCKET, JEIDrawables.SLOT, visible);
@@ -49,31 +51,33 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		int startX = 1 + getWidth() / 2 - ingredients.size() * 9;
 		for(int i = 0; i < ingredients.size(); ++i) {
-			addItem(builder, RecipeIngredientRole.INPUT, startX + i * 18, 1, ingredients.get(i).getStacks(), JEIDrawables.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, startX + i * 18, 1, ingredients.get(i).getMatchingStacks(), JEIDrawables.SLOT, visible);
 		}
-		addItem(builder, RecipeIngredientRole.OUTPUT, 94, 26, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 94, 26, recipe.getResultItem(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
-	public void createRecipeExtras(IRecipeExtrasBuilder builder, FusionShrineRecipe recipe, IFocusGroup focuses) {
-		if(isVisible(recipe)) {
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<FusionShrineRecipe> recipeHolder, IFocusGroup focuses) {
+		if(isVisible(recipeHolder)) {
+			FusionShrineRecipe recipe = recipeHolder.value();
 			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50), 57, 26);
 		}
 	}
 
 	@Override
-	public void draw(FusionShrineRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		if(isVisible(recipe)) {
-			TextRenderer font = font();
+	public void draw(RecipeHolder<FusionShrineRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipeHolder)) {
+			FusionShrineRecipe recipe = recipeHolder.value();
+			Font font = font();
 			if(recipe.getDescription().isPresent()) {
-				List<OrderedText> lines = font.wrapLines(recipe.getDescription().get(), 136);
+				List<FormattedCharSequence> lines = font.split(recipe.getDescription().get(), 136);
 				for(int i = 0; i < lines.size(); ++i) {
-					guiGraphics.drawText(font, lines.get(i), 0, 50 + i * 10, 0x3F3F3F, false);
+					guiGraphics.drawString(font, lines.get(i), 0, 50 + i * 10, 0x3F3F3F, false);
 				}
 			}
-			Text timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
-			guiGraphics.drawText(font, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 70, 0x3F3F3F, false);
+			Component timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
+			guiGraphics.drawString(font, timeComponent, getWidth() / 2 - font.width(timeComponent) / 2, 70, 0x3F3F3F, false);
 		}
 	}
 }

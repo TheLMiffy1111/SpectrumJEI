@@ -7,12 +7,13 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.jeidrawables.gui.render.ResourceDrawable;
 import thelm.spectrumjei.SpectrumJEI;
@@ -22,13 +23,13 @@ import thelm.spectrumjei.SpectrumJEI;
  */
 public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<AnvilCrushingRecipe> {
 
-	public static final Text TITLE = Text.translatable("container.spectrum.rei.anvil_crushing.title");
+	public static final Component TITLE = Component.translatable("container.spectrum.rei.anvil_crushing.title");
 
-	public static final Text LOW_FORCE = Text.translatable("container.spectrum.rei.anvil_crushing.low_force_required");
-	public static final Text MEDIUM_FORCE = Text.translatable("container.spectrum.rei.anvil_crushing.medium_force_required");
-	public static final Text HIGH_FORCE = Text.translatable("container.spectrum.rei.anvil_crushing.high_force_required");
+	public static final Component LOW_FORCE = Component.translatable("container.spectrum.rei.anvil_crushing.low_force_required");
+	public static final Component MEDIUM_FORCE = Component.translatable("container.spectrum.rei.anvil_crushing.medium_force_required");
+	public static final Component HIGH_FORCE = Component.translatable("container.spectrum.rei.anvil_crushing.high_force_required");
 
-	public static final Identifier BACKGROUND = SpectrumCommon.locate("textures/gui/container/anvil_crushing.png");
+	public static final ResourceLocation BACKGROUND = SpectrumCommon.locate("textures/gui/container/anvil_crushing.png");
 	public static final ResourceDrawable WALL = new ResourceDrawable(BACKGROUND, 0, 0, 16, 48);
 	public static final ResourceDrawable FALL = new ResourceDrawable(BACKGROUND, 16, 1, 16, 16);
 
@@ -42,16 +43,17 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, AnvilCrushingRecipe recipe, IFocusGroup focuses) {
-		boolean visible = isVisible(recipe);
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<AnvilCrushingRecipe> recipeHolder, IFocusGroup focuses) {
+		boolean visible = isVisible(recipeHolder);
+		AnvilCrushingRecipe recipe = recipeHolder.value();
 		addItem(builder, RecipeIngredientRole.INPUT, 32, 31, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 32, 11, new ItemStack(Items.ANVIL), visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getResultItem(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
-	public void createRecipeExtras(IRecipeExtrasBuilder builder, AnvilCrushingRecipe recipe, IFocusGroup focuses) {
-		if(isVisible(recipe)) {
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<AnvilCrushingRecipe> recipeHolder, IFocusGroup focuses) {
+		if(isVisible(recipeHolder)) {
 			builder.addDrawable(WALL, 10, 0);
 			builder.addDrawable(FALL, 32, 1);
 			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 60, 16);
@@ -59,18 +61,19 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 	}
 
 	@Override
-	public void draw(AnvilCrushingRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		if(isVisible(recipe)) {
-			TextRenderer font = font();
-			Text xpComponent = Text.translatable("container.spectrum.rei.anvil_crushing.plus_xp", recipe.getExperience());
-			Text forceComponent = getForceComponent(recipe);
-			guiGraphics.drawText(font, xpComponent, 126 - font.getWidth(xpComponent), 40, 0x3F3F3F, false);
-			guiGraphics.drawText(font, forceComponent, getWidth() / 2 - font.getWidth(forceComponent) / 2, 54, 0x3F3F3F, false);
+	public void draw(RecipeHolder<AnvilCrushingRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
+		if(isVisible(recipeHolder)) {
+			AnvilCrushingRecipe recipe = recipeHolder.value();
+			Font font = font();
+			Component xpComponent = Component.translatable("container.spectrum.rei.anvil_crushing.plus_xp", recipe.getExperience());
+			Component forceComponent = getForceComponent(recipe);
+			guiGraphics.drawString(font, xpComponent, 126 - font.width(xpComponent), 40, 0x3F3F3F, false);
+			guiGraphics.drawString(font, forceComponent, getWidth() / 2 - font.width(forceComponent) / 2, 54, 0x3F3F3F, false);
 		}
 	}
 
-	public Text getForceComponent(AnvilCrushingRecipe recipe) {
+	public Component getForceComponent(AnvilCrushingRecipe recipe) {
 		if(recipe.getCrushedItemsPerPointOfDamage() >= 1F) {
 			return LOW_FORCE;
 		}
