@@ -150,7 +150,7 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCategories(new TitrationBarrelRecipeCategory());
 		registration.addRecipeCategories(new PrimordialFireBurningRecipeCategory());
 
-		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, Text.translatable("item.spectrum.natures_staff"), SpectrumAdvancements.UNLOCK_NATURES_STAFF));	
+		registration.addRecipeCategories(new BlockConversionRecipeCategory(NATURES_STAFF, Text.translatable("item.spectrum.natures_staff"), SpectrumAdvancements.UNLOCK_NATURES_STAFF));
 		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(HEATING, Text.translatable("container.spectrum.rei.heating.title"), SpectrumAdvancements.UNLOCK_IDOLS));
 		registration.addRecipeCategories(new BlockConversionWithChanceRecipeCategory(FREEZING, Text.translatable("container.spectrum.rei.freezing.title"), SpectrumAdvancements.UNLOCK_IDOLS));
 	}
