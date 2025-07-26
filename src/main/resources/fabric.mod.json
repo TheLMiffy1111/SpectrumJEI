@@ -27,7 +27,8 @@
 		"jeidrawables": "*",
 		"spectrum": "*"
 	},
-	"breaks": {
+	"conflicts": {
+		"rei_plugin_compatibilities": "*",
 		"emi": "*"
 	}
 }
