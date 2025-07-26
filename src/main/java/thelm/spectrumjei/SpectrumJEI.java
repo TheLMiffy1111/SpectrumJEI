@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.dafuqs.spectrum.SpectrumCommon;
 import de.dafuqs.spectrum.blocks.mob_blocks.FirestarterMobBlock;
 import de.dafuqs.spectrum.blocks.mob_blocks.FreezingMobBlock;
@@ -46,6 +49,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
@@ -78,6 +82,7 @@ import thelm.spectrumjei.recipe.transfer.PedestalRecipeTransferInfo;
 public class SpectrumJEI implements IModPlugin {
 
 	public static final Identifier UID = new Identifier("spectrumjei:spectrum");
+	public static final Logger LOGGER = LogManager.getLogger();
 
 	public static IJeiHelpers jeiHelpers;
 	public static IJeiRuntime jeiRuntime;
@@ -115,6 +120,10 @@ public class SpectrumJEI implements IModPlugin {
 	public void registerCategories(IRecipeCategoryRegistration registration) {
 		jeiHelpers = registration.getJeiHelpers();
 
+		if(checkDisabled()) {
+			return;
+		}
+
 		registration.addRecipeCategories(new PedestalRecipeCategory(PedestalRecipeTier.BASIC));
 		registration.addRecipeCategories(new PedestalRecipeCategory(PedestalRecipeTier.SIMPLE));
 		registration.addRecipeCategories(new PedestalRecipeCategory(PedestalRecipeTier.ADVANCED));
@@ -141,6 +150,10 @@ public class SpectrumJEI implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
+		if(checkDisabled()) {
+			return;
+		}
+
 		RecipeManager recipeManager = MinecraftClient.getInstance().world.getRecipeManager();
 		registration.addRecipes(PEDESTAL_BASIC, recipeManager.listAllOfType(SpectrumRecipeTypes.PEDESTAL).stream().
 				filter(r -> r.getTier() == PedestalRecipeTier.BASIC).toList());
@@ -184,6 +197,10 @@ public class SpectrumJEI implements IModPlugin {
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+		if(checkDisabled()) {
+			return;
+		}
+
 		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.BASIC));
 		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.SIMPLE));
 		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.ADVANCED));
@@ -198,6 +215,10 @@ public class SpectrumJEI implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+		if(checkDisabled()) {
+			return;
+		}
+
 		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.RESTOCKING_CHEST), RecipeTypes.CRAFTING);
 
 		registration.addRecipeCatalyst(new ItemStack(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ), PEDESTAL_BASIC, RecipeTypes.CRAFTING);
@@ -230,6 +251,10 @@ public class SpectrumJEI implements IModPlugin {
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+		if(checkDisabled()) {
+			return;
+		}
+
 		registration.addGuiContainerHandler(PedestalScreen.class, new PedestalRecipeClickAreaHandler());
 		registration.addGuiContainerHandler(CraftingTabletScreen.class, new CraftingTabletRecipeClickAreaHandler());
 		registration.addRecipeClickArea(PotionWorkshopScreen.class, 28, 41, 12, 42, POTION_WORKSHOP_BREWING, POTION_WORKSHOP_CRAFTING, POTION_WORKSHOP_REACTING);
@@ -247,5 +272,13 @@ public class SpectrumJEI implements IModPlugin {
 		RecipeType<R> recipeType = new RecipeType<>(uid, recipeClass);
 		RECIPE_TYPES.add(recipeType);
 		return recipeType;
+	}
+
+	public boolean checkDisabled() {
+		if(FabricLoader.getInstance().isModLoaded("rei_plugin_compatibilities")) {
+			LOGGER.warn("SpectrumJEI is disabled with REIPC as Spectrum has native REI support");
+			return true;
+		}
+		return false;
 	}
 }

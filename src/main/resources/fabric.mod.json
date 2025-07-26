@@ -25,5 +25,8 @@
 		"jei": "*",
 		"jeidrawables": "*",
 		"spectrum": "*"
+	},
+	"conflicts": {
+		"rei_plugin_compatibilities": "*"
 	}
 }
