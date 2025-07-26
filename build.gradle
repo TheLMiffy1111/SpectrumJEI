@@ -144,7 +144,7 @@ def specVersion = "21.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "21.1.1"
+version = "21.1.2"
 
 archivesBaseName = modName
 
@@ -238,7 +238,7 @@ blossom {
 
 processResources {
 	inputs.properties(replacements)
-	filesMatching(["fabric.mod.json"]) {
+	filesMatching(["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
 		filter {
 			it.replace(replacements)
 		}
@@ -294,6 +294,7 @@ publishMods {
 		projectId = "1258607"
 		minecraftVersions.add(mcVersion)
 		requires "jei", "spectrum"
+		incompatible "roughly-enough-items-hacks", "emi"
 	}
 
 	modrinth {
@@ -301,5 +302,6 @@ publishMods {
 		projectId = "8FtYXJhp"
 		minecraftVersions.add(mcVersion)
 		requires "jei", "spectrum"
+		incompatible "roughly-enough-items-hacks", "emi"
 	}
 }

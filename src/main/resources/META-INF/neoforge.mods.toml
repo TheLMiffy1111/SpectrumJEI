@@ -1,0 +1,57 @@
+modLoader = "lowcodefml"
+loaderVersion = "[2,)"
+license = "LGPL-3.0-only"
+issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
+
+[properties]
+	"connector:placeholder" = true
+
+[[mods]]
+	modId = "spectrumjei"
+	version = "0@VERSION@"
+	displayName = "SpectrumJEI"
+	description = "An addon to Spectrum that adds JEI support."
+	logoFile = "spectrumjei.logo.png"
+	authors = "TheLMiffy1111"
+
+[[dependencies.spectrumjei]]
+	modId = "minecraft"
+	versionRange = "[1.21,1.21.2)"
+	type = "required"
+
+[[dependencies.spectrumjei]]
+	modId = "connector"
+	versionRange = "*"
+	type = "required"
+
+[[dependencies.spectrumjei]]
+	modId = "connectorextras"
+	versionRange = "*"
+	type = "required"
+
+[[dependencies.spectrumjei]]
+	modId = "jei"
+	versionRange = "*"
+	type = "required"
+
+[[dependencies.spectrumjei]]
+	modId = "jeidrawables"
+	versionRange = "*"
+	type = "required"
+
+[[dependencies.spectrumjei]]
+	modId = "spectrum"
+	versionRange = "*"
+	type = "required"
+
+[[dependencies.spectrumjei]]
+	modId = "rei_plugin_compatibilities"
+	versionRange = "*"
+	type = "discouraged"
+	reason = "Spectrum has native REI support"
+
+[[dependencies.spectrumjei]]
+	modId = "emi"
+	versionRange = "*"
+	type = "discouraged"
+	reason = "Spectrum has native EMI support"
