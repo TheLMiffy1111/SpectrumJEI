@@ -1,0 +1,45 @@
+modLoader = "lowcodefml"
+loaderVersion = "[47,)"
+license = "LGPL-3.0-only"
+issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
+
+[properties]
+	"connector:placeholder" = true
+
+[[mods]]
+	modId = "spectrumjei"
+	version = "0@VERSION@"
+	displayName = "SpectrumJEI"
+	description = "An addon to Spectrum that adds JEI support."
+	logoFile = "spectrumjei.logo.png"
+	authors = "TheLMiffy1111"
+
+[[dependencies.spectrumjei]]
+	modId = "minecraft"
+	versionRange = "[1.20,1.20.2)"
+	mandatory = true
+
+[[dependencies.spectrumjei]]
+	modId = "connector"
+	versionRange = "*"
+	mandatory = true
+
+[[dependencies.spectrumjei]]
+	modId = "connectorextras"
+	versionRange = "*"
+	mandatory = true
+
+[[dependencies.spectrumjei]]
+	modId = "jei"
+	versionRange = "*"
+	mandatory = true
+
+[[dependencies.spectrumjei]]
+	modId = "jeidrawables"
+	versionRange = "*"
+	mandatory = true
+
+[[dependencies.spectrumjei]]
+	modId = "spectrum"
+	versionRange = "*"
+	mandatory = true

@@ -1,3 +1,3 @@
-Fix Fusion Shrine category not using platform bucket volume  
-Fix Enchantment Upgrade category showing overenchanting recipes when not unlocked  
-Fix incorrect Crystallarieum texture coordinates  
+Make EMI conflicts instead of breaks, and make plugin not load if EMI is present  
+Add REIPC to conflicts  
+Add placeholder mods.toml for use with Connector  
