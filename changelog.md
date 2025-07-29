@@ -1,1 +1,1 @@
-Add REIPC to conflicts  
+Prevent empty fluid stacks breaking categories  

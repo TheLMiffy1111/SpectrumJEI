@@ -151,7 +151,7 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 	public IIngredientAcceptor<?> addFluid(IRecipeLayoutBuilder builder, RecipeIngredientRole ingredientRole, int x, int y, Fluid fluid, long amount, IDrawable background, boolean visible) {
 		IIngredientAcceptor<?> acceptor = addSlot(builder, ingredientRole, x, y, background, visible).addFluidStack(fluid, amount);
 		if(acceptor instanceof IRecipeSlotBuilder slot) {
-			slot.setFluidRenderer(amount, false, 16, 16);
+			slot.setFluidRenderer(Math.max(amount, 1), false, 16, 16);
 		}
 		return acceptor;
 	}

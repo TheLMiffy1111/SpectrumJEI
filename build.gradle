@@ -156,7 +156,7 @@ def specVersion = "18.2"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "18.2.2"
+version = "18.2.3"
 
 archivesBaseName = modName
 
@@ -200,14 +200,14 @@ dependencies {
 		mappings "net.fabricmc:yarn:1.18.2+build.4:v2"
 		parchment "org.parchmentmc.data:parchment-1.18.2:2022.11.06@zip"
 	}
-	modImplementation "net.fabricmc:fabric-loader:0.16.14"
+	modImplementation "net.fabricmc:fabric-loader:0.17.0"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:0.77.0+1.18.2"
 	modImplementation "eu.pb4:placeholder-api:1.1.3+1.17.1"
 	modImplementation "com.terraformersmc:modmenu:3.2.5"
 
 	// JEI
 	modImplementation("mezz.jei:jei-1.18.2-fabric:10.2.1.1009") {transitive = false}
-	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:18.2.1"))
+	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:18.2.2"))
 
 	// Spectrum Included Dependencies
 	modImplementation "com.github.DaFuqs:AdditionalEntityAttributes:35d08069"
