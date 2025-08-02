@@ -1,1 +1,1 @@
-Prevent empty fluid stacks breaking categories  
+Fix Fusion Shrine using wrong fluid amount  
