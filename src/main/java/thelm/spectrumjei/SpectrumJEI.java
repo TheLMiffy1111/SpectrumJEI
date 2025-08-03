@@ -56,6 +56,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
@@ -67,6 +68,9 @@ import thelm.spectrumjei.gui.handler.CraftingTabletRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.OverlayHidingExtraAreaHandler;
 import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.ShadowSlotGhostIngredientHandler;
+import thelm.spectrumjei.ingredient.subtype.ExperienceStorageItemSubtypeInterpreter;
+import thelm.spectrumjei.ingredient.subtype.InkStorageItemSubtypeInterpreter;
+import thelm.spectrumjei.ingredient.subtype.UnstableItemSubtypeInterpreter;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
 import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
 import thelm.spectrumjei.recipe.category.AnvilCrushingRecipeCategory;
@@ -127,6 +131,29 @@ public class SpectrumJEI implements IModPlugin {
 	@Override
 	public Identifier getPluginUid() {
 		return UID;
+	}
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistration registration) {
+		if(checkDisabled()) {
+			return;
+		}
+
+		registration.registerSubtypeInterpreter(SpectrumItems.KNOWLEDGE_GEM, new ExperienceStorageItemSubtypeInterpreter());
+		registration.registerSubtypeInterpreter(SpectrumItems.MIDNIGHT_ABERRATION, new UnstableItemSubtypeInterpreter());
+
+		InkStorageItemSubtypeInterpreter ink = new InkStorageItemSubtypeInterpreter();
+		registration.registerSubtypeInterpreter(SpectrumItems.INK_FLASK, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.INK_ASSORTMENT, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.PIGMENT_PALETTE, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.ARTISTS_PALETTE, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.SHIELDGRASP_AMULET, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.HEARTSINGERS_REWARD, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.GLOVES_OF_DAWNS_GRASP, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_PURSUIT, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_DENSER_STEPS, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_AERIAL_GRACE, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.LAURELS_OF_SERENITY, ink);
 	}
 
 	@Override
