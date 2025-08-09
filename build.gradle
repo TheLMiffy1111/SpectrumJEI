@@ -207,7 +207,7 @@ dependencies {
 
 	// JEI
 	modImplementation("mezz.jei:jei-1.18.2-fabric:10.2.1.1009") {transitive = false}
-	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:18.2.3"))
+	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:18.2.4"))
 
 	// Spectrum Included Dependencies
 	modImplementation "com.github.DaFuqs:AdditionalEntityAttributes:35d08069"

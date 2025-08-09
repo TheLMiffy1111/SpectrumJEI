@@ -18,6 +18,6 @@ public class ExperienceStorageItemSubtypeInterpreter implements IIngredientSubty
 			}
 			return Integer.toString(capacity);
 		}
-		return IIngredientSubtypeInterpreter.NONE;
+		return NONE;
 	}
 }
