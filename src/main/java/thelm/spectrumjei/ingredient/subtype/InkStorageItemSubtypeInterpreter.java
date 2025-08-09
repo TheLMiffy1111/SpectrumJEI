@@ -22,6 +22,6 @@ public class InkStorageItemSubtypeInterpreter implements IIngredientSubtypeInter
 					map(Objects::toString).
 					collect(Collectors.joining(","));
 		}
-		return IIngredientSubtypeInterpreter.NONE;
+		return NONE;
 	}
 }

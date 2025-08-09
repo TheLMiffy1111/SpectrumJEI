@@ -11,6 +11,6 @@ public class UnstableItemSubtypeInterpreter implements IIngredientSubtypeInterpr
 		if(context == UidContext.Ingredient && ingredient.hasNbt() && ingredient.getNbt().getBoolean("Stable")) {
 			return "s";
 		}
-		return IIngredientSubtypeInterpreter.NONE;
+		return NONE;
 	}
 }
