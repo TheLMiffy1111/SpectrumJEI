@@ -31,9 +31,9 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 	public static final Component TITLE = Component.translatable("block.spectrum.crystallarieum");
 
 	public static final Component CATALYST = Component.translatable("container.spectrum.rei.crystallarieum.catalyst");
-	public static final Component ACCELERATOR = Component.translatable("container.spectrum.rei.crystallarieum.accelerator");
-	public static final Component INK_CONSUMPTION = Component.translatable("container.spectrum.rei.crystallarieum.ink_consumption");
-	public static final Component USED_UP = Component.translatable("container.spectrum.rei.crystallarieum.used_up");
+	public static final Component SPEED = Component.translatable("container.spectrum.rei.crystallarieum.speed");
+	public static final Component INK_DRAIN = Component.translatable("container.spectrum.rei.crystallarieum.ink_drain");
+	public static final Component DEPLETION = Component.translatable("container.spectrum.rei.crystallarieum.depletion");
 
 	public static final ResourceLocation BACKGROUND = SpectrumCommon.locate("textures/gui/modonomicon/crystallarieum.png");
 	public static final ResourceDrawable ACCEL_HIGHER = new ResourceDrawable(BACKGROUND, 98, 0, 7, 7, 128, 128);
@@ -161,9 +161,9 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 				timeComponent = Component.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds", recipe.getSecondsPerGrowthStage());
 			}
 			guiGraphics.drawString(font, CATALYST, 6, 43, 0x3F3F3F, false);
-			guiGraphics.drawString(font, ACCELERATOR, 6, 58, 0x3F3F3F, false);
-			guiGraphics.drawString(font, INK_CONSUMPTION, 6, 68, 0x3F3F3F, false);
-			guiGraphics.drawString(font, USED_UP, 6, 78, 0x3F3F3F, false);
+			guiGraphics.drawString(font, SPEED, 6, 58, 0x3F3F3F, false);
+			guiGraphics.drawString(font, INK_DRAIN, 6, 68, 0x3F3F3F, false);
+			guiGraphics.drawString(font, DEPLETION, 6, 78, 0x3F3F3F, false);
 			guiGraphics.drawString(font, timeComponent, getWidth() / 2 - font.width(timeComponent) / 2, 90, 0x3F3F3F, false);
 		}
 	}
