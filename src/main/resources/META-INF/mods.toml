@@ -20,7 +20,7 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
 	mandatory = true
 
 [[dependencies.spectrumjei]]
-	modId = "connector"
+	modId = "connectormod"
 	versionRange = "*"
 	mandatory = true
 
