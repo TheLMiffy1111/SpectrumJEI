@@ -54,7 +54,7 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 			JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50).draw(poseStack, 75, 25);
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			font.draw(poseStack, timeComponent, 52, 56, 0x3F3F3F);
+			font.draw(poseStack, timeComponent, 52, 57, 0x3F3F3F);
 		}
 	}
 }

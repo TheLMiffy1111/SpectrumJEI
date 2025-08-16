@@ -31,7 +31,7 @@ public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<S
 
 	@Override
 	public int getHeight() {
-		return 48;
+		return 45;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<S
 			JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50).draw(poseStack, 73, 10);
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
-			font.draw(poseStack, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 38, 0x3F3F3F);
+			font.draw(poseStack, timeComponent, getWidth() / 2 - font.getWidth(timeComponent) / 2, 36, 0x3F3F3F);
 		}
 	}
 }

@@ -31,7 +31,7 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 
 	@Override
 	public int getHeight() {
-		return 80;
+		return 79;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 			if(recipe.getDescription().isPresent()) {
 				List<OrderedText> lines = font.wrapLines(recipe.getDescription().get(), 136);
 				for(int i = 0; i < lines.size(); ++i) {
-					font.draw(poseStack, lines.get(i), 0, 50 + i * 10, 0x3F3F3F);
+					font.draw(poseStack, lines.get(i), 0, 49 + i * 10, 0x3F3F3F);
 				}
 			}
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime(), recipe.getExperience());
