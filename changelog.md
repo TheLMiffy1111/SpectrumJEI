@@ -1,1 +1,1 @@
-Fixed Crystallarieum text  
+Slight layout adjustments  
