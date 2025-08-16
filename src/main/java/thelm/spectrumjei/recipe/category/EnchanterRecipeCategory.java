@@ -66,7 +66,7 @@ public class EnchanterRecipeCategory extends AbstractGatedRecipeCategory<Enchant
 			JEIDrawables.recipeArrow(recipe.getCraftingTime() * 50).draw(poseStack, 84, 32);
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			font.draw(poseStack, timeComponent, 69, 70, 0x3F3F3F);
+			font.draw(poseStack, timeComponent, 69, 71, 0x3F3F3F);
 		}
 	}
 }
