@@ -77,7 +77,7 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 			ALTAR.draw(guiGraphics, 15, 13);
 			TextRenderer font = font();
 			Text reqComponent = Text.translatable("container.spectrum.rei.enchantment_upgrade.required_item_count", recipe.getRequiredItemCount());
-			guiGraphics.drawText(font, reqComponent, 69, 70, 0x3F3F3F, false);
+			guiGraphics.drawText(font, reqComponent, 69, 71, 0x3F3F3F, false);
 		}
 	}
 

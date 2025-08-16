@@ -61,7 +61,7 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 		if(isVisible(recipe)) {
 			TextRenderer font = font();
 			Text timeComponent = getTimeComponent(recipe.getCraftingTime());
-			guiGraphics.drawText(font, timeComponent, 52, 56, 0x3F3F3F, false);
+			guiGraphics.drawText(font, timeComponent, 52, 57, 0x3F3F3F, false);
 		}
 	}
 }

@@ -38,23 +38,23 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 
 	@Override
 	public int getHeight() {
-		return 64;
+		return 59;
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, AnvilCrushingRecipe recipe, IFocusGroup focuses) {
 		boolean visible = isVisible(recipe);
-		addItem(builder, RecipeIngredientRole.INPUT, 32, 31, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.CATALYST, 32, 11, new ItemStack(Items.ANVIL), visible);
-		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 16, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 32, 30, recipe.getIngredients().get(0), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.CATALYST, 32, 10, new ItemStack(Items.ANVIL), visible);
+		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 15, recipe.getOutput(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}
 
 	@Override
 	public void createRecipeExtras(IRecipeExtrasBuilder builder, AnvilCrushingRecipe recipe, IFocusGroup focuses) {
 		if(isVisible(recipe)) {
 			builder.addDrawable(WALL, 10, 0);
-			builder.addDrawable(FALL, 32, 1);
-			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 60, 16);
+			builder.addDrawable(FALL, 32, 0);
+			builder.addDrawable(JEIDrawables.RECIPE_ARROW, 60, 15);
 		}
 	}
 
@@ -65,8 +65,8 @@ public class AnvilCrushingRecipeCategory extends AbstractGatedRecipeCategory<Anv
 			TextRenderer font = font();
 			Text xpComponent = Text.translatable("container.spectrum.rei.anvil_crushing.plus_xp", recipe.getExperience());
 			Text forceComponent = getForceComponent(recipe);
-			guiGraphics.drawText(font, xpComponent, 126 - font.getWidth(xpComponent), 40, 0x3F3F3F, false);
-			guiGraphics.drawText(font, forceComponent, getWidth() / 2 - font.getWidth(forceComponent) / 2, 54, 0x3F3F3F, false);
+			guiGraphics.drawText(font, xpComponent, 126 - font.getWidth(xpComponent), 38, 0x3F3F3F, false);
+			guiGraphics.drawText(font, forceComponent, getWidth() / 2 - font.getWidth(forceComponent) / 2, 50, 0x3F3F3F, false);
 		}
 	}
 
