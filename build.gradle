@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id "com.crystaelix.blossom" version "1.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
 }
 
 repositories {
@@ -192,12 +192,12 @@ dependencies {
 		parchment "org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip"
 	}
 	modImplementation "net.fabricmc:fabric-loader:0.17.2"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.116.5+1.21.1"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.116.7+1.21.1"
 	modImplementation "eu.pb4:placeholder-api:2.4.2+1.21"
 	modImplementation "com.terraformersmc:modmenu:11.0.3"
 
 	// JEI
-	modImplementation("mezz.jei:jei-1.21.1-fabric:19.22.1.316") {transitive = false}
+	modImplementation("mezz.jei:jei-1.21.1-fabric:19.25.0.322") {transitive = false}
 	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:21.1.4"))
 
 	// Spectrum Included Dependencies
@@ -220,11 +220,11 @@ dependencies {
 	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:0.25.0"
 	implementation "org.commonmark:commonmark-ext-ins:0.25.0"
 	implementation "me.zeroeightsix:fiber:0.23.0-2"
-	modImplementation("com.klikli_dev:modonomicon-1.21.1-fabric:1.114.5") {transitive = false}
+	modImplementation("com.klikli_dev:modonomicon-1.21.1-fabric:1.117.2") {transitive = false}
 	modImplementation "maven.modrinth:dcwa:W0E7l3pF"
 
 	// Spectrum
-	modImplementation "maven.modrinth:spectrum:cl32FO9p"
+	modImplementation "maven.modrinth:spectrum:ZNti2L9b"
 }
 
 def replacements = [
