@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id "com.crystaelix.blossom" version "1.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
 }
 
 repositories {
@@ -195,7 +195,7 @@ dependencies {
 	modImplementation "com.terraformersmc:modmenu:7.2.2"
 
 	// JEI
-	modImplementation("mezz.jei:jei-1.20.1-fabric:15.20.0.112") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-fabric:15.20.0.116") {transitive = false}
 	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:20.1.4"))
 
 	// Spectrum Included Dependencies
@@ -219,11 +219,11 @@ dependencies {
 	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:0.25.0"
 	implementation "org.commonmark:commonmark-ext-ins:0.25.0"
 	implementation "me.zeroeightsix:fiber:0.23.0-2"
-	modImplementation("com.klikli_dev:modonomicon-1.20.1-fabric:1.77.6") {transitive = false}
+	modImplementation("com.klikli_dev:modonomicon-1.20.1-fabric:1.79.2") {transitive = false}
 	modImplementation "maven.modrinth:dcwa:P23QCBEG"
 
 	// Spectrum
-	modImplementation "maven.modrinth:spectrum:WqxHcdgU"
+	modImplementation "maven.modrinth:spectrum:LISEhPJH"
 }
 
 def replacements = [
