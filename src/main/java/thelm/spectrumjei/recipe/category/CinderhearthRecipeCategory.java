@@ -41,7 +41,7 @@ public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<Cind
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CinderhearthRecipe> recipeHolder, IFocusGroup focuses) {
 		boolean visible = isVisible(recipeHolder);
 		CinderhearthRecipe recipe = recipeHolder.value();
-		addItem(builder, RecipeIngredientRole.INPUT, 4, 1, recipe.getIngredientStacks().get(0).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 4, 1, recipe.getIngredientStacks().get(0).getItems().toList(), JEIDrawables.SLOT, visible);
 		List<Tuple<ItemStack, Float>> outputs = recipe.getResultsWithChance();
 		for(int i = 0; i < 3; ++i) {
 			IIngredientAcceptor<?> acceptor = addSlot(builder, RecipeIngredientRole.OUTPUT, 58 + i * 28, 10, JEIDrawables.OUTPUT_SLOT, visible);

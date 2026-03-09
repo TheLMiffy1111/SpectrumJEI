@@ -1,6 +1,6 @@
 package thelm.spectrumjei.recipe.category;
 
-import de.dafuqs.spectrum.recipe.InkConvertingRecipe;
+import de.dafuqs.spectrum.recipe.color_picker.InkConvertingRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;

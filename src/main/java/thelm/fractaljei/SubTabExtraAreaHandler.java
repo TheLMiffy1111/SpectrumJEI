@@ -2,9 +2,9 @@ package thelm.fractaljei;
 
 import java.util.List;
 
-import de.dafuqs.fractal.interfaces.ItemGroupParent;
-import de.dafuqs.fractal.interfaces.SubTabLocation;
-import de.dafuqs.fractal.mixin.client.CreativeInventoryScreenAccessor;
+import de.dafuqs.fractal.interfaces.ICreativeTabParent;
+import de.dafuqs.fractal.interfaces.ISubTabLocation;
+import de.dafuqs.fractal.mixin.client.CreativeModeInventoryScreenAccessor;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.renderer.Rect2i;
@@ -14,9 +14,9 @@ public class SubTabExtraAreaHandler implements IGuiContainerHandler<CreativeMode
 
 	@Override
 	public List<Rect2i> getGuiExtraAreas(CreativeModeInventoryScreen containerScreen) {
-		CreativeModeTab selected = CreativeInventoryScreenAccessor.fractal$getSelectedGroup();
-		if(selected instanceof ItemGroupParent parent &&
-				containerScreen instanceof SubTabLocation stl &&
+		CreativeModeTab selected = CreativeModeInventoryScreenAccessor.fractal$getSelectedTab();
+		if(selected instanceof ICreativeTabParent parent &&
+				containerScreen instanceof ISubTabLocation stl &&
 				parent.fractal$getChildren() != null &&
 				!parent.fractal$getChildren().isEmpty()) {
 			return List.of(

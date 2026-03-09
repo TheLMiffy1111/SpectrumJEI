@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
-import de.dafuqs.fractal.api.ItemSubGroup;
+import de.dafuqs.fractal.api.CreativeSubTab;
 import mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +24,7 @@ public class ItemStackListFactoryMixin {
 
 	@Inject(method = "create", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CreativeModeTabs;allTabs()Ljava/util/List;"))
 	private static void fractaljei$buildSubTabContents(CallbackInfoReturnable<List<ItemStack>> info, @Local CreativeModeTab.ItemDisplayParameters displayParameters) {
-		for(ItemSubGroup tab : ItemSubGroup.SUB_GROUPS) {
+		for(CreativeSubTab tab : CreativeSubTab.SUBTABS) {
 			if(tab.getType() != CreativeModeTab.Type.CATEGORY) {
 				LOGGER.debug("Skipping creative tab: '{}' because it is type: {}", tab.getDisplayName().getString(), tab.getType());
 				continue;

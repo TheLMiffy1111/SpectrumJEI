@@ -3,9 +3,6 @@ loaderVersion = "[2,)"
 license = "LGPL-3.0-only"
 issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
 
-[properties]
-	"connector:placeholder" = true
-
 [[mods]]
 	modId = "spectrumjei"
 	version = "0@VERSION@"
@@ -13,20 +10,14 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
 	description = "An addon to Spectrum that adds JEI support."
 	logoFile = "spectrumjei.logo.png"
 	authors = "TheLMiffy1111"
+	displayURL = "https://www.curseforge.com/minecraft/mc-mods/spectrumjei"
+
+[[mixins]]
+	config = "fractaljei.mixins.json"
 
 [[dependencies.spectrumjei]]
 	modId = "minecraft"
 	versionRange = "[1.21,1.21.2)"
-	type = "required"
-
-[[dependencies.spectrumjei]]
-	modId = "connectormod"
-	versionRange = "*"
-	type = "required"
-
-[[dependencies.spectrumjei]]
-	modId = "connectorextras"
-	versionRange = "*"
 	type = "required"
 
 [[dependencies.spectrumjei]]

@@ -5,8 +5,8 @@ import java.util.List;
 
 import de.dafuqs.spectrum.api.item.GemstoneColor;
 import de.dafuqs.spectrum.api.recipe.IngredientStack;
+import de.dafuqs.spectrum.blocks.pedestal.BuiltinGemstoneColor;
 import de.dafuqs.spectrum.inventories.PedestalScreen;
-import de.dafuqs.spectrum.recipe.pedestal.BuiltinGemstoneColor;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
@@ -122,7 +122,7 @@ public class PedestalRecipeCategory extends AbstractGatedRecipeCategory<Pedestal
 		}
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		for(int i = 0; i < ingredients.size(); ++i) {
-			gridSlots.get(recipe.getGridSlotId(i)).addItemStacks(ingredients.get(i).getMatchingStacks());
+			gridSlots.get(recipe.getGridSlotId(i)).addItemStacks(ingredients.get(i).getItems().toList());
 		}
 		for(int i = 0; i < powderSlotCount; ++i) {
 			IIngredientAcceptor<?> slot = addSlot(builder, RecipeIngredientRole.INPUT, powderSlotX + i * 18, 60, powderSlots[i], visible);

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import de.dafuqs.spectrum.SpectrumCommon;
+import de.dafuqs.spectrum.config.SpectrumConfig;
 import de.dafuqs.spectrum.inventories.PedestalScreen;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import mezz.jei.api.constants.RecipeTypes;
@@ -29,7 +30,7 @@ public class PedestalRecipeClickAreaHandler implements IGuiContainerHandler<Pede
 		if(tier.ordinal() > 2) {
 			recipeTypes.add(SpectrumJEI.PEDESTAL_COMPLEX);
 		}
-		if(SpectrumCommon.CONFIG.canPedestalCraftVanillaRecipes()) {
+		if(SpectrumConfig.CONFIG.canPedestalCraftVanillaRecipes()) {
 			recipeTypes.add(RecipeTypes.CRAFTING);
 		}
 		return List.of(IGuiClickableArea.createBasic(89, 37, 22, 16, recipeTypes.toArray(RecipeType<?>[]::new)));

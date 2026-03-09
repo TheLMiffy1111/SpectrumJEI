@@ -6,6 +6,7 @@ import de.dafuqs.spectrum.SpectrumCommon;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumCatalyst;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
+import de.dafuqs.spectrum.registries.SpectrumDataComponentTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -66,7 +67,9 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 		boolean visible = isVisible(recipeHolder);
 		CrystallarieumRecipe recipe = recipeHolder.value();
 		addItem(builder, RecipeIngredientRole.INPUT, 7, 9, recipe.getIngredientStack(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.CATALYST, 27, 19, SpectrumBlocks.CRYSTALLARIEUM.asStackWithColor(recipe.getInkColor()), visible);
+		ItemStack stack = SpectrumBlocks.CRYSTALLARIEUM.toStack();
+		stack.set(SpectrumDataComponentTypes.INK_COLOR, recipe.getInkColor());
+		addItem(builder, RecipeIngredientRole.CATALYST, 27, 19, stack, visible);
 		List<ItemStack> growthStages = recipe.getGrowthStages().stream().map(BlockState::getBlock).map(ItemStack::new).toList();
 		addItem(builder, RecipeIngredientRole.INPUT, 27, 1, growthStages.get(0), JEIDrawables.SLOT, visible);
 		for(int i = 1; i < growthStages.size(); ++i) {

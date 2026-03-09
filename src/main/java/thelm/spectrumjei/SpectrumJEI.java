@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import de.dafuqs.spectrum.SpectrumCommon;
 import de.dafuqs.spectrum.blocks.idols.FirestarterIdolBlock;
 import de.dafuqs.spectrum.blocks.idols.FreezingIdolBlock;
+import de.dafuqs.spectrum.config.SpectrumConfig;
 import de.dafuqs.spectrum.data_loaders.NaturesStaffConversionDataLoader;
 import de.dafuqs.spectrum.inventories.BlackHoleChestScreen;
 import de.dafuqs.spectrum.inventories.CinderhearthScreen;
@@ -21,9 +22,9 @@ import de.dafuqs.spectrum.inventories.PotionWorkshopScreen;
 import de.dafuqs.spectrum.inventories.PotionWorkshopScreenHandler;
 import de.dafuqs.spectrum.inventories.QuickNavigationGridScreen;
 import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
-import de.dafuqs.spectrum.recipe.InkConvertingRecipe;
 import de.dafuqs.spectrum.recipe.anvil_crushing.AnvilCrushingRecipe;
 import de.dafuqs.spectrum.recipe.cinderhearth.CinderhearthRecipe;
+import de.dafuqs.spectrum.recipe.color_picker.InkConvertingRecipe;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
 import de.dafuqs.spectrum.recipe.enchanter.EnchanterRecipe;
 import de.dafuqs.spectrum.recipe.enchanter.EnchantmentUpgradeRecipe;
@@ -45,6 +46,7 @@ import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import de.dafuqs.spectrum.registries.SpectrumItems;
 import de.dafuqs.spectrum.registries.SpectrumRecipeTypes;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.RecipeType;
@@ -56,13 +58,13 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.ModList;
 import thelm.spectrumjei.gui.handler.CraftingTabletRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.OverlayHidingExtraAreaHandler;
 import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
@@ -92,6 +94,7 @@ import thelm.spectrumjei.recipe.transfer.CraftingTabletRecipeTransferHandler;
 import thelm.spectrumjei.recipe.transfer.GatedRecipeTransferInfo;
 import thelm.spectrumjei.recipe.transfer.PedestalRecipeTransferInfo;
 
+@JeiPlugin
 public class SpectrumJEI implements IModPlugin {
 
 	public static final ResourceLocation UID = ResourceLocation.parse("spectrumjei:spectrum");
@@ -138,21 +141,21 @@ public class SpectrumJEI implements IModPlugin {
 			return;
 		}
 
-		registration.registerSubtypeInterpreter(SpectrumItems.KNOWLEDGE_GEM, new ExperienceStorageItemSubtypeInterpreter());
-		registration.registerSubtypeInterpreter(SpectrumItems.MIDNIGHT_ABERRATION, new UnstableItemSubtypeInterpreter());
+		registration.registerSubtypeInterpreter(SpectrumItems.KNOWLEDGE_GEM.get(), new ExperienceStorageItemSubtypeInterpreter());
+		registration.registerSubtypeInterpreter(SpectrumItems.MIDNIGHT_ABERRATION.get(), new UnstableItemSubtypeInterpreter());
 
 		InkStorageItemSubtypeInterpreter ink = new InkStorageItemSubtypeInterpreter();
-		registration.registerSubtypeInterpreter(SpectrumItems.INK_FLASK, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.INK_ASSORTMENT, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.PIGMENT_PALETTE, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.ARTISTS_PALETTE, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.SHIELDGRASP_AMULET, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.HEARTSINGERS_REWARD, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.GLOVES_OF_DAWNS_GRASP, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_PURSUIT, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_DENSER_STEPS, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_AERIAL_GRACE, ink);
-		registration.registerSubtypeInterpreter(SpectrumItems.LAURELS_OF_SERENITY, ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.INK_FLASK.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.INK_ASSORTMENT.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.PIGMENT_PALETTE.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.ARTISTS_PALETTE.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.SHIELDGRASP_AMULET.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.HEARTSINGERS_REWARD.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.GLOVES_OF_DAWNS_GRASP.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_PURSUIT.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_DENSER_STEPS.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.RING_OF_AERIAL_GRACE.get(), ink);
+		registration.registerSubtypeInterpreter(SpectrumItems.LAURELS_OF_SERENITY.get(), ink);
 	}
 
 	@Override
@@ -277,7 +280,7 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_ALL_BASIC, PEDESTAL_BASIC, PEDESTAL_SIMPLE);
 		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_ONYX, PEDESTAL_BASIC, PEDESTAL_SIMPLE, PEDESTAL_ADVANCED);
 		registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_MOONSTONE, PEDESTAL_BASIC, PEDESTAL_SIMPLE, PEDESTAL_ADVANCED, PEDESTAL_COMPLEX);
-		if(SpectrumCommon.CONFIG.canPedestalCraftVanillaRecipes()) {
+		if(SpectrumConfig.CONFIG.canPedestalCraftVanillaRecipes()) {
 			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_TOPAZ, RecipeTypes.CRAFTING);
 			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_AMETHYST, RecipeTypes.CRAFTING);
 			registration.addRecipeCatalyst(SpectrumBlocks.PEDESTAL_BASIC_CITRINE, RecipeTypes.CRAFTING);
@@ -336,11 +339,11 @@ public class SpectrumJEI implements IModPlugin {
 	}
 
 	public boolean checkDisabled() {
-		if(FabricLoader.getInstance().isModLoaded("rei_plugin_compatibilities")) {
+		if(ModList.get().isLoaded("rei_plugin_compatibilities")) {
 			LOGGER.warn("SpectrumJEI is disabled with REIPC as Spectrum has native REI support");
 			return true;
 		}
-		if(FabricLoader.getInstance().isModLoaded("emi")) {
+		if(ModList.get().isLoaded("emi")) {
 			LOGGER.warn("SpectrumJEI is disabled with EMI as Spectrum has native EMI support");
 			return true;
 		}

@@ -2,7 +2,6 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
-import de.dafuqs.spectrum.api.recipe.FluidIngredient;
 import de.dafuqs.spectrum.api.recipe.IngredientStack;
 import de.dafuqs.spectrum.recipe.fusion_shrine.FusionShrineRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
@@ -40,7 +39,7 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<FusionShrineRecipe> recipeHolder, IFocusGroup focuses) {
 		boolean visible = isVisible(recipeHolder);
 		FusionShrineRecipe recipe = recipeHolder.value();
-		if(recipe.getFluid() != FluidIngredient.EMPTY) {
+		if(!recipe.getFluid().isEmpty()) {
 			addItem(builder, RecipeIngredientRole.CATALYST, 10, 26, new ItemStack(SpectrumBlocks.FUSION_SHRINE_BASALT), visible);
 			addFluid(builder, RecipeIngredientRole.INPUT, 30, 26, recipe.getFluid(), fluidHelper().bucketVolume(), JEIDrawables.SLOT, visible);
 		}
@@ -50,7 +49,7 @@ public class FusionShrineRecipeCategory extends AbstractGatedRecipeCategory<Fusi
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		int startX = 1 + getWidth() / 2 - ingredients.size() * 9;
 		for(int i = 0; i < ingredients.size(); ++i) {
-			addItem(builder, RecipeIngredientRole.INPUT, startX + i * 18, 1, ingredients.get(i).getMatchingStacks(), JEIDrawables.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, startX + i * 18, 1, ingredients.get(i).getItems().toList(), JEIDrawables.SLOT, visible);
 		}
 		addItem(builder, RecipeIngredientRole.OUTPUT, 94, 26, recipe.getResultItem(registryAccess()), JEIDrawables.OUTPUT_SLOT, visible);
 	}

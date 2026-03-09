@@ -41,11 +41,11 @@ public class PotionWorkshopRecipeCategory<R extends PotionWorkshopRecipe> extend
 		boolean visible = isVisible(recipeHolder);
 		R recipe = recipeHolder.value();
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getMatchingStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getMatchingStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getMatchingStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getMatchingStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 49, ingredients.get(0).getItems().toList(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 78, 5, ingredients.get(1).getItems().toList(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(2).getItems().toList(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 13, 25, ingredients.get(3).getItems().toList(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 49, 25, ingredients.get(4).getItems().toList(), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.OUTPUT, 107, 25, recipe.getResultItem(registryAccess()), JEIDrawables.SLOT, visible);
 	}
 

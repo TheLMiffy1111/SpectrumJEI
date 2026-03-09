@@ -41,9 +41,9 @@ public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<S
 		boolean visible = isVisible(recipeHolder);
 		SpiritInstillerRecipe recipe = recipeHolder.value();
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
-		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(0).getMatchingStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 11, 1, ingredients.get(1).getMatchingStacks(), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 51, 1, ingredients.get(2).getMatchingStacks(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 31, 1, ingredients.get(0).getItems().toList(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 11, 1, ingredients.get(1).getItems().toList(), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 51, 1, ingredients.get(2).getItems().toList(), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 31, 18, new ItemStack(SpectrumBlocks.SPIRIT_INSTILLER), visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 11, 18, new ItemStack(SpectrumBlocks.ITEM_BOWL_CALCITE), visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 51, 18, new ItemStack(SpectrumBlocks.ITEM_BOWL_CALCITE), visible);

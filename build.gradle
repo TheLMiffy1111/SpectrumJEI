@@ -25,27 +25,6 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.nucleoid.xyz/"
-			}
-		}
-		filter {
-			includeGroup "eu.pb4"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.terraformersmc.com/"
-			}
-		}
-		filter {
-			includeGroup "com.terraformersmc"
-			includeGroup "dev.emi"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://maven.blamejared.com/"
 			}
 		}
@@ -61,17 +40,6 @@ repositories {
 		}
 		filter {
 			includeGroup "thelm.jeidrawables"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.architectury.dev/"
-			}
-		}
-		filter {
-			includeGroup "dev.architectury"
-			includeGroup "me.shedaniel.cloth"
 		}
 	}
 	exclusiveContent {
@@ -97,42 +65,21 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.ladysnake.org/releases/"
+				url = "https://maven.theillusivec4.top/"
 			}
 		}
 		filter {
-			includeGroup "org.ladysnake.cardinal-components-api"
+			includeGroup "top.theillusivec4.curios"
 		}
 	}
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.jamieswhiteshirt.com/libs-release/"
+				url = "https://cursemaven.com/"
 			}
 		}
 		filter {
-			includeGroup "com.jamieswhiteshirt"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://api.modrinth.com/maven/"
-			}
-		}
-		filter {
-			includeGroup "maven.modrinth"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://jitpack.io/"
-			}
-		}
-		filter {
-			includeGroup "com.github.DaFuqs"
-			includeGroup "com.github.emilyploszaj"
+			includeGroup "curse.maven"
 		}
 	}
 }
@@ -144,7 +91,7 @@ def specVersion = "21.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "21.1.7"
+version = "21.1.8-beta.0"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -169,11 +116,9 @@ loom {
 	silentMojangMappingsLicense()
 	runs {
 		configureEach {
-			property "fabric.log.console.level", "debug"
+			property "forge.logging.console.level", "debug"
 		}
-		client {
-			programArg "--username=Dev"
-		}
+		client
 		server
 	}
 }
@@ -182,45 +127,24 @@ dependencies {
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.21.1"
 	mappings loom.layered {
-		officialMojangMappings {
-			nameSyntheticMembers = false
-		}
+		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip"
 	}
-	modImplementation "net.fabricmc:fabric-loader:0.18.1"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.116.8+1.21.1"
-	modImplementation "eu.pb4:placeholder-api:2.4.2+1.21"
-	modImplementation "com.terraformersmc:modmenu:11.0.3"
+	neoForge "net.neoforged:neoforge:21.1.219"
 
 	// JEI
-	modImplementation("mezz.jei:jei-1.21.1-fabric:19.27.0.340") {transitive = false}
-	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:21.1.4"))
+	implementation("mezz.jei:jei-1.21.1-neoforge:19.27.0.340") {transitive = false}
+	include(implementation("thelm.jeidrawables:JEIDrawables-NeoForge:21.1.4"))
 
-	// Spectrum Included Dependencies
-	implementation "org.jgrapht:jgrapht-core:1.5.2"
-	implementation "org.apfloat:apfloat:1.14.0"
-	implementation "org.jheaps:jheaps:0.14"
-	modImplementation "maven.modrinth:exclusions-lib:R2vQMUlU"
-	modImplementation "de.dafuqs:additionalentityattributes:2.0.0+1.21.1"
-	modImplementation "de.dafuqs:arrowhead:1.4.4+1.21.1"
-	modImplementation "de.dafuqs:reverb:1.1.0+1.21.1"
-	modImplementation "de.dafuqs:fractal:1.3.0+1.21.1"
-	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-api:6.1.2"
-
-	// Spectrum External Dependencies
-	modImplementation "de.dafuqs:revelationary:1.3.9+1.21.1"
-	modImplementation "dev.architectury:architectury-fabric:13.0.8"
-	modImplementation "me.shedaniel.cloth:cloth-config-fabric:15.0.140"
-	modImplementation "dev.emi:trinkets:3.10.0"
-	implementation "org.commonmark:commonmark:0.25.0"
-	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:0.25.0"
-	implementation "org.commonmark:commonmark-ext-ins:0.25.0"
-	implementation "me.zeroeightsix:fiber:0.23.0-2"
-	modImplementation("com.klikli_dev:modonomicon-1.21.1-fabric:1.117.2") {transitive = false}
-	modImplementation "maven.modrinth:dcwa:W0E7l3pF"
+	// Spectrum Dependencies
+	implementation "de.dafuqs:revelationary-neoforge:1.4.0+1.21.1"
+	implementation "de.dafuqs:Fractal:1.6.0+1.21.1-neoforge"
+	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.117.4") {transitive = false}
+	implementation "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
+	implementation "curse.maven:yeetusexperimentus-635427:5444189"
 
 	// Spectrum
-	modImplementation "maven.modrinth:spectrum:EhmjHQFq"
+	implementation "curse.maven:spectrum-556967:7728432"
 }
 
 def replacements = [
@@ -280,8 +204,8 @@ publishMods {
 	file = remapJar.archiveFile
 	version = displayName = project.version
 	changelog = file("changelog.md").text
-	type = STABLE
-	modLoaders.add("fabric")
+	type = BETA
+	modLoaders.add("neoforge")
 	additionalFiles.from(remapSourcesJar.archiveFile)
 
 	curseforge {

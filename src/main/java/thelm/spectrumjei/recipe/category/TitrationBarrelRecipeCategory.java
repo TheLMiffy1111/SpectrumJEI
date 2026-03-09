@@ -2,7 +2,6 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
-import de.dafuqs.spectrum.api.recipe.FluidIngredient;
 import de.dafuqs.spectrum.api.recipe.IngredientStack;
 import de.dafuqs.spectrum.recipe.titration_barrel.ITitrationBarrelRecipe;
 import de.dafuqs.spectrum.recipe.titration_barrel.TitrationBarrelRecipe;
@@ -44,7 +43,7 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		List<IngredientStack> ingredients = recipe.getIngredientStacks();
 		int inputCount = ingredients.size();
 		boolean hasFluid = false;
-		if(recipe.getFluidInput() != FluidIngredient.EMPTY) {
+		if(!recipe.getFluidInput().isEmpty()) {
 			inputCount++;
 			hasFluid = true;
 		}
@@ -56,7 +55,7 @@ public class TitrationBarrelRecipeCategory extends AbstractGatedRecipeCategory<I
 		for(int i = 0; i < ingredients.size(); ++i) {
 			int x = startX + (hasFluid ? i + 1 : i) % 3 * 20;
 			int y = startY + (hasFluid ? i + 1 : i) / 3 * 20;
-			addItem(builder, RecipeIngredientRole.INPUT, x, y, ingredients.get(i).getMatchingStacks(), JEIDrawables.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.INPUT, x, y, ingredients.get(i).getItems().toList(), JEIDrawables.SLOT, visible);
 		}
 		if(recipe.getTappingItem() != null && recipe.getTappingItem() != Items.AIR) {
 			addItem(builder, RecipeIngredientRole.INPUT, 76, 21, new ItemStack(recipe.getTappingItem()), JEIDrawables.SLOT, visible);

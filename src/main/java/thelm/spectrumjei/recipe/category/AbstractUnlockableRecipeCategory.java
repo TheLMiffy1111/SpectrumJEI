@@ -3,7 +3,6 @@ package thelm.spectrumjei.recipe.category;
 import java.util.List;
 
 import de.dafuqs.revelationary.api.advancements.AdvancementHelper;
-import de.dafuqs.spectrum.api.recipe.FluidIngredient;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -27,6 +26,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import thelm.spectrumjei.SpectrumJEI;
 
 public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCategory<R> {
@@ -144,16 +145,8 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 
 	public IIngredientAcceptor<?> addFluid(IRecipeLayoutBuilder builder, RecipeIngredientRole ingredientRole, int x, int y, FluidIngredient ingredient, long amount, IDrawable background, boolean visible) {
 		IIngredientAcceptor<?> acceptor = addSlot(builder, ingredientRole, x, y, background, visible);
-		if(ingredient.isTag()) {
-			List<Fluid> fluids = BuiltInRegistries.FLUID.getTag(ingredient.tag().get()).stream().
-					flatMap(HolderSet::stream).
-					map(Holder::value).toList();
-			for(Fluid fluid : fluids) {
-				acceptor.addFluidStack(fluid, amount);
-			}
-		}
-		else {
-			acceptor.addFluidStack(ingredient.fluid().get(), amount);
+		for(FluidStack stack : ingredient.getStacks()) {
+			acceptor.addFluidStack(stack.getFluid(), amount, stack.getComponentsPatch());
 		}
 		if(acceptor instanceof IRecipeSlotBuilder slot) {
 			slot.setFluidRenderer(Math.max(amount, 1), false, 16, 16);
