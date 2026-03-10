@@ -1,1 +1,1 @@
-Slight layout adjustments  
+Move FractalJEI to jar-in-jar  

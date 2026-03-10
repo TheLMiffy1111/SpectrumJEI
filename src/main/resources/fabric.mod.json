@@ -17,8 +17,7 @@
 	"environment": "client",
 	"entrypoints": {
 		"jei_mod_plugin": [
-			"thelm.spectrumjei.SpectrumJEI",
-			"thelm.fractaljei.FractalJEI"
+			"thelm.spectrumjei.SpectrumJEI"
 		]
 	},
 	"depends": {

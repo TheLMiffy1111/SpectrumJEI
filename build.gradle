@@ -62,6 +62,7 @@ repositories {
 		}
 		filter {
 			includeGroup "thelm.jeidrawables"
+			includeGroup "thelm.fractaljei"
 		}
 	}
 	exclusiveContent {
@@ -136,7 +137,7 @@ def specVersion = "19.2"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "19.2.5"
+version = "19.2.6"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -206,6 +207,9 @@ dependencies {
 	modImplementation "vazkii.patchouli:Patchouli:1.19.2-77-FABRIC"
 	modImplementation "dev.emi:trinkets:3.4.1"
 	modImplementation "maven.modrinth:dcwa:3Zi6jtYW"
+
+	// FractalJEI
+	include(modImplementation("thelm.fractaljei:FractalJEI-Fabric:1.0.0"))
 
 	// Spectrum
 	modImplementation "maven.modrinth:spectrum:cZcvzTh4"
