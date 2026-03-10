@@ -13,6 +13,7 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
 	description = "An addon to Spectrum that adds JEI support."
 	logoFile = "spectrumjei.logo.png"
 	authors = "TheLMiffy1111"
+	displayURL = "https://www.curseforge.com/minecraft/mc-mods/spectrumjei"
 
 [[dependencies.spectrumjei]]
 	modId = "minecraft"

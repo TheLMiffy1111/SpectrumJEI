@@ -17,13 +17,9 @@
 	"environment": "client",
 	"entrypoints": {
 		"jei_mod_plugin": [
-			"thelm.spectrumjei.SpectrumJEI",
-			"thelm.fractaljei.FractalJEI"
+			"thelm.spectrumjei.SpectrumJEI"
 		]
 	},
-	"mixins": [
-		"fractaljei.mixins.json"
-	],
 	"depends": {
 		"minecraft": ">=1.21- <1.21.2-",
 		"jei": "*",
