@@ -12,9 +12,6 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
 	authors = "TheLMiffy1111"
 	displayURL = "https://www.curseforge.com/minecraft/mc-mods/spectrumjei"
 
-[[mixins]]
-	config = "fractaljei.mixins.json"
-
 [[dependencies.spectrumjei]]
 	modId = "minecraft"
 	versionRange = "[1.21,1.21.2)"

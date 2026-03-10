@@ -40,6 +40,7 @@ repositories {
 		}
 		filter {
 			includeGroup "thelm.jeidrawables"
+			includeGroup "thelm.fractaljei"
 		}
 	}
 	exclusiveContent {
@@ -91,7 +92,7 @@ def specVersion = "21.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "21.1.8-beta.0"
+version = "21.1.8-beta.1"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -138,10 +139,12 @@ dependencies {
 
 	// Spectrum Dependencies
 	implementation "de.dafuqs:revelationary-neoforge:1.4.0+1.21.1"
-	implementation "de.dafuqs:Fractal:1.6.0+1.21.1-neoforge"
 	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.117.4") {transitive = false}
 	implementation "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
+
+	// FractalJEI
+	include(implementation("thelm.fractaljei:FractalJEI-NeoForge:2.0.0"))
 
 	// Spectrum
 	implementation "curse.maven:spectrum-556967:7728432"

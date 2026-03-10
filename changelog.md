@@ -1,2 +1,1 @@
-Ported to NeoForge  
-Fix overenchanting icon showing up in recipes that don't support overenchanting  
+Move FractalJEI to jar-in-jar  
