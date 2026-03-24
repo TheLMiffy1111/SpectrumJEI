@@ -62,6 +62,7 @@ import thelm.spectrumjei.gui.handler.OverlayHidingExtraAreaHandler;
 import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
 import thelm.spectrumjei.ingredient.subtype.ExperienceStorageItemSubtypeInterpreter;
 import thelm.spectrumjei.ingredient.subtype.InkStorageItemSubtypeInterpreter;
+import thelm.spectrumjei.ingredient.subtype.MemoryItemSubtypeInterpreter;
 import thelm.spectrumjei.ingredient.subtype.UnstableItemSubtypeInterpreter;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
 import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
@@ -128,6 +129,7 @@ public class SpectrumJEI implements IModPlugin {
 
 		registration.registerSubtypeInterpreter(SpectrumItems.KNOWLEDGE_GEM, new ExperienceStorageItemSubtypeInterpreter());
 		registration.registerSubtypeInterpreter(SpectrumItems.MIDNIGHT_ABERRATION, new UnstableItemSubtypeInterpreter());
+		registration.registerSubtypeInterpreter(SpectrumBlocks.MEMORY.asItem(), new MemoryItemSubtypeInterpreter());
 
 		InkStorageItemSubtypeInterpreter ink = new InkStorageItemSubtypeInterpreter();
 		registration.registerSubtypeInterpreter(SpectrumItems.INK_FLASK, ink);

@@ -1,1 +1,2 @@
-Slight layout adjustments  
+Added memory subtype interpreter  
+Simplified conversion recipe id  

@@ -18,7 +18,7 @@ public abstract class KnowledgeGemItemMixin extends Item {
 	@Override
 	public void appendStacks(ItemGroup tab, DefaultedList<ItemStack> items) {
 		super.appendStacks(tab, items);
-		if(tab == ItemGroup.SEARCH) {
+		if(isIn(tab)) {
 			items.add(KnowledgeGemItem.getKnowledgeDropStackWithXP(10000, false));
 		}
 	}

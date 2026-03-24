@@ -23,7 +23,7 @@ public abstract class InkStorageItemMixin<T extends InkStorage> extends Item imp
 	@Override
 	public void appendStacks(ItemGroup tab, DefaultedList<ItemStack> items) {
 		super.appendStacks(tab, items);
-		if(tab == ItemGroup.SEARCH) {
+		if(isIn(tab)) {
 			items.add(getFullStack());
 		}
 	}

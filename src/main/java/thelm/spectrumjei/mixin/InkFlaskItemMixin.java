@@ -25,7 +25,7 @@ public abstract class InkFlaskItemMixin extends Item implements InkStorageItem<S
 	@Override
 	public void appendStacks(ItemGroup tab, DefaultedList<ItemStack> items) {
 		super.appendStacks(tab, items);
-		if(tab == ItemGroup.SEARCH) {
+		if(isIn(tab)) {
 			for(InkColor color : InkColor.all()) {
 				items.add(getFullStack(color));
 			}
