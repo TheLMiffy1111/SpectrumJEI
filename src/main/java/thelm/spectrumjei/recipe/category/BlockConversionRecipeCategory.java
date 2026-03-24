@@ -49,7 +49,6 @@ public class BlockConversionRecipeCategory extends AbstractUnlockableRecipeCateg
 
 	@Override
 	public Identifier getRegistryName(BlockConversionRecipe recipe) {
-		Identifier blockKey = Registries.BLOCK.getId(recipe.input().getBlock());
-		return new Identifier("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
+		return Registries.BLOCK.getId(recipe.input().getBlock());
 	}
 }
