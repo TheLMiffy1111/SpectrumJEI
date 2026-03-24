@@ -137,7 +137,7 @@ def specVersion = "19.2"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "19.2.6"
+version = "19.2.7"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -185,7 +185,7 @@ dependencies {
 
 	// JEI
 	modImplementation("mezz.jei:jei-1.19.2-fabric:11.8.1.1034") {transitive = false}
-	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:19.2.4"))
+	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:19.2.5"))
 
 	// Spectrum Included Dependencies
 	implementation "org.jgrapht:jgrapht-core:1.5.2"
@@ -209,7 +209,7 @@ dependencies {
 	modImplementation "maven.modrinth:dcwa:3Zi6jtYW"
 
 	// FractalJEI
-	include(modImplementation("thelm.fractaljei:FractalJEI-Fabric:1.0.0"))
+	include(modImplementation("thelm.fractaljei:FractalJEI-Fabric:1.0.1"))
 
 	// Spectrum
 	modImplementation "maven.modrinth:spectrum:cZcvzTh4"

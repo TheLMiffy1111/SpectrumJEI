@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.dafuqs.spectrum.inventories.CraftingTabletScreenHandler;
+import de.dafuqs.spectrum.inventories.PedestalScreenHandler;
 import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
@@ -19,16 +19,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import thelm.spectrumjei.SpectrumJEI;
 
-public class CraftingTabletRecipeTransferHandler implements IRecipeTransferHandler<CraftingTabletScreenHandler, PedestalRecipe> {
+public class PedestalRecipeTransferHandler implements IRecipeTransferHandler<PedestalScreenHandler, PedestalRecipe> {
 
 	public final PedestalRecipeTier tier;
 	public final RecipeType<PedestalRecipe> recipeType;
-	public final IRecipeTransferHandler<CraftingTabletScreenHandler, PedestalRecipe> wrappedHandler;
+	public final IRecipeTransferHandler<PedestalScreenHandler, PedestalRecipe> wrappedGridHandler;
 
-	public CraftingTabletRecipeTransferHandler(PedestalRecipeTier tier, IRecipeTransferHandlerHelper transferHelper) {
+	public PedestalRecipeTransferHandler(PedestalRecipeTier tier, IRecipeTransferHandlerHelper transferHelper) {
 		this.tier = tier;
 		recipeType = getRecipeType(tier);
-		wrappedHandler = transferHelper.createUnregisteredRecipeTransferHandler(new RecipeTransferInfo(recipeType));
+		wrappedGridHandler = transferHelper.createUnregisteredRecipeTransferHandler(new GridRecipeTransferInfo(recipeType));
 	}
 
 	public static RecipeType<PedestalRecipe> getRecipeType(PedestalRecipeTier tier) {
@@ -41,13 +41,13 @@ public class CraftingTabletRecipeTransferHandler implements IRecipeTransferHandl
 	}
 
 	@Override
-	public Class<CraftingTabletScreenHandler> getContainerClass() {
-		return CraftingTabletScreenHandler.class;
+	public Class<PedestalScreenHandler> getContainerClass() {
+		return PedestalScreenHandler.class;
 	}
 
 	@Override
-	public Optional<ScreenHandlerType<CraftingTabletScreenHandler>> getMenuType() {
-		return Optional.of(SpectrumScreenHandlerTypes.CRAFTING_TABLET);
+	public Optional<ScreenHandlerType<PedestalScreenHandler>> getMenuType() {
+		return Optional.of(SpectrumScreenHandlerTypes.PEDESTAL);
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class CraftingTabletRecipeTransferHandler implements IRecipeTransferHandl
 	}
 
 	@Override
-	public IRecipeTransferError transferRecipe(CraftingTabletScreenHandler container, PedestalRecipe recipe, IRecipeSlotsView recipeSlots, PlayerEntity player, boolean maxTransfer, boolean doTransfer) {
-		return wrappedHandler.transferRecipe(container, recipe, () -> filterSlots(recipeSlots), player, maxTransfer, doTransfer);
+	public IRecipeTransferError transferRecipe(PedestalScreenHandler container, PedestalRecipe recipe, IRecipeSlotsView recipeSlots, PlayerEntity player, boolean maxTransfer, boolean doTransfer) {
+		return wrappedGridHandler.transferRecipe(container, recipe, () -> filterGridSlots(recipeSlots), player, maxTransfer, doTransfer);
 	}
 
-	public List<IRecipeSlotView> filterSlots(IRecipeSlotsView recipeSlots) {
+	public List<IRecipeSlotView> filterGridSlots(IRecipeSlotsView recipeSlots) {
 		List<IRecipeSlotView> original = recipeSlots.getSlotViews();
 		List<IRecipeSlotView> filtered = new ArrayList<>();
 		int inputCount = 0;
@@ -75,15 +75,15 @@ public class CraftingTabletRecipeTransferHandler implements IRecipeTransferHandl
 		return filtered;
 	}
 
-	public class RecipeTransferInfo extends GatedRecipeTransferInfo<CraftingTabletScreenHandler, PedestalRecipe> {
+	public class GridRecipeTransferInfo extends GatedRecipeTransferInfo<PedestalScreenHandler, PedestalRecipe> {
 
-		public RecipeTransferInfo(RecipeType<PedestalRecipe> recipeType) {
-			super(CraftingTabletScreenHandler.class, SpectrumScreenHandlerTypes.CRAFTING_TABLET, recipeType, 0, 9, 15, 36);
+		public GridRecipeTransferInfo(RecipeType<PedestalRecipe> recipeType) {
+			super(PedestalScreenHandler.class, SpectrumScreenHandlerTypes.PEDESTAL, recipeType, 0, 9, 16, 36);
 		}
 
 		@Override
-		public boolean canHandle(CraftingTabletScreenHandler container, PedestalRecipe recipe) {
-			return super.canHandle(container, recipe) && container.getTier().orElse(PedestalRecipeTier.BASIC).compareTo(tier) >= 0;
+		public boolean canHandle(PedestalScreenHandler container, PedestalRecipe recipe) {
+			return super.canHandle(container, recipe) && container.getPedestalRecipeTier().compareTo(tier) >= 0;
 		}
 	}
 }

@@ -55,7 +55,6 @@ public class BlockConversionWithChanceRecipeCategory extends AbstractUnlockableR
 
 	@Override
 	public Identifier getRegistryName(BlockConversionWithChanceRecipe recipe) {
-		Identifier blockKey = Registry.BLOCK.getId(recipe.input().getBlock());
-		return new Identifier("%s/%s/%s".formatted(recipeType.getUid(), blockKey.getNamespace(), blockKey.getPath()));
+		return Registry.BLOCK.getId(recipe.input().getBlock());
 	}
 }
