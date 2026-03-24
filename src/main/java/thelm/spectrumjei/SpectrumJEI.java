@@ -69,6 +69,7 @@ import thelm.spectrumjei.gui.handler.PedestalRecipeClickAreaHandler;
 import thelm.spectrumjei.gui.handler.ShadowSlotGhostIngredientHandler;
 import thelm.spectrumjei.ingredient.subtype.ExperienceStorageItemSubtypeInterpreter;
 import thelm.spectrumjei.ingredient.subtype.InkStorageItemSubtypeInterpreter;
+import thelm.spectrumjei.ingredient.subtype.MemoryItemSubtypeInterpreter;
 import thelm.spectrumjei.ingredient.subtype.UnstableItemSubtypeInterpreter;
 import thelm.spectrumjei.recipe.BlockConversionRecipe;
 import thelm.spectrumjei.recipe.BlockConversionWithChanceRecipe;
@@ -90,7 +91,7 @@ import thelm.spectrumjei.recipe.category.SpiritInstillerRecipeCategory;
 import thelm.spectrumjei.recipe.category.TitrationBarrelRecipeCategory;
 import thelm.spectrumjei.recipe.transfer.CraftingTabletRecipeTransferHandler;
 import thelm.spectrumjei.recipe.transfer.GatedRecipeTransferInfo;
-import thelm.spectrumjei.recipe.transfer.PedestalRecipeTransferInfo;
+import thelm.spectrumjei.recipe.transfer.PedestalRecipeTransferHandler;
 
 public class SpectrumJEI implements IModPlugin {
 
@@ -140,6 +141,7 @@ public class SpectrumJEI implements IModPlugin {
 
 		registration.registerSubtypeInterpreter(SpectrumItems.KNOWLEDGE_GEM, new ExperienceStorageItemSubtypeInterpreter());
 		registration.registerSubtypeInterpreter(SpectrumItems.MIDNIGHT_ABERRATION, new UnstableItemSubtypeInterpreter());
+		registration.registerSubtypeInterpreter(SpectrumBlocks.MEMORY.asItem(), new MemoryItemSubtypeInterpreter());
 
 		InkStorageItemSubtypeInterpreter ink = new InkStorageItemSubtypeInterpreter();
 		registration.registerSubtypeInterpreter(SpectrumItems.INK_FLASK, ink);
@@ -247,10 +249,10 @@ public class SpectrumJEI implements IModPlugin {
 		}
 
 		IRecipeTransferHandlerHelper transferHelper = registration.getTransferHelper();
-		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.BASIC));
-		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.SIMPLE));
-		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.ADVANCED));
-		registration.addRecipeTransferHandler(new PedestalRecipeTransferInfo(PedestalRecipeTier.COMPLEX));
+		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.BASIC, transferHelper), PEDESTAL_BASIC);
+		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.SIMPLE, transferHelper), PEDESTAL_SIMPLE);
+		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.ADVANCED, transferHelper), PEDESTAL_ADVANCED);
+		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.COMPLEX, transferHelper), PEDESTAL_COMPLEX);
 		registration.addRecipeTransferHandler(PedestalScreenHandler.class, SpectrumScreenHandlerTypes.PEDESTAL, RecipeTypes.CRAFTING, 0, 9, 16, 36);
 		registration.addRecipeTransferHandler(new CraftingTabletRecipeTransferHandler(PedestalRecipeTier.BASIC, transferHelper), PEDESTAL_BASIC);
 		registration.addRecipeTransferHandler(new CraftingTabletRecipeTransferHandler(PedestalRecipeTier.SIMPLE, transferHelper), PEDESTAL_SIMPLE);
