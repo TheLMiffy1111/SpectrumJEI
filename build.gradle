@@ -92,7 +92,7 @@ def specVersion = "21.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "21.1.8+neoforge"
+version = "21.1.9+neoforge"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -135,7 +135,7 @@ dependencies {
 
 	// JEI
 	implementation("mezz.jei:jei-1.21.1-neoforge:19.27.0.340") {transitive = false}
-	include(implementation("thelm.jeidrawables:JEIDrawables-NeoForge:21.1.5"))
+	include(implementation("thelm.jeidrawables:JEIDrawables-NeoForge:21.1.7"))
 
 	// Spectrum Dependencies
 	implementation "de.dafuqs:revelationary-neoforge:1.4.0+1.21.1"
@@ -144,7 +144,7 @@ dependencies {
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
 
 	// FractalJEI
-	include(implementation("thelm.fractaljei:FractalJEI-NeoForge:2.0.1"))
+	include(implementation("thelm.fractaljei:FractalJEI-NeoForge:2.0.2"))
 
 	// Spectrum
 	implementation "curse.maven:spectrum-556967:7781919"
