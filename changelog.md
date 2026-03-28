@@ -1,2 +1,1 @@
-Added memory subtype interpreter  
-Simplified conversion recipe id  
+Re-enable refmap for better compatibility  
