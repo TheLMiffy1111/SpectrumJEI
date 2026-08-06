@@ -2,6 +2,7 @@ package thelm.spectrumjei.recipe.category;
 
 import java.util.List;
 
+import de.dafuqs.spectrum.recipe.StackWithChance;
 import de.dafuqs.spectrum.recipe.cinderhearth.CinderhearthRecipe;
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -13,8 +14,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import thelm.jeidrawables.JEIDrawables;
 import thelm.spectrumjei.SpectrumJEI;
@@ -42,11 +41,11 @@ public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<Cind
 		boolean visible = isVisible(recipeHolder);
 		CinderhearthRecipe recipe = recipeHolder.value();
 		addItem(builder, RecipeIngredientRole.INPUT, 4, 1, recipe.getIngredientStacks().get(0).getItems().toList(), JEIDrawables.SLOT, visible);
-		List<Tuple<ItemStack, Float>> outputs = recipe.getResultsWithChance();
+		List<StackWithChance> outputs = recipe.getResultsWithChance();
 		for(int i = 0; i < 3; ++i) {
 			IIngredientAcceptor<?> acceptor = addSlot(builder, RecipeIngredientRole.OUTPUT, 58 + i * 28, 10, JEIDrawables.OUTPUT_SLOT, visible);
 			if(i < outputs.size()) {
-				acceptor.addItemStack(outputs.get(i).getA());
+				acceptor.addItemStack(outputs.get(i).stack());
 			}
 		}
 	}
@@ -66,10 +65,10 @@ public class CinderhearthRecipeCategory extends AbstractGatedRecipeCategory<Cind
 		if(isVisible(recipeHolder)) {
 			CinderhearthRecipe recipe = recipeHolder.value();
 			Font font = font();
-			List<Tuple<ItemStack, Float>> outputs = recipe.getResultsWithChance();
+			List<StackWithChance> outputs = recipe.getResultsWithChance();
 			for(int i = 0; i < outputs.size(); ++i) {
-				if(outputs.get(i).getB() < 1) {
-					Component chanceComponent = Component.literal((int)(outputs.get(i).getB() * 100) + "%");
+				if(outputs.get(i).chance() < 1) {
+					Component chanceComponent = Component.literal((int)(outputs.get(i).chance() * 100) + "%");
 					guiGraphics.drawString(font, chanceComponent, 67 + i * 28 - font.width(chanceComponent) / 2, 32, 0x3F3F3F, false);
 				}
 			}

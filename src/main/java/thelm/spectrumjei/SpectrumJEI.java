@@ -21,7 +21,7 @@ import de.dafuqs.spectrum.inventories.PedestalScreenHandler;
 import de.dafuqs.spectrum.inventories.PotionWorkshopScreen;
 import de.dafuqs.spectrum.inventories.PotionWorkshopScreenHandler;
 import de.dafuqs.spectrum.inventories.QuickNavigationGridScreen;
-import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
+import de.dafuqs.spectrum.inventories.SpectrumMenuTypes;
 import de.dafuqs.spectrum.recipe.anvil_crushing.AnvilCrushingRecipe;
 import de.dafuqs.spectrum.recipe.cinderhearth.CinderhearthRecipe;
 import de.dafuqs.spectrum.recipe.color_picker.InkConvertingRecipe;
@@ -31,7 +31,6 @@ import de.dafuqs.spectrum.recipe.enchanter.EnchantmentUpgradeRecipe;
 import de.dafuqs.spectrum.recipe.fluid_converting.DragonrotConvertingRecipe;
 import de.dafuqs.spectrum.recipe.fluid_converting.LiquidCrystalConvertingRecipe;
 import de.dafuqs.spectrum.recipe.fluid_converting.MidnightSolutionConvertingRecipe;
-import de.dafuqs.spectrum.recipe.fluid_converting.SludgeConvertingRecipe;
 import de.dafuqs.spectrum.recipe.fusion_shrine.FusionShrineRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
@@ -116,7 +115,6 @@ public class SpectrumJEI implements IModPlugin {
 	public static final RecipeType<RecipeHolder<PotionWorkshopBrewingRecipe>> POTION_WORKSHOP_BREWING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("potion_workshop_brewing"));
 	public static final RecipeType<RecipeHolder<PotionWorkshopCraftingRecipe>> POTION_WORKSHOP_CRAFTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("potion_workshop_crafting"));
 	public static final RecipeType<RecipeHolder<PotionWorkshopReactingRecipe>> POTION_WORKSHOP_REACTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("potion_workshop_reacting"));
-	public static final RecipeType<RecipeHolder<SludgeConvertingRecipe>> SLUDGE_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("mud_converting"));
 	public static final RecipeType<RecipeHolder<LiquidCrystalConvertingRecipe>> LIQUID_CRYSTAL_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("liquid_crystal_converting"));
 	public static final RecipeType<RecipeHolder<MidnightSolutionConvertingRecipe>> MIDNIGHT_SOLUTION_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("midnight_solution_converting"));
 	public static final RecipeType<RecipeHolder<DragonrotConvertingRecipe>> DRAGONROT_CONVERTING = RecipeType.createRecipeHolderType(SpectrumCommon.locate("dragonrot_converting"));
@@ -179,7 +177,6 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCategories(new PotionWorkshopRecipeCategory<>(POTION_WORKSHOP_BREWING, Component.translatable("container.spectrum.rei.potion_workshop_brewing.title")));
 		registration.addRecipeCategories(new PotionWorkshopRecipeCategory<>(POTION_WORKSHOP_CRAFTING, Component.translatable("container.spectrum.rei.potion_workshop_crafting.title")));
 		registration.addRecipeCategories(new DescriptiveGatedRecipeCategory<>(POTION_WORKSHOP_REACTING, Component.translatable("container.spectrum.rei.potion_workshop_reacting.title")));
-		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(SLUDGE_CONVERTING, Component.translatable("container.spectrum.rei.sludge_converting.title")));
 		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(LIQUID_CRYSTAL_CONVERTING, Component.translatable("container.spectrum.rei.liquid_crystal_converting.title")));
 		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(MIDNIGHT_SOLUTION_CONVERTING, Component.translatable("container.spectrum.rei.midnight_solution_converting.title")));
 		registration.addRecipeCategories(new FluidConvertingRecipeCategory<>(DRAGONROT_CONVERTING, Component.translatable("container.spectrum.rei.dragonrot_converting.title")));
@@ -217,7 +214,6 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipes(POTION_WORKSHOP_BREWING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.POTION_WORKSHOP_BREWING));
 		registration.addRecipes(POTION_WORKSHOP_CRAFTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.POTION_WORKSHOP_CRAFTING));
 		registration.addRecipes(POTION_WORKSHOP_REACTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.POTION_WORKSHOP_REACTING));
-		registration.addRecipes(SLUDGE_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.SLUDGE_CONVERTING));
 		registration.addRecipes(LIQUID_CRYSTAL_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.LIQUID_CRYSTAL_CONVERTING));
 		registration.addRecipes(MIDNIGHT_SOLUTION_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.MIDNIGHT_SOLUTION_CONVERTING));
 		registration.addRecipes(DRAGONROT_CONVERTING, recipeManager.getAllRecipesFor(SpectrumRecipeTypes.DRAGONROT_CONVERTING));
@@ -256,16 +252,16 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.SIMPLE, transferHelper), PEDESTAL_SIMPLE);
 		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.ADVANCED, transferHelper), PEDESTAL_ADVANCED);
 		registration.addRecipeTransferHandler(new PedestalRecipeTransferHandler(PedestalRecipeTier.COMPLEX, transferHelper), PEDESTAL_COMPLEX);
-		registration.addRecipeTransferHandler(PedestalScreenHandler.class, SpectrumScreenHandlerTypes.PEDESTAL, RecipeTypes.CRAFTING, 0, 9, 16, 36);
+		registration.addRecipeTransferHandler(PedestalScreenHandler.class, SpectrumMenuTypes.PEDESTAL, RecipeTypes.CRAFTING, 0, 9, 16, 36);
 		registration.addRecipeTransferHandler(new CraftingTabletRecipeTransferHandler(PedestalRecipeTier.BASIC, transferHelper), PEDESTAL_BASIC);
 		registration.addRecipeTransferHandler(new CraftingTabletRecipeTransferHandler(PedestalRecipeTier.SIMPLE, transferHelper), PEDESTAL_SIMPLE);
 		registration.addRecipeTransferHandler(new CraftingTabletRecipeTransferHandler(PedestalRecipeTier.ADVANCED, transferHelper), PEDESTAL_ADVANCED);
 		registration.addRecipeTransferHandler(new CraftingTabletRecipeTransferHandler(PedestalRecipeTier.COMPLEX, transferHelper), PEDESTAL_COMPLEX);
-		registration.addRecipeTransferHandler(CraftingTabletScreenHandler.class, SpectrumScreenHandlerTypes.CRAFTING_TABLET, RecipeTypes.CRAFTING, 0, 9, 15, 36);
-		registration.addRecipeTransferHandler(new GatedRecipeTransferInfo<>(PotionWorkshopScreenHandler.class, SpectrumScreenHandlerTypes.POTION_WORKSHOP, POTION_WORKSHOP_BREWING, 0, 9, 21, 36));
-		registration.addRecipeTransferHandler(new GatedRecipeTransferInfo<>(PotionWorkshopScreenHandler.class, SpectrumScreenHandlerTypes.POTION_WORKSHOP, POTION_WORKSHOP_CRAFTING, 0, 9, 21, 36));
-		registration.addRecipeTransferHandler(new GatedRecipeTransferInfo<>(CinderhearthScreenHandler.class, SpectrumScreenHandlerTypes.CINDERHEARTH, CINDERHEARTH, 2, 1, 11, 36));
-		registration.addRecipeTransferHandler(CinderhearthScreenHandler.class, SpectrumScreenHandlerTypes.CINDERHEARTH, RecipeTypes.BLASTING, 2, 1, 11, 36);
+		registration.addRecipeTransferHandler(CraftingTabletScreenHandler.class, SpectrumMenuTypes.CRAFTING_TABLET, RecipeTypes.CRAFTING, 0, 9, 15, 36);
+		registration.addRecipeTransferHandler(new GatedRecipeTransferInfo<>(PotionWorkshopScreenHandler.class, SpectrumMenuTypes.POTION_WORKSHOP, POTION_WORKSHOP_BREWING, 0, 9, 21, 36));
+		registration.addRecipeTransferHandler(new GatedRecipeTransferInfo<>(PotionWorkshopScreenHandler.class, SpectrumMenuTypes.POTION_WORKSHOP, POTION_WORKSHOP_CRAFTING, 0, 9, 21, 36));
+		registration.addRecipeTransferHandler(new GatedRecipeTransferInfo<>(CinderhearthScreenHandler.class, SpectrumMenuTypes.CINDERHEARTH, CINDERHEARTH, 2, 1, 11, 36));
+		registration.addRecipeTransferHandler(CinderhearthScreenHandler.class, SpectrumMenuTypes.CINDERHEARTH, RecipeTypes.BLASTING, 2, 1, 11, 36);
 	}
 
 	@Override
@@ -299,7 +295,6 @@ public class SpectrumJEI implements IModPlugin {
 		registration.addRecipeCatalyst(SpectrumBlocks.FUSION_SHRINE_CALCITE, FUSION_SHRINE);
 		registration.addRecipeCatalyst(SpectrumBlocks.ENCHANTER, ENCHANTER, ENCHANTMENT_UPGRADE);
 		registration.addRecipeCatalyst(SpectrumBlocks.POTION_WORKSHOP, POTION_WORKSHOP_BREWING, POTION_WORKSHOP_CRAFTING, POTION_WORKSHOP_REACTING);
-		registration.addRecipeCatalyst(SpectrumItems.SLUDGE_BUCKET, SLUDGE_CONVERTING);
 		registration.addRecipeCatalyst(SpectrumItems.LIQUID_CRYSTAL_BUCKET, LIQUID_CRYSTAL_CONVERTING);
 		registration.addRecipeCatalyst(SpectrumItems.MIDNIGHT_SOLUTION_BUCKET, MIDNIGHT_SOLUTION_CONVERTING);
 		registration.addRecipeCatalyst(SpectrumItems.DRAGONROT_BUCKET, DRAGONROT_CONVERTING);

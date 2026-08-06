@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.dafuqs.spectrum.inventories.CraftingTabletScreenHandler;
-import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
+import de.dafuqs.spectrum.inventories.SpectrumMenuTypes;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
@@ -48,7 +48,7 @@ public class CraftingTabletRecipeTransferHandler implements IRecipeTransferHandl
 
 	@Override
 	public Optional<MenuType<CraftingTabletScreenHandler>> getMenuType() {
-		return Optional.of(SpectrumScreenHandlerTypes.CRAFTING_TABLET);
+		return Optional.of(SpectrumMenuTypes.CRAFTING_TABLET);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class CraftingTabletRecipeTransferHandler implements IRecipeTransferHandl
 	public class RecipeTransferInfo extends GatedRecipeTransferInfo<CraftingTabletScreenHandler, PedestalRecipe> {
 
 		public RecipeTransferInfo(RecipeType<RecipeHolder<PedestalRecipe>> recipeType) {
-			super(CraftingTabletScreenHandler.class, SpectrumScreenHandlerTypes.CRAFTING_TABLET, recipeType, 0, 9, 15, 36);
+			super(CraftingTabletScreenHandler.class, SpectrumMenuTypes.CRAFTING_TABLET, recipeType, 0, 9, 15, 36);
 		}
 
 		@Override

@@ -1,5 +1,6 @@
 package thelm.spectrumjei.recipe.category;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.IntFunction;
@@ -9,8 +10,10 @@ import java.util.stream.IntStream;
 import de.dafuqs.spectrum.SpectrumCommon;
 import de.dafuqs.spectrum.items.magic_items.KnowledgeGemItem;
 import de.dafuqs.spectrum.recipe.enchanter.EnchantmentUpgradeRecipe;
+import de.dafuqs.spectrum.recipe.enchanter.EnchantmentUpgradeRecipe.LevelData;
 import de.dafuqs.spectrum.registries.SpectrumAdvancements;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
+import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
@@ -32,7 +35,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -70,21 +72,21 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<EnchantmentUpgradeRecipe> recipeHolder, IFocusGroup focuses) {
 		boolean visible = isVisible(recipeHolder);
 		EnchantmentUpgradeRecipe recipe = recipeHolder.value();
-		Item inputItem = recipe.getBulkItem();
-		int inputCount = recipe.getBaseItemCost();
-		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getBaseXPCost(), true), JEIDrawables.SLOT, visible);
+		addItem(builder, RecipeIngredientRole.INPUT, 113, 7, KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getLevelData().getFirst().experience(), true), JEIDrawables.SLOT, visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 113, 53, new ItemStack(SpectrumBlocks.ENCHANTER), visible);
 		addSlot(builder, RecipeIngredientRole.INPUT, 34, 32, JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 21, 1, new ItemStack(inputItem, getSplitCount(inputCount, 0)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 47, 1, new ItemStack(inputItem, getSplitCount(inputCount, 1)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 65, 19, new ItemStack(inputItem, getSplitCount(inputCount, 2)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 65, 45, new ItemStack(inputItem, getSplitCount(inputCount, 3)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 47, 63, new ItemStack(inputItem, getSplitCount(inputCount, 4)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 21, 63, new ItemStack(inputItem, getSplitCount(inputCount, 5)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 3, 45, new ItemStack(inputItem, getSplitCount(inputCount, 6)), JEIDrawables.SLOT, visible);
-		addItem(builder, RecipeIngredientRole.INPUT, 3, 19, new ItemStack(inputItem, getSplitCount(inputCount, 7)), JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 21, 1, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 47, 1, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 65, 19, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 65, 45, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 47, 63, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 21, 63, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 3, 45, JEIDrawables.SLOT, visible);
+		addSlot(builder, RecipeIngredientRole.INPUT, 3, 19, JEIDrawables.SLOT, visible);
 		addSlot(builder, RecipeIngredientRole.OUTPUT, 113, 32, JEIDrawables.OUTPUT_SLOT, visible);
-		builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStacks(IntStream.range(1, recipe.getLevelCap()).mapToObj(levelToBook(recipe.getEnchantment())).toList());
+		IIngredientAcceptor<?> invisibleInputs = builder.addInvisibleIngredients(RecipeIngredientRole.INPUT);
+		invisibleInputs.addItemStacks(IntStream.range(1, recipe.getLevelCap()).mapToObj(levelToBook(recipe.getEnchantment())).toList());
+		recipe.getLevelData().forEach(data -> invisibleInputs.addIngredients(data.ingredient()));
 		builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStacks(IntStream.rangeClosed(2, recipe.getLevelCap()).mapToObj(levelToBook(recipe.getEnchantment())).toList());
 	}
 
@@ -200,14 +202,14 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 		}
 
 		public void updateSlots() {
+			LevelData data = recipe.getLevelData().get(index - 1);
 			slots.forEach(IRecipeSlotDrawable::clearDisplayOverrides);
-			slots.get(0).createDisplayOverrides().addItemStack(KnowledgeGemItem.getKnowledgeDropStackWithXP(recipe.getXPScaling().apply(index), false));
+			slots.get(0).createDisplayOverrides().addItemStack(KnowledgeGemItem.getKnowledgeDropStackWithXP(data.experience(), true));
 			slots.get(2).createDisplayOverrides().addItemStack(levelToBook(recipe.getEnchantment()).apply(index));
 			slots.get(11).createDisplayOverrides().addItemStack(levelToBook(recipe.getEnchantment()).apply(index + 1));
-			Item inputItem = recipe.getBulkItem();
-			int inputCount = recipe.getItemScaling().apply(index);
+			List<ItemStack> ingredient = Arrays.stream(data.ingredient().getItems()).map(ItemStack::copy).peek(s -> s.setCount(data.countPerBowl())).toList();
 			for(int i = 0; i < 8; ++i) {
-				slots.get(3 + i).createDisplayOverrides().addItemStack(new ItemStack(inputItem, getSplitCount(inputCount, i)));
+				slots.get(3 + i).createDisplayOverrides().addItemStacks(ingredient);
 			}
 		}
 
@@ -217,8 +219,9 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 				slot.draw(guiGraphics);
 			}
 			Font font = font();
+			LevelData data = recipe.getLevelData().get(index - 1);
 			Component levelComponent = Component.translatable("container.spectrum.rei.enchantment_upgrade.level", index, index + 1);
-			Component reqComponent = Component.translatable("container.spectrum.rei.enchantment_upgrade.required_item_count", recipe.getItemScaling().apply(index));
+			Component reqComponent = Component.translatable("container.spectrum.rei.enchantment_upgrade.required_item_count", data.countPerBowl() * 8);
 			guiGraphics.drawString(font, levelComponent, 69, 2, index >= recipe.getEnchantment().value().getMaxLevel() ? 0xDB3564 : 0x3F3F3F, false);
 			guiGraphics.drawString(font, reqComponent, 69, 71, 0x3F3F3F, false);
 		}

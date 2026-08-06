@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.dafuqs.spectrum.inventories.PedestalScreenHandler;
-import de.dafuqs.spectrum.inventories.SpectrumScreenHandlerTypes;
+import de.dafuqs.spectrum.inventories.SpectrumMenuTypes;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipe;
 import de.dafuqs.spectrum.recipe.pedestal.PedestalRecipeTier;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
@@ -48,7 +48,7 @@ public class PedestalRecipeTransferHandler implements IRecipeTransferHandler<Ped
 
 	@Override
 	public Optional<MenuType<PedestalScreenHandler>> getMenuType() {
-		return Optional.of(SpectrumScreenHandlerTypes.PEDESTAL);
+		return Optional.of(SpectrumMenuTypes.PEDESTAL);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class PedestalRecipeTransferHandler implements IRecipeTransferHandler<Ped
 	public class GridRecipeTransferInfo extends GatedRecipeTransferInfo<PedestalScreenHandler, PedestalRecipe> {
 
 		public GridRecipeTransferInfo(RecipeType<RecipeHolder<PedestalRecipe>> recipeType) {
-			super(PedestalScreenHandler.class, SpectrumScreenHandlerTypes.PEDESTAL, recipeType, 0, 9, 16, 36);
+			super(PedestalScreenHandler.class, SpectrumMenuTypes.PEDESTAL, recipeType, 0, 9, 16, 36);
 		}
 
 		@Override

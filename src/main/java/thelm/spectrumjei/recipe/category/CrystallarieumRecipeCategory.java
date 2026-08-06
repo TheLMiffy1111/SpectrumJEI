@@ -3,10 +3,12 @@ package thelm.spectrumjei.recipe.category;
 import java.util.List;
 
 import de.dafuqs.spectrum.SpectrumCommon;
-import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumCatalyst;
+import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumAdditive;
 import de.dafuqs.spectrum.recipe.crystallarieum.CrystallarieumRecipe;
 import de.dafuqs.spectrum.registries.SpectrumBlocks;
 import de.dafuqs.spectrum.registries.SpectrumDataComponentTypes;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -31,27 +33,15 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 
 	public static final Component TITLE = Component.translatable("block.spectrum.crystallarieum");
 
-	public static final Component CATALYST = Component.translatable("container.spectrum.rei.crystallarieum.catalyst");
+	public static final Component CATALYST = Component.translatable("container.spectrum.rei.crystallarieum.additive");
 	public static final Component SPEED = Component.translatable("container.spectrum.rei.crystallarieum.speed");
 	public static final Component INK_DRAIN = Component.translatable("container.spectrum.rei.crystallarieum.ink_drain");
 	public static final Component DEPLETION = Component.translatable("container.spectrum.rei.crystallarieum.depletion");
 
 	public static final ResourceLocation BACKGROUND = SpectrumCommon.locate("textures/gui/modonomicon/crystallarieum.png");
-	public static final ResourceDrawable ACCEL_HIGHER = new ResourceDrawable(BACKGROUND, 98, 0, 7, 7, 128, 128);
-	public static final ResourceDrawable ACCEL_HIGH = new ResourceDrawable(BACKGROUND, 91, 0, 7, 7, 128, 128);
-	public static final ResourceDrawable ACCEL_NONE = new ResourceDrawable(BACKGROUND, 84, 0, 7, 7, 128, 128);
-	public static final ResourceDrawable ACCEL_LOW = new ResourceDrawable(BACKGROUND, 77, 0, 7, 7, 128, 128);
-	public static final ResourceDrawable ACCEL_LOWER = new ResourceDrawable(BACKGROUND, 70, 0, 7, 7, 128, 128);
-	public static final ResourceDrawable CONSUME_HIGHER = new ResourceDrawable(BACKGROUND, 70, 7, 7, 7, 128, 128);
-	public static final ResourceDrawable CONSUME_HIGH = new ResourceDrawable(BACKGROUND, 77, 7, 7, 7, 128, 128);
-	public static final ResourceDrawable CONSUME_NORMAL = new ResourceDrawable(BACKGROUND, 84, 7, 7, 7, 128, 128);
-	public static final ResourceDrawable CONSUME_LOW = new ResourceDrawable(BACKGROUND, 91, 7, 7, 7, 128, 128);
-	public static final ResourceDrawable CONSUME_LOWER = new ResourceDrawable(BACKGROUND, 98, 7, 7, 7, 128, 128);
-	public static final ResourceDrawable CHANCE_HIGHER = new ResourceDrawable(BACKGROUND, 70, 14, 7, 7, 128, 128);
-	public static final ResourceDrawable CHANCE_HIGH = new ResourceDrawable(BACKGROUND, 77, 14, 7, 7, 128, 128);
-	public static final ResourceDrawable CHANCE_NORMAL = new ResourceDrawable(BACKGROUND, 84, 14, 7, 7, 128, 128);
-	public static final ResourceDrawable CHANCE_LOW = new ResourceDrawable(BACKGROUND, 91, 14, 7, 7, 128, 128);
-	public static final ResourceDrawable CHANCE_NONE = new ResourceDrawable(BACKGROUND, 98, 14, 7, 7, 128, 128);
+	public static final Int2ObjectMap<ResourceDrawable> GROWTH_SPEED = new Int2ObjectArrayMap<>(5);
+	public static final Int2ObjectMap<ResourceDrawable> CONSUMPTION = new Int2ObjectArrayMap<>(5);
+	public static final Int2ObjectMap<ResourceDrawable> CONSUME_CHANCE = new Int2ObjectArrayMap<>(5);
 
 	public CrystallarieumRecipeCategory() {
 		super(SpectrumJEI.CRYSTALLARIEUM, TITLE);
@@ -75,10 +65,10 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 		for(int i = 1; i < growthStages.size(); ++i) {
 			addItem(builder, RecipeIngredientRole.OUTPUT, 53 + i * 20, 9, growthStages.get(i), JEIDrawables.SLOT, visible);
 		}
-		List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
-		for(int i = 0; i < catalysts.size(); ++i) {
+		List<CrystallarieumAdditive> additives = recipe.getAdditives();
+		for(int i = 0; i < additives.size(); ++i) {
 			int x = 53 + i * 18;
-			addItem(builder, RecipeIngredientRole.CATALYST, x, 39, catalysts.get(i).ingredient(), JEIDrawables.SLOT, visible);
+			addItem(builder, RecipeIngredientRole.CATALYST, x, 39, additives.get(i).ingredient(), JEIDrawables.SLOT, visible);
 		}
 	}
 
@@ -87,64 +77,23 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 		if(isVisible(recipeHolder)) {
 			CrystallarieumRecipe recipe = recipeHolder.value();
 			builder.addDrawable(JEIDrawables.recipeArrow(recipe.getSecondsPerGrowthStage() * 1000), 47, 9);
-			List<CrystallarieumCatalyst> catalysts = recipe.getCatalysts();
-			for(int i = 0; i < catalysts.size(); ++i) {
-				CrystallarieumCatalyst catalyst = catalysts.get(i);
+			List<CrystallarieumAdditive> additives = recipe.getAdditives();
+			for(int i = 0; i < additives.size(); ++i) {
+				CrystallarieumAdditive additive = additives.get(i);
 				int x = 58 + i * 18;
+				int offsetU;
 				IDrawable icon;
 
-				float growthAcceleration = catalyst.growthAccelerationMod();
-				if(growthAcceleration >= 5F) {
-					icon = ACCEL_HIGHER;
-				}
-				else if(growthAcceleration > 1F) {
-					icon = ACCEL_HIGH;
-				}
-				else if(growthAcceleration == 1F) {
-					icon = ACCEL_NONE;
-				}
-				else if(growthAcceleration >= 0.2F) {
-					icon = ACCEL_LOW;
-				}
-				else {
-					icon = ACCEL_LOWER;
-				}
+				offsetU = CrystallarieumRecipe.growthSpeedOffsetU(additive);
+				icon = GROWTH_SPEED.computeIfAbsent(offsetU, u -> new ResourceDrawable(BACKGROUND, u, CrystallarieumRecipe.GROWTH_SPEED_V, 7, 7, 128, 128));
 				builder.addDrawable(icon, x, 59);
 
-				float inkConsumption = catalyst.inkConsumptionMod();
-				if(inkConsumption >= 5F) {
-					icon = CONSUME_HIGHER;
-				}
-				else if(inkConsumption > 1F) {
-					icon = CONSUME_HIGH;
-				}
-				else if(inkConsumption == 1F) {
-					icon = CONSUME_NORMAL;
-				}
-				else if(inkConsumption >= 0.2F) {
-					icon = CONSUME_LOW;
-				}
-				else {
-					icon = CONSUME_LOWER;
-				}
+				offsetU = CrystallarieumRecipe.consumptionOffsetU(additive, offsetU);
+				icon = CONSUMPTION.computeIfAbsent(offsetU, u -> new ResourceDrawable(BACKGROUND, u, CrystallarieumRecipe.CONSUMPTION_V, 7, 7, 128, 128));
 				builder.addDrawable(icon, x, 69);
 
-				float consumeChance = catalyst.consumeChancePerSecond();
-				if(consumeChance >= 0.25F) {
-					icon = CHANCE_HIGHER;
-				}
-				else if(consumeChance >= 0.05F) {
-					icon = CHANCE_HIGH;
-				}
-				else if(consumeChance >= 0.02F) {
-					icon = CHANCE_NORMAL;
-				}
-				else if(consumeChance > 1e-4F) {
-					icon = CHANCE_LOW;
-				}
-				else {
-					icon = CHANCE_NONE;
-				}
+				offsetU = CrystallarieumRecipe.consumeChanceOffsetU(additive, offsetU);
+				icon = CONSUME_CHANCE.computeIfAbsent(offsetU, u -> new ResourceDrawable(BACKGROUND, u, CrystallarieumRecipe.CONSUME_CHANCE_V, 7, 7, 128, 128));
 				builder.addDrawable(icon, x, 79);
 			}
 		}
@@ -157,8 +106,8 @@ public class CrystallarieumRecipeCategory extends AbstractGatedRecipeCategory<Cr
 			CrystallarieumRecipe recipe = recipeHolder.value();
 			Font font = font();
 			Component timeComponent;
-			if(recipe.growsWithoutCatalyst()) {
-				timeComponent = Component.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds_catalyst_optional", recipe.getSecondsPerGrowthStage());
+			if(recipe.growsWithoutAdditive()) {
+				timeComponent = Component.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds_additive_optional", recipe.getSecondsPerGrowthStage());
 			}
 			else {
 				timeComponent = Component.translatable("container.spectrum.rei.crystallarieum.crafting_time_per_stage_seconds", recipe.getSecondsPerGrowthStage());

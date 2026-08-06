@@ -1,1 +1,1 @@
-Update JEIDrawables and FractalJEI  
+Update to Spectrum 1.12
