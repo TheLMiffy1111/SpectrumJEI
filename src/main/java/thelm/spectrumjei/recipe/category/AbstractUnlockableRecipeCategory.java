@@ -70,8 +70,12 @@ public abstract class AbstractUnlockableRecipeCategory<R> implements IRecipeCate
 
 	public abstract boolean isUnlocked(R recipe);
 
+	public boolean isSecret(R recipe) {
+		return false;
+	}
+
 	public boolean isVisible(R recipe) {
-		return isUnlocked(recipe);
+		return isUnlocked(recipe) && !isSecret(recipe);
 	}
 
 	@Override

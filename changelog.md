@@ -1,1 +1,1 @@
-Update to Spectrum 1.12
+Update to Spectrum 1.12.3+

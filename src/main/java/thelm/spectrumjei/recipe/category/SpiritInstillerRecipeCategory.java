@@ -48,9 +48,6 @@ public class SpiritInstillerRecipeCategory extends AbstractGatedRecipeCategory<S
 		addItem(builder, RecipeIngredientRole.CATALYST, 11, 18, new ItemStack(SpectrumBlocks.ITEM_BOWL_CALCITE), visible);
 		addItem(builder, RecipeIngredientRole.CATALYST, 51, 18, new ItemStack(SpectrumBlocks.ITEM_BOWL_CALCITE), visible);
 		ItemStack stack = recipe.getResultItem(registryAccess());
-		if(recipe instanceof SpawnerChangeRecipe spawnerChange) {
-			LoreHelper.setLore(stack, spawnerChange.getOutputLoreText());
-		}
 		addItem(builder, RecipeIngredientRole.OUTPUT, 105, 10, stack, JEIDrawables.OUTPUT_SLOT, visible);
 	}
 

@@ -29,7 +29,7 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/SpectrumJEI/issues"
 
 [[dependencies.spectrumjei]]
 	modId = "spectrum"
-	versionRange = "[1.12,)"
+	versionRange = "[1.12.3,)"
 	type = "required"
 
 [[dependencies.spectrumjei]]

@@ -92,7 +92,7 @@ def specVersion = "21.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "21.1.10+neoforge"
+version = "21.1.11+neoforge"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -147,7 +147,7 @@ dependencies {
 	include(implementation("thelm.fractaljei:FractalJEI-NeoForge:2.0.2"))
 
 	// Spectrum
-	implementation "curse.maven:spectrum-556967:8577000"
+	implementation "curse.maven:spectrum-556967:8679750"
 }
 
 def replacements = [

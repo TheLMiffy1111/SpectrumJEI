@@ -16,12 +16,12 @@ public abstract class AbstractGatedRecipeCategory<R extends GatedRecipe<?>> exte
 
 	@Override
 	public boolean isUnlocked(RecipeHolder<R> recipeHolder) {
-		return hasAdvancement(recipeHolder.value().getRecipeTypeUnlockIdentifier()) && hasAdvancement(recipeHolder.value().getRequiredAdvancementIdentifier().orElse(null));
+		return hasAdvancement(recipeHolder.value().getRecipeTypeUnlockIdentifier()) && hasAdvancement(recipeHolder.value().getRequiredAdvancement().orElse(null));
 	}
 
 	@Override
-	public boolean isVisible(RecipeHolder<R> recipeHolder) {
-		return super.isVisible(recipeHolder) && !recipeHolder.value().isSecret();
+	public boolean isSecret(RecipeHolder<R> recipeHolder) {
+		return !hasAdvancement(recipeHolder.value().getRevealSecretAdvancement().orElse(null));
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public abstract class AbstractGatedRecipeCategory<R extends GatedRecipe<?>> exte
 		if(!isUnlocked(recipeHolder)) {
 			drawLockedText(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
 		}
-		else if(recipeHolder.value().isSecret()) {
+		else if(isSecret(recipeHolder)) {
 			drawSecretText(recipeHolder, recipeSlotsView, guiGraphics, mouseX, mouseY);
 		}
 	}
