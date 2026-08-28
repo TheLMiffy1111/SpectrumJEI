@@ -209,7 +209,7 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 		@Override
 		public void drawWidget(GuiGraphics guiGraphics, double mouseX, double mouseY) {
 			for(IRecipeSlotDrawable slot : slots) {
-				slot.draw(guiGraphics);
+				slot.draw(guiGraphics, slot.isMouseOver(mouseX, mouseY));
 			}
 			if(hasAdvancement(SpectrumAdvancements.OVERENCHANTING)) {
 				OVERENCHANT.draw(guiGraphics, 3, 1);

@@ -1,1 +1,1 @@
-Update JEIDrawables and FractalJEI  
+Update FractalJEI  
