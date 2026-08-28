@@ -145,7 +145,7 @@ def specVersion = "20.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "20.1.9"
+version = "20.1.9.1"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -187,12 +187,12 @@ dependencies {
 		parchment "org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip"
 	}
 	modImplementation "net.fabricmc:fabric-loader:0.19.3"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.92.9+1.20.1"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.92.11+1.20.1"
 	modImplementation "eu.pb4:placeholder-api:2.1.4+1.20.1"
 	modImplementation "com.terraformersmc:modmenu:7.2.2"
 
 	// JEI
-	modImplementation("mezz.jei:jei-1.20.1-fabric:15.20.0.133") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-fabric:15.49.0.193") {transitive = false}
 	include(modImplementation("thelm.jeidrawables:JEIDrawables-Fabric:20.1.7"))
 
 	// Spectrum Included Dependencies
@@ -220,7 +220,7 @@ dependencies {
 	modImplementation "maven.modrinth:dcwa:P23QCBEG"
 
 	// FractalJEI
-	include(modImplementation("thelm.fractaljei:FractalJEI-Fabric:2.0.2"))
+	include(modImplementation("thelm.fractaljei:FractalJEI-Fabric:2.0.3"))
 
 	// Spectrum
 	modImplementation "maven.modrinth:spectrum:mDJAjTuc"
