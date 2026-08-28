@@ -216,7 +216,7 @@ public class EnchantmentUpgradeRecipeCategory extends AbstractGatedRecipeCategor
 		@Override
 		public void drawWidget(GuiGraphics guiGraphics, double mouseX, double mouseY) {
 			for(IRecipeSlotDrawable slot : slots) {
-				slot.draw(guiGraphics);
+				slot.draw(guiGraphics, slot.isMouseOver(mouseX, mouseY));
 			}
 			Font font = font();
 			LevelData data = recipe.getLevelData().get(index - 1);

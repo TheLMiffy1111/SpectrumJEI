@@ -92,7 +92,7 @@ def specVersion = "21.1"
 def vendor = "thelm"
 
 group = "thelm.spectrumjei"
-version = "21.1.11+neoforge"
+version = "21.1.11.1+neoforge"
 
 def archivesName = modName
 base.archivesName = archivesName
@@ -131,10 +131,10 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip"
 	}
-	neoForge "net.neoforged:neoforge:21.1.234"
+	neoForge "net.neoforged:neoforge:21.1.248"
 
 	// JEI
-	implementation("mezz.jei:jei-1.21.1-neoforge:19.27.0.346") {transitive = false}
+	implementation("mezz.jei:jei-1.21.1-neoforge:19.44.0.405") {transitive = false}
 	include(implementation("thelm.jeidrawables:JEIDrawables-NeoForge:21.1.7"))
 
 	// Spectrum Dependencies
@@ -144,7 +144,7 @@ dependencies {
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
 
 	// FractalJEI
-	include(implementation("thelm.fractaljei:FractalJEI-NeoForge:2.0.2"))
+	include(implementation("thelm.fractaljei:FractalJEI-NeoForge:2.0.3"))
 
 	// Spectrum
 	implementation "curse.maven:spectrum-556967:8679750"
